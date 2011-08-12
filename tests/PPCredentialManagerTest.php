@@ -51,7 +51,7 @@ class PPCredentialManagerTest extends PHPUnit_Framework_TestCase
 		$IPPCredential = $this->object->getCredentialObject('suarumugam-biz_api1.paypal.com');
 		$this->assertNotNull($IPPCredential);
 		$this->assertEquals('suarumugam-biz_api1.paypal.com', $IPPCredential->getUsername());
-		$this->assertEquals('config/sandbox-cert.pem', $IPPCredential->getCertificatePath());
+		$this->assertEquals('config/cert_key.pem', $IPPCredential->getCertificatePath());
 		$IPPCredential = $this->object->getCredentialObject('suarumugam-biz_api1.paypal.com');
 		$this->assertNotNull($IPPCredential->getUserName());
 		$IPPCredential = $this->object->getCredentialObject();

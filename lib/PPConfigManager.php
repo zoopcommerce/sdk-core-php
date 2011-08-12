@@ -14,7 +14,7 @@ class PPConfigManager {
 	private static $instance;
 
 	private function __construct(){
-		$configFile = __DIR__ . DIRECTORY_SEPARATOR . ".."
+		$configFile = dirname(__FILE__) . DIRECTORY_SEPARATOR . ".."
 		. DIRECTORY_SEPARATOR. "config" . DIRECTORY_SEPARATOR . "sdk_config.ini";
 		$this->load($configFile);
 	}

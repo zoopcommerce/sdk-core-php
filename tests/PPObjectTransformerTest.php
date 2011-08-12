@@ -38,7 +38,7 @@ class PPObjectTransformerTest extends PHPUnit_Framework_TestCase
      */
     public function testToString()
     {
-       $testObj = new RequestEnvelope('en_US');
+       $testObj = new RequesEnvelope('en_US');
        $testObj->detailLevel = "ReturnAll";
        $ret = $this->object->toString($testObj);
        $this->assertEquals("detailLevel=ReturnAll&errorLanguage=en_US",$ret );
@@ -47,7 +47,7 @@ class PPObjectTransformerTest extends PHPUnit_Framework_TestCase
        $failtest->toString('');
     }
 }
-class RequestEnvelope {
+class RequesEnvelope {
 	/**
 	 * @access public
 	 * @var DetailLevelCode

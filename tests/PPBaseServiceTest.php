@@ -21,6 +21,8 @@ class PPBaseServiceTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->object = new PPBaseService('serviceName');
+        $this->object->setAccessToken('sampletoken');
+        $this->object->setTokenSecret('sampleSrcret');
     }
 
     /**
@@ -37,6 +39,8 @@ class PPBaseServiceTest extends PHPUnit_Framework_TestCase
     public function testGetServiceName()
     {
         $this->assertEquals('serviceName',$this->object->getServiceName() );
+        $this->assertEquals('sampletoken',$this->object->getAccessToken() );
+        $this->assertEquals('sampleSrcret',$this->object->getTokenSecret() );
     }
     
    

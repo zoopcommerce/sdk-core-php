@@ -20,7 +20,7 @@ class PPLoggingManagerTest extends PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->object = new PPLoggingManager('TestService');
+        $this->object = new PPLoggingManager('InvoiceTest');
     }
 
     /**
