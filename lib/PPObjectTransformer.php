@@ -13,9 +13,7 @@ class PPObjectTransformer {
 		
 		$confManager = PPConfigManager::getInstance();
 		switch(strtoupper($confManager->get("service.Binding"))) {
-			case 'SOAP':
-				return $object->toXMLString();
-			
+			case 'SOAP':$object->toSOAP();
 			case 'XML':
 			case 'JSON':
 				return "";
