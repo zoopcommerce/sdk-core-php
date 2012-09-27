@@ -65,7 +65,7 @@ class PPUtils {
 	 * parameter when making API calls
 	 */
 	public static function getRequestSource() {
-		return str_replace(" ", "-", self::SDK_NAME). self::SDK_VERSION;
+		return str_replace(" ", "_", self::SDK_NAME). self::SDK_VERSION;
 	}
 	public static function xmlToArray($xmlInput) {
 
@@ -254,8 +254,6 @@ class XmlToArray
 		$array[$name] = $this->_struct_to_array($values, $i);
 		return $array;
 	}//createArray
-
-	
 
 
 }//XmlToArray

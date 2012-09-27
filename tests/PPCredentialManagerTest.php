@@ -46,7 +46,7 @@ class PPCredentialManagerTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testGetCredentialObject()
 	{
-		$IPPCredential = $this->object->getCredentialObject('jb-us-seller_api1.paypal.com');
+		$IPPCredential = $this->object->getCredentialObject('jb-us-seller1_api1.paypal.com');
 		$this->assertNotNull($IPPCredential);
 		$IPPCredential = $this->object->getCredentialObject('suarumugam-biz_api1.paypal.com');
 		$this->assertNotNull($IPPCredential);
@@ -55,7 +55,7 @@ class PPCredentialManagerTest extends PHPUnit_Framework_TestCase
 		$IPPCredential = $this->object->getCredentialObject('suarumugam-biz_api1.paypal.com');
 		$this->assertNotNull($IPPCredential->getUserName());
 		$IPPCredential = $this->object->getCredentialObject();
-		$this->assertEquals('jb-us-seller_api1.paypal.com', $IPPCredential->getUsername());
+		$this->assertEquals('jb-us-seller1_api1.paypal.com', $IPPCredential->getUsername());
 		$this->setExpectedException('PPInvalidCredentialException');
 		$IPPCredential = $this->object->getCredentialObject('invalid_biz_api1.gmail.com');
 
