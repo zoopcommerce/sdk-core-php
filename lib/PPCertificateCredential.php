@@ -9,7 +9,7 @@ class PPCertificateCredential extends IPPCredential{
 
 	private $passPhrase;
 	
-	public function __construct($userName, $password, $certPath, $appId, $passPhrase) {
+	public function __construct($userName, $password, $certPath, $passPhrase, $appId) {
 		parent::__construct($userName, $password, $appId);
 		$this->certificatePath = $certPath;
 		$this->passPhrase = $passPhrase;
