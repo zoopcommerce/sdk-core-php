@@ -1,11 +1,9 @@
 <?php
-require_once 'PHPUnit/Framework.php';
-
 require_once 'exceptions/PPMissingCredentialException.php';
 
 /**
  * Test class for PPMissingCredentialException.
- * 
+ *
  */
 class PPMissingCredentialExceptionTest extends PHPUnit_Framework_TestCase
 {

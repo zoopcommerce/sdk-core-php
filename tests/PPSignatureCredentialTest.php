@@ -1,5 +1,4 @@
 <?php
-require_once 'PHPUnit/Framework.php';
 require_once 'PPSignatureCredential.php';
 require_once 'PPSubjectAuthorization.php';
 require_once 'PPTokenAuthorization.php';

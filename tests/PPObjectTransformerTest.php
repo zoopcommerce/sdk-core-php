@@ -1,12 +1,11 @@
 <?php
-require_once 'PHPUnit/Framework.php';
 require_once 'PPConfigManager.php';
 require_once 'PPObjectTransformer.php';
 require_once 'exceptions/PPTransformerException.php';
 
 /**
  * Test class for PPObjectTransformer.
- * 
+ *
  */
 class PPObjectTransformerTest extends PHPUnit_Framework_TestCase
 {
@@ -22,7 +21,7 @@ class PPObjectTransformerTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->object = new PPObjectTransformer;
-    
+
     }
 
     /**
@@ -63,7 +62,7 @@ class RequesEnvelope {
 		$this->errorLanguage  = $errorLanguage;
 	}
 
-	public function toNVPString($prefix='') { 
+	public function toNVPString($prefix='') {
 		$str = '';
 		$delim = '';
 		if( $this->detailLevel != null ) {

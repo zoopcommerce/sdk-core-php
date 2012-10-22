@@ -1,11 +1,9 @@
 <?php
-require_once 'PHPUnit/Framework.php';
-
 require_once 'PPConnectionManager.php';
 
 /**
  * Test class for PPConnectionManager.
- * 
+ *
  */
 class PPConnectionManagerTest extends PHPUnit_Framework_TestCase
 {
