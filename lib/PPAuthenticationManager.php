@@ -29,7 +29,7 @@ class PPAuthenticationManager
 
 			$headers_arr[] = "X-PAYPAL-SECURITY-USERID:  " . $apiCred->getUserName();
 			$headers_arr[] = "X-PAYPAL-SECURITY-PASSWORD: " . $apiCred->getPassword();
-			$connection->setSSLCert($apiCred->getCertificatePath(), $apiCred->getPassPhrase());
+			$connection->setSSLCert($apiCred->getCertificatePath(), $apiCred->getCertificatePassPhrase());
 		}
 
 		// Add other headers

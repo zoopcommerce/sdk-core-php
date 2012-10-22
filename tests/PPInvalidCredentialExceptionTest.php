@@ -37,7 +37,7 @@ class PPInvalidCredentialExceptionTest extends PHPUnit_Framework_TestCase
     public function testErrorMessage()
     {
       $msg = $this->object->errorMessage();
-      $this->assertContains('Error on line 23', $msg);
+      $this->assertContains('Error on line', $msg);
     }
 }
 ?>

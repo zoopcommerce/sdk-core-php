@@ -5,40 +5,71 @@ require_once 'IPPCredential.php';
 require_once 'PPConfigManager.php';
 
 /**
- * API signature based credentials
+ * API signature (3-token) based credentials
  */
 class PPSignatureCredential extends IPPCredential {
-	
+
+	/**
+	 * API username
+	 * @var string
+	 */
+	protected $userName;
+
+	/**
+	 * API password
+	 * @var string
+	 */
+	protected $password;
 	/**
 	 * API Signature
 	 * @var string
 	 */
-	private $signature;
+	protected $signature;
 
-	public function __construct($userName, $password, $signature, $appId){
-		parent::__construct($userName, $password, $appId);		
-		$this->signature = $signature;
+	/**
+	 * Application Id that uniquely identifies an application that uses the
+	 * Platform APIs - Not required for Express Checkout / MassPay / DCC etc
+	 * The application Id is issued by PayPal.
+	 * Test application Ids are available for the sandbox environment
+	 * @var string
+	 */
+	protected $applicationId;
+
+	public function __construct($userName, $password, $signature) {
+		$this->userName = trim($userName);
+		$this->password = trim($password);
+		$this->signature = trim($signature);
 		$this->validate();
 	}
-	
+
 	public function validate() {
-		
-		if ($this->userName == null || $this->userName == "") {
+
+		if (empty($this->userName)) {
 			throw new PPMissingCredentialException("username cannot be empty");
 		}
-		if ($this->password == null || $this->password == "") {
+		if (empty($this->password)) {
 			throw new PPMissingCredentialException("password cannot be empty");
 		}
-		if ($this->signature == null || $this->signature == "") {
+		if (empty($this->signature)) {
 			throw new PPMissingCredentialException("signature cannot be empty");
-		}
-		if ($this->applicationId == null || $this->applicationId == "") {
-			throw new PPMissingCredentialException("applicationId cannot be empty");
 		}
 	}
 
-	public function getSignature(){
+	public function getUserName() {
+		return $this->userName;
+	}
+	public function getPassword() {
+		return $this->password;
+	}
+	public function getSignature() {
 		return $this->signature;
+	}
+
+	public function setApplicationId($applicationId) {
+		$this->applicationId = trim($applicationId);
+	}
+	public function getApplicationId() {
+		return $this->applicationId;
 	}
 }
 ?>

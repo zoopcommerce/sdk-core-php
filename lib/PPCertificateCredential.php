@@ -3,65 +3,101 @@ require_once 'IPPCredential.php';
 require_once 'PPConfigManager.php';
 require_once 'exceptions/PPMissingCredentialException.php';
 
-class PPCertificateCredential extends IPPCredential{
+/**
+ * 
+ * Client certificate based credentials
+ */
+class PPCertificateCredential extends IPPCredential {
 	
-	private $certificatePath;
+	/**
+	 * API username
+	 * @var string
+	 */
+	protected $userName;
+	
+	/**
+	 * API password
+	 * @var string
+	 */
+	protected $password;
 
-	private $passPhrase;
+	/**
+	 * Path to PEM encoded API certificate on local filesystem
+	 * @var string
+	 */
+	protected $certificatePath;
+
+	/**
+	 * Password used to protect the API certificate
+	 * @var string
+	 */
+	protected $certificatePassPhrase;
 	
-	public function __construct($userName, $password, $certPath, $passPhrase, $appId) {
-		parent::__construct($userName, $password, $appId);
-		$this->certificatePath = $certPath;
-		$this->passPhrase = $passPhrase;
+	/**
+	 * Application Id that uniquely identifies an application that uses the
+	 * Platform APIs - Not required for Express Checkout / MassPay / DCC etc
+	 * The application Id is issued by PayPal.
+	 * Test application Ids are available for the sandbox environment
+	 * @var string
+	 */
+	protected $applicationId;	
+	
+	/**
+	 * Constructs a new certificate credential object
+	 * 
+	 * @param string $userName	API username
+	 * @param string $password	API password
+	 * @param string $certPath	Path to PEM encoded client certificate file
+	 * @param string $certificatePassPhrase	password need to use the certificate
+	 */
+	public function __construct($userName, $password, $certPath, $certificatePassPhrase) {
+		$this->userName = trim($userName);
+		$this->password = trim($password);
+		$this->certificatePath = trim($certPath);
+		$this->certificatePassPhrase = $certificatePassPhrase; //TODO: can cert path contain a space?
 		$this->validate();
 	}
 	
 	public function validate() {
 		
-		if ($this->userName == null || $this->userName == "") {
+		if (empty($this->userName)) {
 			throw new PPMissingCredentialException("username cannot be empty");
 		}
-		if ($this->password == null || $this->password == "") {
+		if (empty($this->password)) {
 			throw new PPMissingCredentialException("password cannot be empty");
 		}		
-		if ($this->certificatePath == null || $this->certificatePath == "") {
+		if (empty($this->certificatePath)) {
 			throw new PPMissingCredentialException("certificate cannot be empty");
 		}
-		if ($this->passPhrase == null || $this->passPhrase == "") {
-			throw new PPMissingCredentialException("passphrase cannot be empty");
-		}
-		if ($this->applicationId == null || $this->applicationId == "") {
-			throw new PPMissingCredentialException("applicationId cannot be empty");
-		}
+		if ($this->certificatePassPhrase == null || trim($this->certificatePassPhrase) == "") {
+			throw new PPMissingCredentialException("certificatePassPhrase cannot be empty");
+		}		
 	}
 
-	public function getUserName()
-	{
+	public function getUserName() {
 		return $this->userName;
 	}
 
-	public function getPassword()
-	{
+	public function getPassword() {
 		return $this->password;
 	}
 	
-	public function getCertificatePath()
-	{
-		if (realpath($this->certificatePath))
-		{
+	public function getCertificatePath() {
+		if (realpath($this->certificatePath)) {
 			return realpath($this->certificatePath);
-		}
-		else
-		{
+		} else {
 			return realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . ".."	. DIRECTORY_SEPARATOR . "config" . DIRECTORY_SEPARATOR . $this->certificatePath);
 		}
 	}
 
-	public function getPassPhrase()
-	{
-		return $this->passPhrase;
+	public function getCertificatePassPhrase() {
+		return $this->certificatePassPhrase;
 	}
-
+	
+	public function setApplicationId($applicationId) {
+		$this->applicationId = trim($applicationId);
+	}
+	
 	public function getApplicationId() {
 		return $this->applicationId;
 	}

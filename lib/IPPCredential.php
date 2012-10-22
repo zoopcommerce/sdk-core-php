@@ -1,49 +1,25 @@
 <?php
 
 /**
- * Base class that represents API credentials
+ * Interface that represents API credentials
  */
 abstract class IPPCredential
-{	
+{
 	/**
-	 * Application Id that uniquely identifies the application
-	 * The application Id is issued by PayPal.
-	 * Test application Ids are available for the sandbox environment
-	 * @var string
+	 * 
+	 * @var IPPThirdPartyAuthorization
 	 */
-	protected $applicationId;
-
-	/**
-	 * API username
-	 * @var string
-	 */
-	protected $userName;
+	protected $thirdPartyAuthorization;
 	
-	/**
-	 * API password
-	 * @var string
-	 */
-	protected $password;	
-	
-	protected abstract function validate();	
-	
-	public function __construct($userName, $password, $applicationId) {
-		$this->userName = $userName;
-		$this->password = $password;
-		$this->applicationId = $applicationId;
+	public function setThirdPartyAuthorization($thirdPartyAuthorization) {
+		$this->thirdPartyAuthorization = $thirdPartyAuthorization;
 	}
 	
-	public function getApplicationId(){
-		return $this->applicationId;
+	public function getThirdPartyAuthorization() {
+		return $this->thirdPartyAuthorization;
 	}
 	
-	public function getUserName() {
-		return $this->userName;
-	}
-	
-	public function getPassword() {
-		return $this->password;
-	}
+	public abstract function validate();
 }
 
 ?>
