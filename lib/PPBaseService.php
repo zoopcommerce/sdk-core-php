@@ -5,6 +5,7 @@ require_once 'PPAPIService.php';
 class PPBaseService {
 
 	private $serviceName;
+	private $handlers;
 
    /*
     * Setters and getters for Third party authentication (Permission Services)
@@ -40,22 +41,20 @@ class PPBaseService {
 		$this->tokenSecret = $tokenSecret;
 	}
 
-	public function __construct($serviceName) {
+	public function __construct($serviceName, $handlers=array()) {
 		$this->serviceName = $serviceName;
+		$this->handlers = $handlers;
 	}
 
 	public function getServiceName() {
 		return $this->serviceName;
 	}
 
-	public function call($method, $requestObject, $apiUsername = null) {
-		$params = $this->marshall($requestObject);
-		$service = new PPAPIService();
-		$service->setServiceName($this->serviceName);
-
-		$this->lastRequest = $params;
-		$this->lastResponse = $service->makeRequest($method, $params, $apiUsername ,$this->accessToken, $this->tokenSecret);
-
+	public function call($method, $requestObject, $apiUsername = null) {		
+		$service = new PPAPIService($this->serviceName, $this->handlers);		
+		$ret = $service->makeRequest($method, $requestObject, $apiUsername ,$this->accessToken, $this->tokenSecret);
+		$this->lastRequest = $ret['request'];
+		$this->lastResponse = $ret['response'];
 		return $this->lastResponse;
 	}
 

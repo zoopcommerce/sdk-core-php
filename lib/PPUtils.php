@@ -83,7 +83,7 @@ class PPUtils
 	 */
 	public static function getRequestSource()
 	{
-		return str_replace(" ", "-", self::SDK_NAME) . self::SDK_VERSION;
+		return str_replace(" ", "-", self::SDK_NAME) . "-" . self::SDK_VERSION;
 	}
 
 
