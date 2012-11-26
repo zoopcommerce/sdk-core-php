@@ -50,11 +50,11 @@ class PPCertificateCredential extends IPPCredential {
 	 * @param string $certPath	Path to PEM encoded client certificate file
 	 * @param string $certificatePassPhrase	password need to use the certificate
 	 */
-	public function __construct($userName, $password, $certPath, $certificatePassPhrase) {
+	public function __construct($userName, $password, $certPath, $certificatePassPhrase=NULL) {
 		$this->userName = trim($userName);
 		$this->password = trim($password);
 		$this->certificatePath = trim($certPath);
-		$this->certificatePassPhrase = $certificatePassPhrase; //TODO: can cert path contain a space?
+		$this->certificatePassPhrase = $certificatePassPhrase; 
 		$this->validate();
 	}
 	
@@ -69,9 +69,6 @@ class PPCertificateCredential extends IPPCredential {
 		if (empty($this->certificatePath)) {
 			throw new PPMissingCredentialException("certificate cannot be empty");
 		}
-		if ($this->certificatePassPhrase == null || trim($this->certificatePassPhrase) == "") {
-			throw new PPMissingCredentialException("certificatePassPhrase cannot be empty");
-		}		
 	}
 
 	public function getUserName() {
@@ -85,6 +82,8 @@ class PPCertificateCredential extends IPPCredential {
 	public function getCertificatePath() {
 		if (realpath($this->certificatePath)) {
 			return realpath($this->certificatePath);
+		} else if(defined('PP_CONFIG_PATH')) {
+			return realpath(constant('PP_CONFIG_PATH') . DIRECTORY_SEPARATOR . $this->certificatePath);
 		} else {
 			return realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . ".."	. DIRECTORY_SEPARATOR . "config" . DIRECTORY_SEPARATOR . $this->certificatePath);
 		}

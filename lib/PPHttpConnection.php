@@ -55,7 +55,7 @@ class PPHttpConnection
 		$this->logger->fine("Payload " . $data);
 		
 		$ch = curl_init($this->httpConfig->getUrl());
-		curl_setopt_array($ch, $this->httpConfig->getCurlOptions());
+		curl_setopt_array($ch, $this->httpConfig->getCurlOptions());		
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
 		curl_setopt($ch, CURLOPT_URL, $this->httpConfig->getUrl());
 		curl_setopt($ch, CURLOPT_HEADER, false);
@@ -89,7 +89,7 @@ class PPHttpConnection
 
 		}
 		if ( curl_errno($ch) ) {
-			$ex = new PPConnectionException($url, curl_error($ch), curl_errno($ch));
+			$ex = new PPConnectionException($this->httpConfig->getUrl(), curl_error($ch), curl_errno($ch));
 			curl_close($ch);
 			throw $ex;
 		}

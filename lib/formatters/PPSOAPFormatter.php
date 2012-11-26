@@ -4,15 +4,21 @@ require_once 'IPPFormatter.php';
 
 class PPSOAPFormatter implements IPPFormatter {
 	
-	public function toString($object, $options=array()) {
-		
-		$soapEnvelope = '<soapenv:Envelope ' . implode(' ', $options['namespace']) . '>';
+	private static $SOAP_NAMESPACE = ' xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" ';
+	
+	public function toString($request, $options=array()) {
+				
+		$customNamespace = ( $request->getBindingInfo('namespace') != null ) ?  $request->getBindingInfo('namespace') : "";
+		$soapEnvelope = '<soapenv:Envelope ' . self::$SOAP_NAMESPACE . " $customNamespace >";
 
 		$soapHeader = '<soapenv:Header>';
-		$soapHeader = '</soapenv:Header>';
+		if($request->getBindingInfo('securityHeader') != null) {
+			$soapHeader .= $request->getBindingInfo('securityHeader');
+		}		
+		$soapHeader .= '</soapenv:Header>';
 				
 		$soapBody = '<soapenv:Body>';
-		$soapBody .= $object->toXMLString();
+		$soapBody .= $request->getRequestObject()->toXMLString();
 		$soapBody .= '</soapenv:Body>';
 		
 		return $soapEnvelope . $soapHeader . $soapBody . '</soapenv:Envelope>';

@@ -13,8 +13,8 @@ class PPPlatformServiceHandler extends PPGenericServiceHandler {
 		$this->apiCredential = $apiCredential;
 	}
 	
-	public function handle($httpConfig) {
-		parent::handle($httpConfig);
+	public function handle($httpConfig, $request) {
+		parent::handle($httpConfig, $request);
 		if($this->apiCredential->getApplicationId() != NULL) {
 			$httpConfig->addHeader('X-PAYPAL-APPLICATION-ID', $this->apiCredential->getApplicationId());
 		}

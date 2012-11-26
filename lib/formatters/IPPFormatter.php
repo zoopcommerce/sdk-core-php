@@ -9,7 +9,13 @@
  */
 interface IPPFormatter {
 	
-	public function toString($object, $options=array());
+	/**
+	 * 
+	 * @param PPRequest $request The request to format
+	 * @param array $options Any formatter specific options 
+	 *   to be passed in 
+	 */
+	public function toString($request, $options=array());
 	
 	public function toObject($string, $options=array());
 }

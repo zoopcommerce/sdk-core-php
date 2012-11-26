@@ -3,6 +3,7 @@ require_once 'PPConfigManager.php';
 require_once 'auth/IPPCredential.php';
 require_once 'auth/PPSignatureCredential.php';
 require_once 'auth/PPCertificateCredential.php';
+require_once 'auth/PPSubjectAuthorization.php';
 require_once 'exceptions/PPInvalidCredentialException.php';
 
 class PPCredentialManager
@@ -53,37 +54,44 @@ class PPCredentialManager
 		$arrayPartKeys = $configMgr->getIniPrefix();
 		if(count($arrayPartKeys) == 0)
 			throw new MissingCredentialException("No valid API accounts have been configured");
-			
-		while (in_array($prefix.$suffix, $arrayPartKeys)){
+
+		$key = $prefix.$suffix;
+		while (in_array($key, $arrayPartKeys)){
 							
-			if(isset($credArr[$prefix.$suffix.".Signature"]) 
-					&& $credArr[$prefix.$suffix.".Signature"] != null && $credArr[$prefix.$suffix.".Signature"] != ""){
+			if(isset($credArr[$key.".Signature"]) 
+					&& $credArr[$key.".Signature"] != null && $credArr[$key.".Signature"] != ""){
 					
-				$userName = isset($credArr[$prefix.$suffix.'.UserName']) ? $credArr[$prefix.$suffix.'.UserName'] : "";
-				$password = isset($credArr[$prefix.$suffix.'.Password']) ? $credArr[$prefix.$suffix.'.Password'] : "";
-				$signature = isset($credArr[$prefix.$suffix.'.Signature']) ? $credArr[$prefix.$suffix.'.Signature'] : "";
+				$userName = isset($credArr[$key.'.UserName']) ? $credArr[$key.'.UserName'] : "";
+				$password = isset($credArr[$key.'.Password']) ? $credArr[$key.'.Password'] : "";
+				$signature = isset($credArr[$key.'.Signature']) ? $credArr[$key.'.Signature'] : "";
 				
 				$this->credentialHashmap[$userName] = new PPSignatureCredential($userName, $password, $signature);
-				if (isset($credArr[$prefix.$suffix.'.AppId'])) {				
-					$this->credentialHashmap[$userName]->setApplicationId($credArr[$prefix.$suffix.'.AppId']);
+				if (isset($credArr[$key.'.AppId'])) {				
+					$this->credentialHashmap[$userName]->setApplicationId($credArr[$key.'.AppId']);
 				}
 				
-			} elseif (isset($credArr[$prefix.$suffix.".CertPath"]) 
-					&& $credArr[$prefix.$suffix.".CertPath"] != null && $credArr[$prefix.$suffix.".CertPath"] != ""){
+			} elseif (isset($credArr[$key.".CertPath"]) 
+					&& $credArr[$key.".CertPath"] != null && $credArr[$key.".CertPath"] != ""){
 						
-				$userName = isset($credArr[$prefix.$suffix.'.UserName']) ? $credArr[$prefix.$suffix.'.UserName'] : "";
-				$password = isset($credArr[$prefix.$suffix.'.Password']) ? $credArr[$prefix.$suffix.'.Password'] : "";
-				$certPassPhrase = isset($credArr[$prefix.$suffix.'.CertKey']) ? $credArr[$prefix.$suffix.'.CertKey'] : "";	
-				$certPath = isset($credArr[$prefix.$suffix.'.CertPath']) ? $credArr[$prefix.$suffix.'.CertPath'] : "";				
+				$userName = isset($credArr[$key.'.UserName']) ? $credArr[$key.'.UserName'] : "";
+				$password = isset($credArr[$key.'.Password']) ? $credArr[$key.'.Password'] : "";
+				$certPassPhrase = isset($credArr[$key.'.CertKey']) ? $credArr[$key.'.CertKey'] : "";	
+				$certPath = isset($credArr[$key.'.CertPath']) ? $credArr[$key.'.CertPath'] : "";				
 				
 				$this->credentialHashmap[$userName] = new PPCertificateCredential($userName, $password, $certPath, $certPassPhrase);
-				if (isset($credArr[$prefix.$suffix.'.AppId'])) {
-					$this->credentialHashmap[$userName]->setApplicationId($credArr[$prefix.$suffix.'.AppId']);
+				if (isset($credArr[$key.'.AppId'])) {
+					$this->credentialHashmap[$userName]->setApplicationId($credArr[$key.'.AppId']);
 				}
 			}
-			if ($this->defaultAccountName == null)
-				$this->defaultAccountName = $credArr[$prefix. $suffix . '.UserName'];
+			if($userName && isset($credArr[$key . ".Subject"])) {
+				$auth = new PPSubjectAuthorization($credArr[$key . ".Subject"]);
+				$this->credentialHashmap[$userName]->setThirdPartyAuthorization($auth);
+			}
+			
+			if ($userName && $this->defaultAccountName == null)
+				$this->defaultAccountName = $credArr[$key . '.UserName'];
 			$suffix++;
+			$key = $prefix.$suffix;
 		}
 
 	}

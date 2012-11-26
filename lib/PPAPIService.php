@@ -4,6 +4,7 @@ require_once 'PPConnectionManager.php';
 require_once 'PPHttpConfig.php';
 require_once 'PPObjectTransformer.php';
 require_once 'PPLoggingManager.php';
+require_once 'PPRequest.php';
 require_once 'PPUtils.php';
 require_once dirname(__FILE__) . '/formatters/PPNVPFormatter.php';
 require_once dirname(__FILE__) . '/formatters/PPSOAPFormatter.php';
@@ -15,13 +16,15 @@ class PPAPIService {
 	public $serviceName;
 	private $logger;
 	private $handlers = array();
+	private $serviceBinding;
 
-	public function __construct($serviceName, $handlers=array()) {
+	public function __construct($serviceName, $serviceBinding, $handlers=array()) {
 		$this->serviceName = $serviceName;
 		$config = PPConfigManager::getInstance();
 		$this->endpoint = $config->get('service.EndPoint');
 		$this->logger = new PPLoggingManager(__CLASS__);
 		$this->handlers = $handlers;
+		$this->serviceBinding = $serviceBinding;
 	}
 
 	public function setServiceName($serviceName) {
@@ -42,8 +45,12 @@ class PPAPIService {
 		} else {
 			$apiCredential = $apiUsername; //TODO: Aargh
 		}
+		if(isset($accessToken) && isset($tokenSecret)) {
+			$apiCredential->setThirdPartyAuthorization(
+				new PPTokenAuthorization($accessToken, $tokenSecret));
+		}
 		
-		if($config->get('service.Binding') == 'SOAP' ) {
+		if($this->serviceBinding == 'SOAP' ) {
 			$url = $this->endpoint;
 			$formatter = new PPSOAPFormatter();
 		} else {
@@ -51,10 +58,11 @@ class PPAPIService {
 			$formatter = new PPNVPFormatter();
 		}
 
+		$request = new PPRequest($params, $this->serviceBinding);
 		$httpConfig = new PPHttpConfig($url);
-		$this->runHandlers($httpConfig, $apiCredential);
+		$this->runHandlers($httpConfig, $request, $apiCredential);
 		
-		$payload = $formatter->toString($params);
+		$payload = $formatter->toString($request);
 		$connection = PPConnectionManager::getInstance()->getConnection($httpConfig);
 		$this->logger->info("Request: $payload");
 		$response = $connection->execute($payload);
@@ -63,13 +71,13 @@ class PPAPIService {
 		return array('request' => $payload, 'response' => $response);
 	}
 
-	private function runHandlers($httpConfig, $apiCredential) {
+	private function runHandlers($httpConfig, $request, $apiCredential) {
+		$handler = new PPAuthenticationHandler($apiCredential);
+		$handler->handle($httpConfig, $request);
 		foreach($this->handlers as $handlerClass) {
 			$handler = new $handlerClass($apiCredential);
-			$handler->handle($httpConfig);
+			$handler->handle($httpConfig, $request);
 		}
-		$handler = new PPAuthenticationHandler($apiCredential);
-		$handler->handle($httpConfig);		
 	}
 
 }

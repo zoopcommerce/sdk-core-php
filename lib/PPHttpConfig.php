@@ -37,12 +37,17 @@ class PPHttpConfig {
 		return $this->url;
 	}
 	
+	
+	
 	public function getHeaders() {
 		return $this->headers;
 	}
 	
 	public function getHeader($name) {
-		return $this->headers[$name];
+		if(array_key_exists($name, $this->headers)) {
+			return $this->headers[$name];
+		}
+		return NULL;
 	}
 
 	public function setHeaders(array $headers) {
@@ -61,6 +66,8 @@ class PPHttpConfig {
 		unset($this->headers[$name]);
 	}
 
+	
+	
 	public function getCurlOptions() {
 		return $this->curlOptions;
 	}
@@ -73,24 +80,25 @@ class PPHttpConfig {
 		$this->curlOptions = $options;
 	}
 
+	
 
 	/**
 	 * Set ssl parameters for certificate based client authentication
 	 *
 	 * @param string $certPath - path to client certificate file (PEM formatted file)
 	 */
-	public function setSSLCert($certPath, $passPhrase)
-	{
+	public function setSSLCert($certPath, $passPhrase=NULL) {		
 		$this->curlOptions[CURLOPT_SSLCERT] = realpath($certPath);
-		$this->curlOptions[CURLOPT_SSLCERTPASSWD] = $passPhrase;
+		if(isset($passPhrase) && trim($passPhrase) != "") {
+			$this->curlOptions[CURLOPT_SSLCERTPASSWD] = $passPhrase;
+		}
 	}
 
 	/**
 	 * Set connection timeout in seconds
 	 * @param integer $timeout
 	 */
-	public function setHttpTimeout($timeout)
-	{
+	public function setHttpTimeout($timeout) {
 		$this->curlOptions[CURLOPT_CONNECTTIMEOUT] = $timeout;
 	}
 
@@ -99,8 +107,7 @@ class PPHttpConfig {
 	 * @param string $proxy
 	 * @throws PPConfigurationException
 	 */
-	public function setHttpProxy($proxy)
-	{
+	public function setHttpProxy($proxy) {
 		$urlParts = parse_url($proxy);
 		if($urlParts == false || !array_key_exists("host", $urlParts))
 			throw new PPConfigurationException("Invalid proxy configuration ".$proxy);

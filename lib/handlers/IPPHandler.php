@@ -2,7 +2,8 @@
 interface IPPHandler {
 	/**
 	 * 
-	 * @param IPPHttpConfig $httpConfig
+	 * @param PPHttpConfig $httpConfig
+	 * @param PPRequest $request 
 	 */
-	public function handle($httpConfig);
+	public function handle($httpConfig, $request);
 }
