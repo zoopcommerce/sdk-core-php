@@ -13,9 +13,6 @@ require_once 'PPLoggingManager.php';
 class PPHttpConnection
 {
 
-	const HTTP_GET = 'GET';
-	const HTTP_POST = 'POST';
-
 	private $httpConfig;
 
 	/**
@@ -47,10 +44,9 @@ class PPHttpConnection
 	 * Executes an HTTP request
 	 *
 	 * @param string $data query string OR POST content as a string
-	 * @param string $method  HTTP method (GET, POST etc) defaults to POST
 	 * @throws PPConnectionException
 	 */
-	public function execute($data, $method = null) {
+	public function execute($data) {
 		$this->logger->fine("Connecting to " . $this->httpConfig->getUrl());			
 		$this->logger->fine("Payload " . $data);
 
@@ -62,10 +58,10 @@ class PPHttpConnection
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $this->getHttpHeaders());		
 		foreach($this->getHttpHeaders() as $header) {
 			//TODO: Strip out credentials and other secure info when logging.
-			$this->logger->fine("Adding header $header");
+			$this->logger->info("Adding header $header");
 		}
-		if(isset($method)) {
-			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
+		if($this->httpConfig->getMethod()) {
+			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $this->httpConfig->getMethod());
 		}
 
 		$result = curl_exec($ch);

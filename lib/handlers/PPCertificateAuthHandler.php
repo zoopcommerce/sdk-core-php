@@ -9,15 +9,19 @@ class PPCredentialAuthHandler implements IPPHandler {
 		if(!isset($credential)) {
 			return;
 		}
-		$thirdPartyAuth = $credential->getThirdPartyAuthorization();
+		
 		$httpConfig->setSSLCert($credential->getCertificatePath(), $credential->getCertificatePassPhrase());
+		$thirdPartyAuth = $credential->getThirdPartyAuthorization();
+		if($thirdPartyAuth && $thirdPartyAuth instanceof PPTokenAuthorization) {
+			$httpConfig->addHeader('X-PAYPAL-AUTHORIZATION',
+					AuthSignature::generateFullAuthString($credential->getUsername(), $credential->getPassword(),
+							$thirdPartyAuth->getAccessToken(), $thirdPartyAuth->getTokenSecret(),
+							$httpConfig->getMethod(), $httpConfig->getUrl()));
+		}
 		
 		switch($request->getBindingType()) {
 			case 'NV':
-				if($thirdPartyAuth && $thirdPartyAuth instanceof PPTokenAuthorization) {
-					$httpConfig->addHeader('X-PAYPAL-AUTHORIZATION', 
-							AuthSignature::generateFullAuthString($credential, $thirdPartyAuth->getAccessToken(), $thirdPartyAuth->getTokenSecret(), $httpConfig->getUrl()));
-				} else {
+				if(!$thirdPartyAuth || !$thirdPartyAuth instanceof PPTokenAuthorization) {
 					$httpConfig->addHeader('X-PAYPAL-SECURITY-USERID', $credential->getUserName());
 					$httpConfig->addHeader('X-PAYPAL-SECURITY-PASSWORD', $credential->getPassword());					
 					if($thirdPartyAuth) {
@@ -27,8 +31,7 @@ class PPCredentialAuthHandler implements IPPHandler {
 				break;
 			case 'SOAP':
 				if($thirdPartyAuth && $thirdPartyAuth instanceof PPTokenAuthorization) {
-					$httpConfig->addHeader('X-PAYPAL-AUTHORIZATION', AuthSignature::generateFullAuthString($credential, $accessToken, $tokenSecret, $httpConfig->getUrl()));
-					$request->addBindingInfo('securityHeader' , '<ns:RequesterCredentials/>');
+					$securityHeader = '<ns:RequesterCredentials/>';
 				} else {
 					$securityHeader = '<ns:RequesterCredentials><ebl:Credentials>';
 					$securityHeader .= '<ebl:Username>' . $credential->getUserName() . '</ebl:Username>';
@@ -40,7 +43,7 @@ class PPCredentialAuthHandler implements IPPHandler {
 					$request->addBindingInfo('securityHeader' , $securityHeader);
 				}
 				break;	
-		}		
+		}				
 	}
 
 }

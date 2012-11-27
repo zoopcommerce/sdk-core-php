@@ -15,21 +15,31 @@ class PPHttpConfig {
 		CURLOPT_SSL_VERIFYHOST => 2,
 		CURLOPT_SSL_VERIFYPEER => 1
 	);	
-	const HEADER_SEPARATOR = ';';
+	
+	const HEADER_SEPARATOR = ';';	
+	const HTTP_GET = 'GET';
+	const HTTP_POST = 'POST';
 
 	private $headers = array();
 
 	private $curlOptions;
 
 	private $url;
-	
+
+	private $method;
 	/***
 	 * Number of times to retry a failed HTTP call
 	 */
 	private $retryCount;
 
-	public function __construct($url) {
+	/**
+	 * 
+	 * @param string $url
+	 * @param string $method  HTTP method (GET, POST etc) defaults to POST
+	 */
+	public function __construct($url, $method=self::HTTP_POST) {
 		$this->url = $url;
+		$this->method = $method;
 		$this->curlOptions = self::$DEFAULT_CURL_OPTS;
 	}
 	
@@ -37,7 +47,9 @@ class PPHttpConfig {
 		return $this->url;
 	}
 	
-	
+	public function getMethod() {
+		return $this->method;
+	}
 	
 	public function getHeaders() {
 		return $this->headers;
@@ -129,4 +141,5 @@ class PPHttpConfig {
 	public function getHttpRetryCount() {
 		return $this->retryCount;
 	}
+	
 }

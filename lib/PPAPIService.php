@@ -59,7 +59,7 @@ class PPAPIService {
 
 		$request = new PPRequest($params, $this->serviceBinding);
 		$request->setCredential($apiCredential);
-		$httpConfig = new PPHttpConfig($url);
+		$httpConfig = new PPHttpConfig($url, PPHttpConfig::HTTP_POST);
 		$this->runHandlers($httpConfig, $request);
 		
 		$formatter = FormatterFactory::factory($this->serviceBinding);

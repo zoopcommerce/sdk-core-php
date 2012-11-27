@@ -27,8 +27,8 @@ class AuthSignature {
 	
 	public static function generateFullAuthString($key, $secret, $token, $tokenSecret, $httpMethod, $endpoint) {
 		$authSignature = new AuthSignature();
-		$response = $authSignature->genSign($key, $secret, $accessToken, $tokenSecret, $httpMethod, $endpoint);
-		return "token=" . $accessToken . 
+		$response = $authSignature->genSign($key, $secret, $token, $tokenSecret, $httpMethod, $endpoint);
+		return "token=" . $token . 
 			   ",signature=" . $response['oauth_signature'] .
 		       ",timestamp=" . $response['oauth_timestamp'];		
 	}

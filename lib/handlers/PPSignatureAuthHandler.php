@@ -1,4 +1,5 @@
 <?php
+require_once dirname(__FILE__) . '/../auth/PPAuth.php';
 require_once 'IPPHandler.php';
 
 class PPSignatureAuthHandler implements IPPHandler {
@@ -10,12 +11,16 @@ class PPSignatureAuthHandler implements IPPHandler {
 			return;
 		}		
 		$thirdPartyAuth = $credential->getThirdPartyAuthorization();
+		if($thirdPartyAuth && $thirdPartyAuth instanceof PPTokenAuthorization) {
+			$httpConfig->addHeader('X-PAYPAL-AUTHORIZATION',
+					AuthSignature::generateFullAuthString($credential->getUsername(), $credential->getPassword(),
+							$thirdPartyAuth->getAccessToken(), $thirdPartyAuth->getTokenSecret(),
+							$httpConfig->getMethod(), $httpConfig->getUrl()));
+		}
 		
 		switch($request->getBindingType()) {
 			case 'NV':
-				if($thirdPartyAuth && $thirdPartyAuth instanceof PPTokenAuthorization) {
-					$httpConfig->addHeader('X-PAYPAL-AUTHORIZATION', AuthSignature::generateFullAuthString($credential, $accessToken, $tokenSecret, $httpConfig->getUrl()));
-				} else {
+				if(!$thirdPartyAuth || !$thirdPartyAuth instanceof PPTokenAuthorization) {
 					$httpConfig->addHeader('X-PAYPAL-SECURITY-USERID', $credential->getUserName());
 					$httpConfig->addHeader('X-PAYPAL-SECURITY-PASSWORD', $credential->getPassword());
 					$httpConfig->addHeader('X-PAYPAL-SECURITY-SIGNATURE', $credential->getSignature());
@@ -26,7 +31,6 @@ class PPSignatureAuthHandler implements IPPHandler {
 				break;
 			case 'SOAP':
 				if($thirdPartyAuth && $thirdPartyAuth instanceof PPTokenAuthorization) {
-					$httpConfig->addHeader('X-PAYPAL-AUTHORIZATION', AuthSignature::generateFullAuthString($credential, $accessToken, $tokenSecret, $httpConfig->getUrl()));
 					$request->addBindingInfo('securityHeader' , '<ns:RequesterCredentials/>');
 				} else {
 					$securityHeader = '<ns:RequesterCredentials><ebl:Credentials>';
