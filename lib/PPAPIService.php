@@ -6,9 +6,10 @@ require_once 'PPObjectTransformer.php';
 require_once 'PPLoggingManager.php';
 require_once 'PPRequest.php';
 require_once 'PPUtils.php';
-require_once dirname(__FILE__) . '/formatters/PPNVPFormatter.php';
-require_once dirname(__FILE__) . '/formatters/PPSOAPFormatter.php';
-require_once dirname(__FILE__) . '/handlers/PPAuthenticationHandler.php';
+require_once dirname(__FILE__) . '/formatters/FormatterFactory.php';
+foreach(glob(dirname(__FILE__) . '/handlers/*') as $handler) {
+	require_once $handler;
+}
 
 class PPAPIService {
 	
@@ -52,16 +53,16 @@ class PPAPIService {
 		
 		if($this->serviceBinding == 'SOAP' ) {
 			$url = $this->endpoint;
-			$formatter = new PPSOAPFormatter();
 		} else {
 			$url = $this->endpoint . $this->serviceName . '/' . $apiMethod;
-			$formatter = new PPNVPFormatter();
 		}
 
 		$request = new PPRequest($params, $this->serviceBinding);
+		$request->setCredential($apiCredential);
 		$httpConfig = new PPHttpConfig($url);
-		$this->runHandlers($httpConfig, $request, $apiCredential);
+		$this->runHandlers($httpConfig, $request);
 		
+		$formatter = FormatterFactory::factory($this->serviceBinding);
 		$payload = $formatter->toString($request);
 		$connection = PPConnectionManager::getInstance()->getConnection($httpConfig);
 		$this->logger->info("Request: $payload");
@@ -71,11 +72,11 @@ class PPAPIService {
 		return array('request' => $payload, 'response' => $response);
 	}
 
-	private function runHandlers($httpConfig, $request, $apiCredential) {
-		$handler = new PPAuthenticationHandler($apiCredential);
+	private function runHandlers($httpConfig, $request) {
+		$handler = new PPAuthenticationHandler();
 		$handler->handle($httpConfig, $request);
 		foreach($this->handlers as $handlerClass) {
-			$handler = new $handlerClass($apiCredential);
+			$handler = new $handlerClass();
 			$handler->handle($httpConfig, $request);
 		}
 	}

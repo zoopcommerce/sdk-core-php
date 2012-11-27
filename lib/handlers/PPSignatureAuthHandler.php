@@ -2,27 +2,23 @@
 require_once 'IPPHandler.php';
 
 class PPSignatureAuthHandler implements IPPHandler {
-	
-	private $apiCredential;
-	/**
-	 *
-	 * @param IPPCredential $apiCredential
-	 */
-	public function __construct($apiCredential) {
-		$this->apiCredential = $apiCredential;
-	}
-	
+		
 	public function handle($httpConfig, $request) {
-		$thirdPartyAuth = $this->apiCredential->getThirdPartyAuthorization();
+		
+		$credential = $request->getCredential();
+		if(!isset($credential)) {
+			return;
+		}		
+		$thirdPartyAuth = $credential->getThirdPartyAuthorization();
 		
 		switch($request->getBindingType()) {
 			case 'NV':
 				if($thirdPartyAuth && $thirdPartyAuth instanceof PPTokenAuthorization) {
-					$httpConfig->addHeader('X-PAYPAL-AUTHORIZATION', AuthSignature::generateFullAuthString($this->apiCredential, $accessToken, $tokenSecret, $httpConfig->getUrl()));
+					$httpConfig->addHeader('X-PAYPAL-AUTHORIZATION', AuthSignature::generateFullAuthString($credential, $accessToken, $tokenSecret, $httpConfig->getUrl()));
 				} else {
-					$httpConfig->addHeader('X-PAYPAL-SECURITY-USERID', $this->apiCredential->getUserName());
-					$httpConfig->addHeader('X-PAYPAL-SECURITY-PASSWORD', $this->apiCredential->getPassword());
-					$httpConfig->addHeader('X-PAYPAL-SECURITY-SIGNATURE', $this->apiCredential->getSignature());
+					$httpConfig->addHeader('X-PAYPAL-SECURITY-USERID', $credential->getUserName());
+					$httpConfig->addHeader('X-PAYPAL-SECURITY-PASSWORD', $credential->getPassword());
+					$httpConfig->addHeader('X-PAYPAL-SECURITY-SIGNATURE', $credential->getSignature());
 					if($thirdPartyAuth) {
 						$httpConfig->addHeader('X-PAYPAL-SECURITY-SUBJECT', $thirdPartyAuth->getSubject());
 					}
@@ -30,13 +26,13 @@ class PPSignatureAuthHandler implements IPPHandler {
 				break;
 			case 'SOAP':
 				if($thirdPartyAuth && $thirdPartyAuth instanceof PPTokenAuthorization) {
-					$httpConfig->addHeader('X-PAYPAL-AUTHORIZATION', AuthSignature::generateFullAuthString($this->apiCredential, $accessToken, $tokenSecret, $httpConfig->getUrl()));
+					$httpConfig->addHeader('X-PAYPAL-AUTHORIZATION', AuthSignature::generateFullAuthString($credential, $accessToken, $tokenSecret, $httpConfig->getUrl()));
 					$request->addBindingInfo('securityHeader' , '<ns:RequesterCredentials/>');
 				} else {
 					$securityHeader = '<ns:RequesterCredentials><ebl:Credentials>';
-					$securityHeader .= '<ebl:Username>' . $this->apiCredential->getUserName() . '</ebl:Username>';
-					$securityHeader .= '<ebl:Password>' . $this->apiCredential->getPassword() . '</ebl:Password>';
-					$securityHeader .= '<ebl:Signature>' . $this->apiCredential->getSignature() . '</ebl:Signature>';					
+					$securityHeader .= '<ebl:Username>' . $credential->getUserName() . '</ebl:Username>';
+					$securityHeader .= '<ebl:Password>' . $credential->getPassword() . '</ebl:Password>';
+					$securityHeader .= '<ebl:Signature>' . $credential->getSignature() . '</ebl:Signature>';					
 					if($thirdPartyAuth && $thirdPartyAuth instanceof PPSubjectAuthorization) {
 						$securityHeader .= '<ebl:Subject>' . $thirdPartyAuth->getSubject() . '</ebl:Subject>';
 					}

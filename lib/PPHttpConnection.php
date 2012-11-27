@@ -53,7 +53,7 @@ class PPHttpConnection
 	public function execute($data, $method = null) {
 		$this->logger->fine("Connecting to " . $this->httpConfig->getUrl());			
 		$this->logger->fine("Payload " . $data);
-		
+
 		$ch = curl_init($this->httpConfig->getUrl());
 		curl_setopt_array($ch, $this->httpConfig->getCurlOptions());		
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $data);

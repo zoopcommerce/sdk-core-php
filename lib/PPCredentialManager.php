@@ -83,9 +83,9 @@ class PPCredentialManager
 					$this->credentialHashmap[$userName]->setApplicationId($credArr[$key.'.AppId']);
 				}
 			}
-			if($userName && isset($credArr[$key . ".Subject"])) {
-				$auth = new PPSubjectAuthorization($credArr[$key . ".Subject"]);
-				$this->credentialHashmap[$userName]->setThirdPartyAuthorization($auth);
+			if($userName && isset($credArr[$key . ".Subject"]) && trim($credArr[$key . ".Subject"]) != "" ) {
+				$this->credentialHashmap[$userName]->setThirdPartyAuthorization(
+						new PPSubjectAuthorization($credArr[$key . ".Subject"]));
 			}
 			
 			if ($userName && $this->defaultAccountName == null)

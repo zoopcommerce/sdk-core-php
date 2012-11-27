@@ -1,4 +1,8 @@
 <?php
+/**
+ * Encapsulates API request information
+ *
+ */
 class PPrequest {
 	
 	/**
@@ -7,6 +11,13 @@ class PPrequest {
 	 * @var object
 	 */
 	private $requestObject;
+	
+	/**
+	 * Optional credentials associated with
+	 * the request
+	 * @var ICredential
+	 */
+	private $credential;
 		
 	/**
 	 * Transport binding for this request.
@@ -49,5 +60,13 @@ class PPrequest {
 	 */
 	public function addBindingInfo($name, $value) {
 		$this->bindingInfo[$name] = $value;
+	}
+	
+	public function setCredential($credential) {
+		$this->credential = $credential;
+	}
+	
+	public function getCredential() {
+		return $this->credential;
 	}
 }

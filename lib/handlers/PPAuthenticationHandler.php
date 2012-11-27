@@ -7,26 +7,20 @@ require_once 'IPPHandler.php';
 require_once 'PPSignatureAuthHandler.php';
 require_once 'PPCertificateAuthHandler.php';
 
-class PPAuthenticationHandler implements IPPHandler {
-	
-	private $apiCredential;
-	/**
-	 *
-	 * @param IPPCredential $apiCredential
-	 */
-	public function __construct($apiCredential) {
-		$this->apiCredential = $apiCredential;
-	}
+class PPAuthenticationHandler implements IPPHandler {	
 	
 	public function handle($httpConfig, $request) {
-		if($this->apiCredential instanceof PPSignatureCredential) {
-			$handler = new PPSignatureAuthHandler($this->apiCredential);
-		} else if($this->apiCredential instanceof PPCertificateCredential) {
-			$handler = new PPCredentialAuthHandler($this->apiCredential);
-		} else {
-			throw new PPInvalidCredentialException();
+		$credential = $request->getCredential();
+		if(isset($credential)) {
+			if($credential instanceof PPSignatureCredential) {
+				$handler = new PPSignatureAuthHandler($credential);
+			} else if($credential instanceof PPCertificateCredential) {
+				$handler = new PPCredentialAuthHandler($credential);
+			} else {
+				throw new PPInvalidCredentialException();
+			}
+			$handler->handle($httpConfig, $request);
 		}
-		$handler->handle($httpConfig, $request);
 	}
 }
 

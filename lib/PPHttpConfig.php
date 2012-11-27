@@ -54,11 +54,11 @@ class PPHttpConfig {
 		$this->headers = $headers;
 	}
 
-	public function addHeader($name, $value, $overWrite=false) {
-		if(array_key_exists($name, $this->headers) && $overWrite) {
-			$this->headers[$name] = $this->headers[$name] . HEADER_SEPARATOR . $value;
-		} else {
+	public function addHeader($name, $value, $overWrite=true) {
+		if(!array_key_exists($name, $this->headers) || $overWrite) {
 			$this->headers[$name] = $value;
+		} else {
+			$this->headers[$name] = $this->headers[$name] . HEADER_SEPARATOR . $value;			
 		}
 	}
 	
