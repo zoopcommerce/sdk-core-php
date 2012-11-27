@@ -29,7 +29,7 @@ class PPSignatureCredential extends IPPCredential {
 	/**
 	 * Application Id that uniquely identifies an application that uses the
 	 * Platform APIs - Not required for Express Checkout / MassPay / DCC etc
-	 * The application Id is issued by PayPal.
+	 * Application Ids are issued by PayPal.
 	 * Test application Ids are available for the sandbox environment
 	 * @var string
 	 */
@@ -50,9 +50,7 @@ class PPSignatureCredential extends IPPCredential {
 		if (empty($this->password)) {
 			throw new PPMissingCredentialException("password cannot be empty");
 		}
-		if (empty($this->signature)) {
-			throw new PPMissingCredentialException("signature cannot be empty");
-		}
+		// Signature can be empty if using 3-rd party auth tokens from permissions API
 	}
 
 	public function getUserName() {
