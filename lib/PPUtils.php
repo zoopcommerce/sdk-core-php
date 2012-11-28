@@ -121,7 +121,7 @@ class PPUtils
 			if (strlen($text) > 0) {
 				$arr[$nextIdx]['text'] = $text;
 			}
-			$arr[$nextIdx]['children'] = array();
+			$arr[$nextIdx]['children'] = array();			
 			PPutils::convertXmlObjToArr($node, $arr[$nextIdx]['children']);
 		}
 		return $arr;
@@ -243,7 +243,7 @@ class PPUtils
 				return substr($annotations['var'], 0, -2);
 			}
 
-			return $annotations['var'];
+			return trim($annotations['var']);
 		}
 
 		return 'string';
