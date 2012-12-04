@@ -200,8 +200,8 @@ class PPUtils
 		if (!preg_match_all('~\@([^\s@\(]+)[\t ]*(?:\(?([^\n@]+)\)?)?~i', $refl->getDocComment(), $annots, PREG_PATTERN_ORDER)) {
 			return NULL;
 		}
-		foreach ($annots[1] as $i => $annot) {
-			$annotations[strtolower($annot)] = empty($annots[2][$i]) ? TRUE : rtrim($annots[2][$i], ')');
+		foreach ($annots[1] as $i => $annot) {			
+			$annotations[strtolower($annot)] = empty($annots[2][$i]) ? TRUE : rtrim($annots[2][$i], " \n\r\t)");
 		}
 
 		return $annotations;
@@ -243,7 +243,7 @@ class PPUtils
 				return substr($annotations['var'], 0, -2);
 			}
 
-			return trim($annotations['var']);
+			return $annotations['var'];
 		}
 
 		return 'string';
