@@ -53,7 +53,7 @@ class PPConfigManagerTest extends PHPUnit_Framework_TestCase
 		$ret = $this->object->get('acct1.UserName');
 		$this->assertEquals('jb-us-seller_api1.paypal.com', $ret);
 		$ret = $this->object->get("acct");
-		$this->assertEquals(sizeof($ret), 9);
+		$this->assertEquals(sizeof($ret), 8);
 
 	}
 

@@ -1,5 +1,7 @@
 <?php
+
 require_once 'PPConnectionManager.php';
+require_once 'PPHttpConfig.php';
 
 /**
  * Test class for PPConnectionManager.
@@ -43,7 +45,7 @@ class PPConnectionManagerTest extends PHPUnit_Framework_TestCase
      */
     public function testGetConnection()
     {
-        $conn = $this->object->getConnection();
+        $conn = $this->object->getConnection(new PPHttpConfig("http://domain.com"));
         $this->assertNotNull($conn);
         $this->assertTrue($conn instanceof PPHttpConnection);
         $this->assertEquals(get_class($conn), "PPHttpConnection");
