@@ -38,12 +38,6 @@ class PPIPNMessage {
 		}
 		//TODO: If postData is passed in, should we urldecode values??
 		$this->ipnData = $postData;	
-		
-
-		$fh = fopen('log.txt', 'a') or die("Can't open file.");
-		$results = print_r($this->ipnData, true);
-		fwrite($fh, $results);
-		fclose($fh);
 	}
 	
 	/**
@@ -94,7 +88,19 @@ class PPIPNMessage {
 	 * @return string
 	 */
 	public function getTransactionId() {
-		
+		if(isset($this->ipnData['txn_id']))
+			return $this->ipnData['txn_id'];
+		else if(isset($this->ipnData['transaction[0].id']))
+		{
+			for($i=0;$i<10;$i++)
+			{
+				if(isset($this->ipnData["transaction[$i].id"]))
+					$tranId[] =  $this->ipnData["transaction[$i].id"];
+				else 
+					break;
+			}
+			return $tranId;
+		}
 	}
 	
 	/**
