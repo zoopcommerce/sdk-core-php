@@ -70,7 +70,7 @@ class PPIPNMessage {
 			$request .= "&$key=$value";
 		}
 		
-		$httpConfig = new PPHttpConfig(PPConfigManager::getInstance()->get('service.IPNCallbackURL'));
+		$httpConfig = new PPHttpConfig(PPConfigManager::getInstance()->get('service.IPNEndpoint'));
 		$httpConfig->addCurlOption(CURLOPT_FORBID_REUSE, 1);
 	    $httpConfig->addCurlOption(CURLOPT_HTTPHEADER, array('Connection: Close'));
 	    
