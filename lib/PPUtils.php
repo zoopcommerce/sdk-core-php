@@ -2,12 +2,6 @@
 class PPUtils
 {
 
-	const SDK_VERSION = "1.2.95";
-
-	const SDK_NAME = "sdk-php";
-
-
-
 	/**
 	 *
 	 * Convert a Name Value Pair (NVP) formatted string into
@@ -74,19 +68,6 @@ class PPUtils
 			}
 		}
 	}
-
-
-
-	/**
-	 * Compute the value that needs to sent for the PAYPAL_REQUEST_SOURCE
-	 * parameter when making API calls
-	 */
-	public static function getRequestSource()
-	{
-		return str_replace(" ", "-", self::SDK_NAME) . "-" . self::SDK_VERSION;
-	}
-
-
 
 	public static function xmlToArray($xmlInput)
 	{
