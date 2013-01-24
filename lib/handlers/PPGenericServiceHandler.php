@@ -1,7 +1,5 @@
 <?php
 
-require_once 'IPPHandler.php';
-
 class PPGenericServiceHandler implements IPPHandler {
 
 	public function handle($httpConfig, $request) {		

@@ -1,6 +1,4 @@
 <?php
-require_once 'IPPThirdPartyAuthorization.php';
-
 /**
  *
  * Represents token based third party authorization

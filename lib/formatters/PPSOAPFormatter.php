@@ -1,7 +1,5 @@
 <?php
 
-require_once 'IPPFormatter.php';
-
 class PPSOAPFormatter implements IPPFormatter {
 	
 	private static $SOAP_NAMESPACE = ' xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" ';

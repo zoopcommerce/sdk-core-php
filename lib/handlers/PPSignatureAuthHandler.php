@@ -1,7 +1,4 @@
 <?php
-require_once dirname(__FILE__) . '/../auth/PPAuth.php';
-require_once 'IPPHandler.php';
-
 class PPSignatureAuthHandler implements IPPHandler {
 		
 	public function handle($httpConfig, $request) {

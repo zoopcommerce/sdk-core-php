@@ -1,7 +1,5 @@
 <?php
 
-require_once 'PPGenericServiceHandler.php';
-
 class PPPlatformServiceHandler extends PPGenericServiceHandler {
 	
 	public function handle($httpConfig, $request) {
