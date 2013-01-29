@@ -1,6 +1,4 @@
 <?php
-//require_once 'PHPUnit/Framework.php';
-require_once 'PPBootStrap.php';;
 
 
 class SimpleTestClass extends PPMessage {

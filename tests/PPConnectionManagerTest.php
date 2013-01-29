@@ -1,7 +1,5 @@
 <?php
 
-require_once 'PPBootStrap.php';
-
 /**
  * Test class for PPConnectionManager.
  *
