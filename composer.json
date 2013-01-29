@@ -16,7 +16,7 @@
         "ext-curl": "*"
     },
     "autoload": {
-        "classmap": [""]
+        "classmap": ["lib"]
     }
  
 }
