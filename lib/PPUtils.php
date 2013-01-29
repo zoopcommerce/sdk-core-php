@@ -2,12 +2,6 @@
 class PPUtils
 {
 
-	const SDK_VERSION = "2.0.96";
-
-	const SDK_NAME = "merchant-php-sdk";
-
-
-
 	/**
 	 *
 	 * Convert a Name Value Pair (NVP) formatted string into
@@ -36,20 +30,29 @@ class PPUtils
 	 * @param string $key
 	 * @return bool
 	 */
-	public static function array_match_key($map, $key)
-	{
-		$key = str_replace("(", "\(", $key);
-		$key = str_replace(")", "\)", $key);
-		$key = str_replace(".", "\.", $key);
-		$pattern = "/$key*/";
-		foreach ($map as $k => $v) {
-			preg_match($pattern, $k, $matches);
-			if (count($matches) > 0) {
-				return true;
-			}
-		}
-		return false;
-	}
+        public static function array_match_key($map, $key)
+        {
+            $replace = str_replace(array(
+                '(',
+                ')',
+                '.'
+            ), array(
+                '\(',
+                '\)',
+                '\.'
+            ), $key);
+    
+            $pattern = "/$replace*/";
+    
+            foreach ($map as $k => $v) {
+                preg_match($pattern, $k, $matches);
+                if(count($matches) > 0)
+    
+                return true;
+            }
+    
+            return false;
+        }
 
 
 
@@ -74,19 +77,6 @@ class PPUtils
 			}
 		}
 	}
-
-
-
-	/**
-	 * Compute the value that needs to sent for the PAYPAL_REQUEST_SOURCE
-	 * parameter when making API calls
-	 */
-	public static function getRequestSource()
-	{
-		return str_replace(" ", "-", self::SDK_NAME) . "-" . self::SDK_VERSION;
-	}
-
-
 
 	public static function xmlToArray($xmlInput)
 	{
@@ -206,8 +196,6 @@ class PPUtils
 
 		return $annotations;
 	}
-
-
 
 	/**
 	 * @param string $class
