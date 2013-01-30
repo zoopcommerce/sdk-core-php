@@ -40,7 +40,7 @@ class PPAPIService {
 		if(is_string($apiUsername) || is_null($apiUsername)) {
 			// $apiUsername is optional, if null the default account in config file is taken
 			$credMgr = PPCredentialManager::getInstance();
-			$apiCredential = $credMgr->getCredentialObject($apiUsername );
+			$apiCredential = clone($credMgr->getCredentialObject($apiUsername ));
 		} else {
 			$apiCredential = $apiUsername; //TODO: Aargh
 		}
