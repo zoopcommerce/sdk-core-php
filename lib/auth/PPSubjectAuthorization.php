@@ -1,6 +1,4 @@
 <?php
-require_once 'IPPThirdPartyAuthorization.php';
-
 /**
  *
  * Represents the older subject based "third party authorization"

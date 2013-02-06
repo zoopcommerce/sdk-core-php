@@ -1,15 +1,4 @@
 <?php
-require_once 'PPCredentialManager.php';
-require_once 'PPConnectionManager.php';
-require_once 'PPHttpConfig.php';
-require_once 'PPLoggingManager.php';
-require_once 'PPRequest.php';
-require_once 'PPUtils.php';
-require_once dirname(__FILE__) . '/auth/PPTokenAuthorization.php';
-require_once dirname(__FILE__) . '/formatters/FormatterFactory.php';
-foreach(glob(dirname(__FILE__) . '/handlers/*') as $handler) {
-	require_once $handler;
-}
 
 class PPAPIService {
 	
@@ -51,7 +40,7 @@ class PPAPIService {
 		if(is_string($apiUsername) || is_null($apiUsername)) {
 			// $apiUsername is optional, if null the default account in config file is taken
 			$credMgr = PPCredentialManager::getInstance();
-			$apiCredential = $credMgr->getCredentialObject($apiUsername );
+			$apiCredential = clone($credMgr->getCredentialObject($apiUsername ));
 		} else {
 			$apiCredential = $apiUsername; //TODO: Aargh
 		}

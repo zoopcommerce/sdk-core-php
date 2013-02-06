@@ -1,7 +1,5 @@
 <?php
 
-require_once 'PPAPIService.php';
-
 /**
  * Test class for PPAPIService.
  *
@@ -19,7 +17,7 @@ class PPAPIServiceTest extends PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->object = new PPAPIService('ServiceName', 'SOAP');
+        $this->object = new PPAPIService(null,'AdaptiveAccounts', 'SOAP');
     }
 
     /**
@@ -35,8 +33,10 @@ class PPAPIServiceTest extends PHPUnit_Framework_TestCase
      */
     public function testSetServiceName()
     {  
-    	$this->assertEquals('ServiceName',$this->object->serviceName);
+	echo $this->object->serviceName;
+    	$this->assertEquals('AdaptiveAccounts',$this->object->serviceName);
     	$this->object->setServiceName('Invoice');
+		echo "Second".$this->object->serviceName;
         $this->assertEquals('Invoice',$this->object->serviceName);
     }
 

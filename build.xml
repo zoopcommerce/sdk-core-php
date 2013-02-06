@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE project>
-<project name="PayPal_PHP_SDK" default="build">
+<project name="PayPal_Core_SDK" default="build">
 
 	<property name="tests.dir" value="tests"/>
 	<property name="tests.out.dir" value="tests\reports"/>
@@ -16,7 +16,7 @@
 	<target name="test">
 		<mkdir dir="${tests.out.dir}" />
 		<exec dir="${basedir}" executable="${PHPUNIT_BIN}" failonerror="true">
-			<arg line="--testdox --include-path lib --log-junit ${tests.out.dir}\phpunit.xml ${tests.dir}" />
+			<arg line="--testdox --bootstrap ${tests.dir}\PPBootStrap.php --log-junit ${tests.out.dir}\phpunit.xml ${tests.dir}" />
 		</exec>
 	</target>
 

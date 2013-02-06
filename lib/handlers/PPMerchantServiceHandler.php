@@ -1,7 +1,5 @@
 <?php
 
-require_once 'PPGenericServiceHandler.php';
-
 class PPMerchantServiceHandler extends PPGenericServiceHandler {
 
 	public function handle($httpConfig, $request) {

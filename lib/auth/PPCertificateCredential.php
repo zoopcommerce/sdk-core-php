@@ -1,8 +1,4 @@
 <?php
-require_once 'IPPCredential.php';
-require_once dirname(__FILE__) . '/../PPConfigManager.php';
-require_once dirname(__FILE__) . '/../exceptions/PPMissingCredentialException.php';
-
 /**
  * 
  * Client certificate based credentials
@@ -83,7 +79,7 @@ class PPCertificateCredential extends IPPCredential {
 		if (realpath($this->certificatePath)) {
 			return realpath($this->certificatePath);
 		} else if(defined('PP_CONFIG_PATH')) {
-			return realpath(constant('PP_CONFIG_PATH') . DIRECTORY_SEPARATOR . $this->certificatePath);
+			return constant('PP_CONFIG_PATH') . DIRECTORY_SEPARATOR . $this->certificatePath;
 		} else {
 			return realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . ".."	.DIRECTORY_SEPARATOR . ".."	. DIRECTORY_SEPARATOR . "config" . DIRECTORY_SEPARATOR . $this->certificatePath);
 		}

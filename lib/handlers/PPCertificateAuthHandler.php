@@ -1,6 +1,4 @@
 <?php
-require_once 'IPPHandler.php';
-
 class PPCredentialAuthHandler implements IPPHandler {
 
 	public function handle($httpConfig, $request) {

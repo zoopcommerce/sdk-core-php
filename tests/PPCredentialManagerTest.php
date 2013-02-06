@@ -1,6 +1,4 @@
 <?php
-require_once 'PPCredentialManager.php';
-
 /**
  * Test class for PPCredentialManager.
  *
@@ -47,10 +45,10 @@ class PPCredentialManagerTest extends PHPUnit_Framework_TestCase
 		$this->assertNotNull($cred);
 		$this->assertEquals('jb-us-seller_api1.paypal.com', $cred->getUsername());
 		
-		$cred = $this->object->getCredentialObject('certuser_biz_api1.paypal.com');
+		$cred = $this->object->getCredentialObject('platfo_1255170694_biz_api1.gmail.com');
 		$this->assertNotNull($cred);
-		$this->assertEquals('certuser_biz_api1.paypal.com', $cred->getUsername());
-		$this->assertStringEndsWith('cert_key.pem', $cred->getCertificatePath());		
+		$this->assertEquals('platfo_1255170694_biz_api1.gmail.com', $cred->getUsername());
+		$this->assertStringEndsWith('cacert.pem', $cred->getCertificatePath());		
 	}
 	
 	/**

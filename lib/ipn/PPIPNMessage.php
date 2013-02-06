@@ -1,9 +1,5 @@
 <?php
 
-require_once basename(__FILE__) . '/../PPConfigManager.php';
-require_once basename(__FILE__) . '/../PPConnectionManager.php';
-require_once basename(__FILE__) . '/../PPHttpConfig.php';
-
 /**
  * 
  *

@@ -1,9 +1,12 @@
 <?php
-require_once 'PPAPIService.php';
-
 
 class PPBaseService {
 
+    // SDK Name
+	protected  static $SDK_NAME = "paypal-php-sdk";
+	// SDK Version
+	protected static $SDK_VERSION = "2.1.96";
+	
 	private $serviceName;
 	private $serviceBinding;
 	private $handlers;
@@ -13,8 +16,21 @@ class PPBaseService {
     */
 	protected $accessToken;
 	protected $tokenSecret;
+	
 	protected $lastRequest;
 	protected $lastResponse;
+	
+
+
+	/**
+	 * Compute the value that needs to sent for the PAYPAL_REQUEST_SOURCE
+	 * parameter when making API calls
+	 */
+	public static function getRequestSource()
+	{
+		return str_replace(" ", "-", self::$SDK_NAME) . "-" . self::$SDK_VERSION;
+	}
+	
 
     public function getLastRequest() {
 		return $this->lastRequest;
