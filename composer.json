@@ -8,7 +8,7 @@
     "authors": [
         {
             "name": "PayPal",
-            "homepage": "https://github.com/paypal/php-core-sdk/contributors"
+            "homepage": "https://github.com/paypal/sdk-core-php/contributors"
         }
     ],
     "require": {
