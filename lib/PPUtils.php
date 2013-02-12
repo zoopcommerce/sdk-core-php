@@ -30,29 +30,29 @@ class PPUtils
 	 * @param string $key
 	 * @return bool
 	 */
-        public static function array_match_key($map, $key)
-        {
-            $replace = str_replace(array(
-                '(',
-                ')',
-                '.'
-            ), array(
-                '\(',
-                '\)',
-                '\.'
-            ), $key);
-    
-            $pattern = "/$replace*/";
-    
-            foreach ($map as $k => $v) {
-                preg_match($pattern, $k, $matches);
-                if(count($matches) > 0)
-    
-                return true;
-            }
-    
-            return false;
-        }
+	public static function array_match_key($map, $key)
+	{
+		$replace = str_replace(array(
+				'(',
+				')',
+				'.'
+		), array(
+				'\(',
+				'\)',
+				'\.'
+		), $key);
+
+		$pattern = "/$replace*/";
+
+		foreach ($map as $k => $v) {
+			preg_match($pattern, $k, $matches);
+			if(count($matches) > 0)
+
+				return true;
+		}
+
+		return false;
+	}
 
 
 
@@ -85,8 +85,8 @@ class PPUtils
 		$ns = $xml->getNamespaces(true);
 		$soap = $xml->children($ns['SOAP-ENV']);
 		$getChild = $soap->Body->children();
-
-		$ret = PPUtils::convertXmlObjToArr($getChild, $array = array());
+		$array = array();
+		$ret = PPUtils::convertXmlObjToArr($getChild, $array);
 		return $ret;
 	}
 
@@ -160,7 +160,7 @@ class PPUtils
 
 	/**
 	 * @var array|string[]
-	 */
+	*/
 	private static $propertiesType = array();
 
 
@@ -170,7 +170,7 @@ class PPUtils
 	 * @param string $propertyName
 	 * @throws RuntimeException
 	 * @return string
-	 */
+	*/
 	public static function propertyAnnotations($class, $propertyName)
 	{
 		$class = is_object($class) ? get_class($class) : $class;
