@@ -92,7 +92,7 @@ class PPUtils
 
 
 
-	function convertXmlObjToArr($obj, &$arr)
+	private static function convertXmlObjToArr($obj, &$arr)
 	{
 		$children = $obj->children();
 		foreach ($children as $elementName => $node) {
