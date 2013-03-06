@@ -33,10 +33,8 @@ class PPAPIServiceTest extends PHPUnit_Framework_TestCase
      */
     public function testSetServiceName()
     {  
-	echo $this->object->serviceName;
     	$this->assertEquals('AdaptiveAccounts',$this->object->serviceName);
     	$this->object->setServiceName('Invoice');
-		echo "Second".$this->object->serviceName;
         $this->assertEquals('Invoice',$this->object->serviceName);
     }
 
