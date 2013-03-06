@@ -1,6 +1,7 @@
 tests/reports
+build
 .DS_Store
-*.log 
+*.log
 
 # IDE
 .project
@@ -11,5 +12,3 @@ tests/reports
 # Composer
 vendor
 composer.lock
-
-

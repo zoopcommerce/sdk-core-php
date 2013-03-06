@@ -74,15 +74,24 @@ class PPCredentialManager
 				$this->credentialHashmap[$userName] = new PPCertificateCredential($userName, $password, $certPath, $certPassPhrase);
 				if (isset($credArr[$key.'.AppId'])) {
 					$this->credentialHashmap[$userName]->setApplicationId($credArr[$key.'.AppId']);
-				}
+				}				
+			} elseif (isset($credArr[$key.".ClientId"]) && isset($credArr[$key.".ClientId"]) ){
+				$userName = $key;
+				$this->credentialHashmap[$userName] = array('clientId' => $credArr[$key.".ClientId"], 
+						'clientSecret' => $credArr[$key.".ClientSecret"]);
 			}
 			if($userName && isset($credArr[$key . ".Subject"]) && trim($credArr[$key . ".Subject"]) != "" ) {
 				$this->credentialHashmap[$userName]->setThirdPartyAuthorization(
 						new PPSubjectAuthorization($credArr[$key . ".Subject"]));
 			}
 			
-			if ($userName && $this->defaultAccountName == null)
-				$this->defaultAccountName = $credArr[$key . '.UserName'];
+			if ($userName && $this->defaultAccountName == null) {
+				if(array_key_exists($key. '.UserName', $credArr)) {
+					$this->defaultAccountName = $credArr[$key . '.UserName'];
+				} else {
+					$this->defaultAccountName = $key;
+				}
+			}
 			$suffix++;
 			$key = $prefix.$suffix;
 		}
@@ -94,10 +103,11 @@ class PPCredentialManager
 	 */
 	public function getCredentialObject($userId = null){
 		
-		if($userId == null)
+		if($userId == null) {			
 			$credObj = $this->credentialHashmap[$this->defaultAccountName];
-		else if (array_key_exists($userId, $this->credentialHashmap))
+		} else if (array_key_exists($userId, $this->credentialHashmap)) {
 			$credObj = $this->credentialHashmap[$userId];
+		}
 			
 		if (empty($credObj)) {
 			throw new PPInvalidCredentialException("Invalid userId $userId");

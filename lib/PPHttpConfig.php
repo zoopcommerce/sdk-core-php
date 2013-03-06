@@ -6,11 +6,11 @@ class PPHttpConfig {
 	 * These are typically overridden by PPConnectionManager
 	 */
 	public static $DEFAULT_CURL_OPTS = array(
+		CURLOPT_SSLVERSION => 3,
 		CURLOPT_CONNECTTIMEOUT => 10,
 		CURLOPT_RETURNTRANSFER => TRUE,
 		CURLOPT_TIMEOUT        => 60,	// maximum number of seconds to allow cURL functions to execute
 		CURLOPT_USERAGENT      => 'PayPal-PHP-SDK',
-		CURLOPT_POST           => 1,
 		CURLOPT_HTTPHEADER     => array(),
 		CURLOPT_SSL_VERIFYHOST => 2,
 		CURLOPT_SSL_VERIFYPEER => 1
@@ -142,4 +142,11 @@ class PPHttpConfig {
 		return $this->retryCount;
 	}
 	
+	/**
+	 * Sets the User-Agent string on the HTTP request
+	 * @param string $userAgentString
+	 */
+	public function setUserAgent($userAgentString) {
+		$this->curlOptions[CURLOPT_USERAGENT] = $userAgentString;
+	}
 }

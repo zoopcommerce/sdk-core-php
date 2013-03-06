@@ -49,18 +49,23 @@ class PPHttpConnection
 
 		$ch = curl_init($this->httpConfig->getUrl());
 		curl_setopt_array($ch, $this->httpConfig->getCurlOptions());		
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-		curl_setopt($ch, CURLOPT_URL, $this->httpConfig->getUrl());
+		curl_setopt($ch, CURLOPT_URL, $this->httpConfig->getUrl());		
 		curl_setopt($ch, CURLOPT_HEADER, false);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, $this->getHttpHeaders());		
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $this->getHttpHeaders());
+		
+		switch($this->httpConfig->getMethod()) {
+			case 'POST':
+				curl_setopt($ch, CURLOPT_POST, true);
+				curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+				break;
+		}
+		if($this->httpConfig->getMethod() != NULL) {
+			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $this->httpConfig->getMethod());
+		}
 		foreach($this->getHttpHeaders() as $header) {
 			//TODO: Strip out credentials and other secure info when logging.
 			$this->logger->info("Adding header $header");
 		}
-		if($this->httpConfig->getMethod()) {
-			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $this->httpConfig->getMethod());
-		}
-
 		$result = curl_exec($ch);
 		if (curl_errno($ch) == 60) {
 		 	$this->logger->info("Invalid or no certificate authority found - Retrying using bundled CA certs file");
@@ -70,16 +75,13 @@ class PPHttpConnection
 		}
 		$httpStatus = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 		$retries = 0;
-		if(in_array($httpStatus, self::$retryCodes) && $this->httpConfig->getRetryCount() != null) {
+		if(in_array($httpStatus, self::$retryCodes) && $this->httpConfig->getHttpRetryCount() != null) {
 			$this->logger->info("Got $httpStatus response from server. Retrying");
 
 			do 	{
 				$result = curl_exec($ch);
 				$httpStatus = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-
-			} while (in_array($httpStatus, self::$retryCodes) && ++$retries < $this->httpConfig->getRetryCount() );
-
-
+			} while (in_array($httpStatus, self::$retryCodes) && (++$retries < $this->httpConfig->getHttpRetryCount()) );
 		}
 		if ( curl_errno($ch) ) {
 			$ex = new PPConnectionException($this->httpConfig->getUrl(), curl_error($ch), curl_errno($ch));
@@ -89,9 +91,16 @@ class PPHttpConnection
 
 		curl_close($ch);
 
-		if(in_array($httpStatus, self::$retryCodes))
-		{
-			throw new PPConnectionException($url ,"Retried ".$retries." times, Http Response code ".$httpStatus);
+		if(in_array($httpStatus, self::$retryCodes)) {
+			$ex = new PPConnectionException($this->httpConfig->getUrl() , 
+					"Got Http response code $httpStatus when accessing {$this->httpConfig->getUrl()}. Retried $retries times.");
+			$ex->setData($result);
+			throw $ex;
+		} else if($httpStatus < 200 || $httpStatus >=300) {
+			$ex = new PPConnectionException($this->httpConfig->getUrl() , 
+					"Got Http response code $httpStatus when accessing {$this->httpConfig->getUrl()}.");
+			$ex->setData($result);
+			throw $ex;
 		}
 		return $result;
 	}

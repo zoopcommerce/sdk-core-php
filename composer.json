@@ -3,7 +3,7 @@
     "description": "PayPal Core SDK for PHP",
     "keywords": ["paypal", "php", "sdk"],
     "type": "library",
-    "homepage": "https://x.com",
+    "homepage": "https://github.com/paypal/sdk-core-php",
     "license": "Apache2",
     "authors": [
         {
@@ -18,5 +18,4 @@
     "autoload": {
         "classmap": ["lib"]
     }
- 
 }

@@ -46,11 +46,10 @@ class PPUtils
 
 		foreach ($map as $k => $v) {
 			preg_match($pattern, $k, $matches);
-			if(count($matches) > 0)
-
+			if (count($matches) > 0) {
 				return true;
+			}
 		}
-
 		return false;
 	}
 
@@ -160,7 +159,7 @@ class PPUtils
 
 	/**
 	 * @var array|string[]
-	*/
+	 */
 	private static $propertiesType = array();
 
 
@@ -170,7 +169,7 @@ class PPUtils
 	 * @param string $propertyName
 	 * @throws RuntimeException
 	 * @return string
-	*/
+	 */
 	public static function propertyAnnotations($class, $propertyName)
 	{
 		$class = is_object($class) ? get_class($class) : $class;
