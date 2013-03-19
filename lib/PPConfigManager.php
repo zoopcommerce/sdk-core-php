@@ -7,7 +7,7 @@
 
 class PPConfigManager {
 
-	private $config;
+	public $config;
 	/**
 	 * @var PPConfigManager
 	 */
@@ -91,4 +91,15 @@ class PPConfigManager {
 			return $acct;
 		}
 	}
+	
+	/**
+	 * returns the config file hashmap
+	 * 
+	 */
+	public function getConfigHashmap()
+	{
+		return $this->config;
+	}
 }
+
+    

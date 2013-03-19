@@ -3,27 +3,29 @@
 class PPAPIService {
 	
 	public $endpoint;
+	public $config;
 	public $serviceName;
 	private $logger;
 	private $handlers = array();
 	private $serviceBinding;
-
-	public function __construct($port, $serviceName, $serviceBinding, $handlers=array()) {
+	
+	public function __construct($port, $serviceName, $serviceBinding, $handlers=array(), $config) {
 		$this->serviceName = $serviceName;
-		$config = PPConfigManager::getInstance();
+	//	$config = PPConfigManager::getInstance();
 		if($port!= null)
 		{
-			$this->endpoint = $config->get('service.EndPoint.'.$port);
+			$this->endpoint = $config['service.EndPoint.'.$port];
 		}
 		// for backward compatibilty (for those who are using old config files with 'service.EndPoint')
 		else
 		{
-			$this->endpoint = $config->get('service.EndPoint');
+			$this->endpoint = $config['service.EndPoint'];
 		}
 		
 		$this->logger = new PPLoggingManager(__CLASS__);
 		$this->handlers = $handlers;
 		$this->serviceBinding = $serviceBinding;
+		$this->config = $config;
 	}
 
 	public function setServiceName($serviceName) {
@@ -36,10 +38,10 @@ class PPAPIService {
 
 	public function makeRequest($apiMethod, $params, $apiUsername = null, $accessToken = null, $tokenSecret = null) {
 
-		$config = PPConfigManager::getInstance();
+	//	$config = PPConfigManager::getInstance();
 		if(is_string($apiUsername) || is_null($apiUsername)) {
 			// $apiUsername is optional, if null the default account in config file is taken
-			$credMgr = PPCredentialManager::getInstance();
+			$credMgr = PPCredentialManager::getInstance($this->config);
 			$apiCredential = clone($credMgr->getCredentialObject($apiUsername ));
 		} else {
 			$apiCredential = $apiUsername; //TODO: Aargh
@@ -47,6 +49,10 @@ class PPAPIService {
 		if(isset($accessToken) && isset($tokenSecret)) {
 			$apiCredential->setThirdPartyAuthorization(
 				new PPTokenAuthorization($accessToken, $tokenSecret));
+		}
+		else if((isset($this->config['accessToken']) && isset($this->config['tokenSecret']))) {
+			$apiCredential->setThirdPartyAuthorization(
+				new PPTokenAuthorization($this->config['accessToken'], $this->config['tokenSecret']));
 		}
 		
 		if($this->serviceBinding == 'SOAP' ) {
