@@ -2,7 +2,7 @@
 
 class PPAuthenticationHandler implements IPPHandler {	
 	
-	public function handle($httpConfig, $request) {
+	public function handle($httpConfig, $request, $options) {
 		$credential = $request->getCredential();
 		if(isset($credential)) {
 			if($credential instanceof PPSignatureCredential) {
@@ -12,7 +12,7 @@ class PPAuthenticationHandler implements IPPHandler {
 			} else {
 				throw new PPInvalidCredentialException();
 			}
-			$handler->handle($httpConfig, $request);
+			$handler->handle($httpConfig, $request, $options);
 		}
 	}
 }
