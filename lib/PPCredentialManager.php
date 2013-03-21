@@ -29,10 +29,9 @@ class PPCredentialManager
 	 */
 	public static function getInstance($config)
 	{
-		if (!isset(self::$instance)) {
-			self::$instance = new PPCredentialManager($config);
-		}
-		return self::$instance;
+		
+			return self::$instance = new PPCredentialManager($config);
+		
 	}
 	
 	/*
