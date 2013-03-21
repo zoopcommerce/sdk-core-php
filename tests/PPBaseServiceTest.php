@@ -17,7 +17,7 @@ class PPBaseServiceTest extends PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->object = new PPBaseService('serviceName', 'serviceBinding');
+        $this->object = new PPBaseService('serviceName', 'serviceBinding', null);
         $this->object->setAccessToken('sampletoken');
         $this->object->setTokenSecret('sampleSrcret');
     }

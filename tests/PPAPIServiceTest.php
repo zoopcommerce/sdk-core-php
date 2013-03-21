@@ -10,6 +10,29 @@ class PPAPIServiceTest extends PHPUnit_Framework_TestCase
      * @var PPAPIService
      */
     protected $object;
+    
+    private $config = array(
+    		'acct1.UserName' => 'jb-us-seller_api1.paypal.com'	,
+    		'acct1.Password' => 'WX4WTU3S8MY44S7F'	,
+    		'acct1.Signature' => 	'AFcWxV21C7fd0v3bYYYRCpSSRl31A7yDhhsPUU2XhtMoZXsWHFxu-RWy'	,
+    		'acct1.AppId' => 	'APP-80W284485P519543T'	,
+    		'acct2.UserName' => 	'certuser_biz_api1.paypal.com'	,
+    		'acct2.Password' => 	'D6JNKKULHN3G5B8A'	,
+    		'acct2.CertPath' => 	'cert_key.pem'	,
+    		'acct2.AppId' => 	'APP-80W284485P519543T'	,
+    		'http.ConnectionTimeOut' => 	'30'	,
+    		'http.Retry' => 	'5'	,
+    		'service.RedirectURL' => 	'https://www.sandbox.paypal.com/webscr&cmd='	,
+    		'service.DevCentralURL' => 'https://developer.paypal.com'	,
+    		'service.EndPoint.IPN' => 'https://www.sandbox.paypal.com/cgi-bin/webscr'	,
+    		'service.EndPoint.AdaptivePayments' => 'https://svcs.sandbox.paypal.com/'	,
+    		'service.SandboxEmailAddress' => 'platform_sdk_seller@gmail.com',
+    		'log.FileName' => 'PayPal1.log'	,
+    		'log.LogLevel' => 	'INFO'	,
+    		'log.LogEnabled' => 	'1'	,
+    
+    
+    );
 
     /**
      * Sets up the fixture, for example, opens a network connection.
@@ -17,7 +40,7 @@ class PPAPIServiceTest extends PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->object = new PPAPIService(null,'AdaptiveAccounts', 'SOAP');
+        $this->object = new PPAPIService(null,'AdaptiveAccounts', 'SOAP', null, $this->config);
     }
 
     /**

@@ -1,68 +1,74 @@
 <?php
 
 /**
- * 
+ *
  *
  */
 class PPIPNMessage {
-	
+
 	const IPN_CMD = 'cmd=_notify-validate';
-	
+
 	/*
 	 *@var boolian
-	 *
-	 */
+	*
+	*/
 	private $isIpnVerified;
-	
+
+	/*
+	 *@var config
+	*
+	*/
+	private $config;
 	/**
-	 * 
+	 *
 	 * @var array
 	 */
 	private $ipnData = array();
 
 	/**
-	 * 
-	 * @param string $postData OPTIONAL post data. If null, 
-	 * 				the class automatically reads incoming POST data 
+	 *
+	 * @param string $postData OPTIONAL post data. If null,
+	 * 				the class automatically reads incoming POST data
 	 * 				from the input stream
-	 */
-	public function __construct($postData='') {
-		if($postData == '') {			
+	*/
+	public function __construct($postData='', $config = null) {
+		$this->config = $config;
+		if($postData == '') {
 			// reading posted data from directly from $_POST may causes serialization issues with array data in POST
-			// reading raw POST data from input stream instead.			
+			// reading raw POST data from input stream instead.
 			$postData = file_get_contents('php://input');
 		}
-		
-		$rawPostArray = explode('&', $postData);		
+
+		$rawPostArray = explode('&', $postData);
 		foreach ($rawPostArray as $keyValue) {
 			$keyValue = explode ('=', $keyValue);
 			if (count($keyValue) == 2)
 				$this->ipnData[$keyValue[0]] = urldecode($keyValue[1]);
 		}
-		//var_dump($this->ipnData);	
+		//var_dump($this->ipnData);
 	}
-	
+
 	/**
 	 * Returns a hashmap of raw IPN data
-	 * 
-	 * @return array  
+	 *
+	 * @return array
 	 */
 	public function getRawData() {
 		return $this->ipnData;
 	}
-	
+
 	/**
 	 * Validates a IPN message
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public function validate() {
-	    if(isset($this->isIpnVerified))
+		if(isset($this->isIpnVerified))
 		{
 			return $this->isIpnVerified;
 		}
 		else
-			{
+		{
 			$request = self::IPN_CMD;
 			if(function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc() == 1) {
 				$get_magic_quotes_exists = true;
@@ -76,22 +82,58 @@ class PPIPNMessage {
 					$value = urlencode($value);
 				}
 				$request .= "&$key=$value";
-			}			
-			$httpConfig = new PPHttpConfig(PPConfigManager::getInstance()->get('service.EndPoint.IPN'));
+			}
+				
+			if($this->config == null)
+			{
+				$conf = PPConfigManager::getInstance();
+				$confMap = $conf->config;
+			}
+			else
+			{
+				$confMap = $config;
+			}
+			
+			if(isset($confMap['service.EndPoint.IPN']))
+			{
+				$url = $confMap['service.EndPoint.IPN'];
+			}
+			else if(isset($confMap['mode']))
+			{
+				if($confMap['mode'] == 'SANDBOX')
+				{
+					$url = IPN_SANDBOX_ENDPOINT;
+				}
+				else if ($confMap['mode'] == 'LIVE')
+				{
+					$url = IPN_LIVE_ENDPOINT;
+				}
+				else
+				{
+					throw new PPConfigurationException('mode not set');
+				}
+			}
+			else
+			{
+				throw new PPConfigurationException('No COnfig file found');
+			}
+			$httpConfig = new PPHttpConfig($url);
+				
+				
 			$httpConfig->addCurlOption(CURLOPT_FORBID_REUSE, 1);
 			$httpConfig->addCurlOption(CURLOPT_HTTPHEADER, array('Connection: Close'));
-			
-			$connection = PPConnectionManager::getInstance()->getConnection($httpConfig);
+
+			$connection = PPConnectionManager::getInstance()->getConnection($httpConfig, $this->config);
 			$response = $connection->execute($request);
 			if($response == 'VERIFIED') {
 				$this->isIpnVerified = true;
 				return true;
 			}
-			$this->isIpnVerified = false;	
+			$this->isIpnVerified = false;
 			return false; // value is 'INVALID'
-			}
+		}
 	}
-	
+
 	/**
 	 * Returns the transaction id for which
 	 * this IPN was generated, if one is available
@@ -103,22 +145,22 @@ class PPIPNMessage {
 			return $this->ipnData['txn_id'];
 		} else if(isset($this->ipnData['transaction[0].id'])) {
 			$idx = 0;
-			do {				
-				$transId[] =  $this->ipnData["transaction[$idx].id"];				
+			do {
+				$transId[] =  $this->ipnData["transaction[$idx].id"];
 				$idx++;
 			} while(isset($this->ipnData["transaction[$idx].id"]));
 			return $transId;
 		}
 	}
-	
+
 	/**
 	 * Returns the transaction type for which
 	 * this IPN was generated
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getTransactionType() {
 		return $this->ipnData['transaction_type'];
-	}	
-	
+	}
+
 }
