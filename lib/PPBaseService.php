@@ -10,7 +10,7 @@ class PPBaseService {
 	private $serviceName;
 	private $serviceBinding;
 	private $handlers;
-
+	
    /*
     * Setters and getters for Third party authentication (Permission Services)
     */
@@ -19,6 +19,8 @@ class PPBaseService {
 	
 	protected $lastRequest;
 	protected $lastResponse;
+	
+	
 	
 	// config hash map
 	public $config;
@@ -85,15 +87,18 @@ class PPBaseService {
 		$this->tokenSecret = $tokenSecret;
 	}
 
-	public function __construct($serviceName, $serviceBinding, $handlers=array(),$config) {
+	public function __construct($serviceName, $serviceBinding, $handlers=array(), $config = null) {
 		$this->serviceName = $serviceName;
 		$this->serviceBinding = $serviceBinding;
 		$this->handlers = $handlers;
-		$this->config = $config;
-		if($this->config == null)
+		if($config == null)
 		{
 			$configFile = PPConfigManager::getInstance();
 			$this->config = $configFile->getConfigHashmap();
+		}
+		else 
+		{
+			$this->config = PPConfigManager::mergrDefaults($config);
 		}
 	}
 
