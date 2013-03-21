@@ -11,6 +11,13 @@ class PPConfigManager {
 	/**
 	 * @var PPConfigManager
 	 */
+	
+	//default config values
+	public static $defaults = array(
+			"http.ConnectionTimeOut" => "30",
+			"http.Retry" => "5",
+	);
+	
 	private static $instance;
 
 	private function __construct(){
@@ -99,6 +106,14 @@ class PPConfigManager {
 	public function getConfigHashmap()
 	{
 		return $this->config;
+	}
+	
+	/**
+	 * use  the default configuration if it is not passed in hashmap
+	 */
+	public static function mergrDefaults($config)
+	{
+		return array_merge(PPConfigManager::$defaults, $config);
 	}
 }
 
