@@ -26,22 +26,22 @@ class PPMerchantServiceHandler extends PPGenericServiceHandler {
 			{
 				if($credential instanceof PPSignatureCredential)
 				{
-					$this->endpoint = MERCHANT_SANDBOX_SIGNATURE_ENDPOINT;
+					$this->endpoint = PPConstants::MERCHANT_SANDBOX_SIGNATURE_ENDPOINT;
 				}
 				else if($credential instanceof PPCertificateCredential)
 				{
-					$this->endpoint = MERCHANT_SANDBOX_CERT_ENDPOINT;
+					$this->endpoint = PPConstants::MERCHANT_SANDBOX_CERT_ENDPOINT;
 				}
 			}
 			else if(strtoupper($this->config['mode']) == 'LIVE')
 			{
 			if($credential instanceof PPSignatureCredential)
 				{
-					$this->endpoint = MERCHANT_LIVE_SIGNATURE_ENDPOINT;
+					$this->endpoint = PPConstants::MERCHANT_LIVE_SIGNATURE_ENDPOINT;
 				}
 				else if($credential instanceof PPCertificateCredential)
 				{
-					$this->endpoint = MERCHANT_LIVE_CERT_ENDPOINT;
+					$this->endpoint = PPConstants::MERCHANT_LIVE_CERT_ENDPOINT;
 				}
 			}
 		}

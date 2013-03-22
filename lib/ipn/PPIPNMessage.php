@@ -146,11 +146,11 @@ class PPIPNMessage {
 		{
 			if(strtoupper($this->$config['mode']) == 'SANDBOX')
 			{
-				$url = IPN_SANDBOX_ENDPOINT;
+				$url = PPConstants::IPN_SANDBOX_ENDPOINT;
 			}
 			else if (strtoupper($this->$config['mode']) == 'LIVE')
 			{
-				$url = IPN_LIVE_ENDPOINT;
+				$url = PPConstants::IPN_LIVE_ENDPOINT;
 			}
 			else
 			{

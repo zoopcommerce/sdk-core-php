@@ -25,11 +25,11 @@ class PPPlatformServiceHandler extends PPGenericServiceHandler {
 		{
 			if(strtoupper($this->config['mode']) == 'SANDBOX')
 			{
-				$this->endpoint = PLATFORM_SANDBOX_ENDPOINT;
+				$this->endpoint = PPConstants::PLATFORM_SANDBOX_ENDPOINT;
 			}
 			else if(strtoupper($this->config['mode']) == 'LIVE')
 			{
-				$this->endpoint = PLATFORM_LIVE_ENDPOINT;
+				$this->endpoint = PPConstants::PLATFORM_LIVE_ENDPOINT;
 			}
 		}
 		else
