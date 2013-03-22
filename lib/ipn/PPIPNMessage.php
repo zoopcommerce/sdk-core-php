@@ -32,7 +32,15 @@ class PPIPNMessage {
 	 * 				from the input stream
 	*/
 	public function __construct($postData='', $config = null) {
-		$this->config = $config;
+		if($config == null)
+		{
+			$conf = PPConfigManager::getInstance();
+			$this->$config = $conf->config;
+		}
+		else
+		{
+			$this->$config = $config;
+		}
 		if($postData == '') {
 			// reading posted data from directly from $_POST may causes serialization issues with array data in POST
 			// reading raw POST data from input stream instead.
@@ -84,42 +92,7 @@ class PPIPNMessage {
 				$request .= "&$key=$value";
 			}
 				
-			if($this->config == null)
-			{
-				$conf = PPConfigManager::getInstance();
-				$confMap = $conf->config;
-			}
-			else
-			{
-				$confMap = $config;
-			}
-			
-			if(isset($confMap['service.EndPoint.IPN']))
-			{
-				$url = $confMap['service.EndPoint.IPN'];
-			}
-			else if(isset($confMap['mode']))
-			{
-				if($confMap['mode'] == 'SANDBOX')
-				{
-					$url = IPN_SANDBOX_ENDPOINT;
-				}
-				else if ($confMap['mode'] == 'LIVE')
-				{
-					$url = IPN_LIVE_ENDPOINT;
-				}
-				else
-				{
-					throw new PPConfigurationException('mode not set');
-				}
-			}
-			else
-			{
-				throw new PPConfigurationException('No COnfig file found');
-			}
-			$httpConfig = new PPHttpConfig($url);
-				
-				
+			$this->setEndpoint();
 			$httpConfig->addCurlOption(CURLOPT_FORBID_REUSE, 1);
 			$httpConfig->addCurlOption(CURLOPT_HTTPHEADER, array('Connection: Close'));
 
@@ -161,6 +134,34 @@ class PPIPNMessage {
 	 */
 	public function getTransactionType() {
 		return $this->ipnData['transaction_type'];
+	}
+	
+	private function setEndpoint()
+	{
+		if(isset($this->$config['service.EndPoint.IPN']))
+		{
+			$url = $this->$config['service.EndPoint.IPN'];
+		}
+		else if(isset($this->$config['mode']))
+		{
+			if(strtoupper($this->$config['mode']) == 'SANDBOX')
+			{
+				$url = IPN_SANDBOX_ENDPOINT;
+			}
+			else if (strtoupper($this->$config['mode']) == 'LIVE')
+			{
+				$url = IPN_LIVE_ENDPOINT;
+			}
+			else
+			{
+				throw new PPConfigurationException('mode should be LIVE or SANDBOX');
+			}
+		}
+		else
+		{
+			throw new PPConfigurationException('No COnfig file found');
+		}
+		$httpConfig = new PPHttpConfig($url);
 	}
 
 }
