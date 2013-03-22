@@ -13,14 +13,14 @@ class PPAPIService {
 	private $apiMethod;
 	public function __construct($port, $serviceName, $serviceBinding, $handlers=array(), $config) {
 		
-		
+		$this->config = $config;
 		$this->serviceName = $serviceName;
 		$this->port = $port;
 
-	//	$this->logger = new PPLoggingManager(__CLASS__);
+		$this->logger = new PPLoggingManager(__CLASS__, $this->config);
 		$this->handlers = $handlers;
 		$this->serviceBinding = $serviceBinding;
-		$this->config = $config;
+		
 	}
 
 	public function setServiceName($serviceName) {
@@ -59,9 +59,9 @@ class PPAPIService {
 		$formatter = FormatterFactory::factory($this->serviceBinding);
 		$payload = $formatter->toString($request);
 		$connection = PPConnectionManager::getInstance()->getConnection($httpConfig, $this->config);
-//		$this->logger->info("Request: $payload");
+		$this->logger->info("Request: $payload");
 		$response = $connection->execute($payload);
-//		$this->logger->info("Response: $response");
+		$this->logger->info("Response: $response");
 
 		return array('request' => $payload, 'response' => $response);
 	}

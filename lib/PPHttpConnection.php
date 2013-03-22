@@ -19,13 +19,13 @@ class PPHttpConnection
 
 	private $logger;
 
-	public function __construct($httpConfig)
+	public function __construct($httpConfig, $config)
 	{
 		if( !function_exists("curl_init") ) {
 			throw new PPConfigurationException("Curl module is not available on this system");
 		}
 		$this->httpConfig = $httpConfig;
-		//$this->logger = new PPLoggingManager(__CLASS__);
+		$this->logger = new PPLoggingManager(__CLASS__, $config);
 	}	
 
 	private function getHttpHeaders() {
@@ -44,8 +44,8 @@ class PPHttpConnection
 	 * @throws PPConnectionException
 	 */
 	public function execute($data) {
-		//$this->logger->fine("Connecting to " . $this->httpConfig->getUrl());			
-		//$this->logger->fine("Payload " . $data);
+		$this->logger->fine("Connecting to " . $this->httpConfig->getUrl());			
+		$this->logger->fine("Payload " . $data);
 
 		$ch = curl_init($this->httpConfig->getUrl());
 		curl_setopt_array($ch, $this->httpConfig->getCurlOptions());		
@@ -55,7 +55,7 @@ class PPHttpConnection
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $this->getHttpHeaders());		
 		foreach($this->getHttpHeaders() as $header) {
 			//TODO: Strip out credentials and other secure info when logging.
-			//$this->logger->info("Adding header $header");
+			$this->logger->info("Adding header $header");
 		}
 		if($this->httpConfig->getMethod()) {
 			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $this->httpConfig->getMethod());
@@ -63,7 +63,7 @@ class PPHttpConnection
 
 		$result = curl_exec($ch);
 		if (curl_errno($ch) == 60) {
-		 //	$this->logger->info("Invalid or no certificate authority found - Retrying using bundled CA certs file");
+		 	$this->logger->info("Invalid or no certificate authority found - Retrying using bundled CA certs file");
 		 	curl_setopt($ch, CURLOPT_CAINFO,
 		 	dirname(__FILE__) . '/cacert.pem');
 		 	$result = curl_exec($ch);

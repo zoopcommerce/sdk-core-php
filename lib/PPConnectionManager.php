@@ -33,7 +33,7 @@ class PPConnectionManager
 			$httpConfig->setHttpRetryCount($retry ) ;
 		}
 		
-		return new PPHttpConnection($httpConfig);
+		return new PPHttpConnection($httpConfig, $config);
 	}
 
 }
