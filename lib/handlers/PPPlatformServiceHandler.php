@@ -11,7 +11,7 @@ class PPPlatformServiceHandler extends PPGenericServiceHandler {
 		if($credential && $credential->getApplicationId() != NULL) {
 			$httpConfig->addHeader('X-PAYPAL-APPLICATION-ID', $credential->getApplicationId());
 		}
-		if($options['port'] != null)
+		if($options['port'] != null && isset($this->config['service.EndPoint.'.$options['port']]))
 		{
 			$endpnt = 'service.EndPoint.'.$options['port']; 
 			$this->endpoint = $this->config[$endpnt];
