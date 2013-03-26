@@ -35,11 +35,11 @@ class PPIPNMessage {
 		if($config == null)
 		{
 			$conf = PPConfigManager::getInstance();
-			$this->$config = $conf->config;
+			$this->config = $conf->config;
 		}
 		else
 		{
-			$this->$config = $config;
+			$this->config = $config;
 		}
 		if($postData == '') {
 			// reading posted data from directly from $_POST may causes serialization issues with array data in POST
@@ -92,7 +92,7 @@ class PPIPNMessage {
 				$request .= "&$key=$value";
 			}
 				
-			$this->setEndpoint();
+			$httpConfig = new PPHttpConfig($this->setEndpoint());
 			$httpConfig->addCurlOption(CURLOPT_FORBID_REUSE, 1);
 			$httpConfig->addCurlOption(CURLOPT_HTTPHEADER, array('Connection: Close'));
 
@@ -138,17 +138,17 @@ class PPIPNMessage {
 	
 	private function setEndpoint()
 	{
-		if(isset($this->$config['service.EndPoint.IPN']))
+		if(isset($this->config['service.EndPoint.IPN']))
 		{
-			$url = $this->$config['service.EndPoint.IPN'];
+			$url = $this->config['service.EndPoint.IPN'];
 		}
-		else if(isset($this->$config['mode']))
+		else if(isset($this->config['mode']))
 		{
-			if(strtoupper($this->$config['mode']) == 'SANDBOX')
+			if(strtoupper($this->config['mode']) == 'SANDBOX')
 			{
 				$url = PPConstants::IPN_SANDBOX_ENDPOINT;
 			}
-			else if (strtoupper($this->$config['mode']) == 'LIVE')
+			else if (strtoupper($this->config['mode']) == 'LIVE')
 			{
 				$url = PPConstants::IPN_LIVE_ENDPOINT;
 			}
@@ -161,7 +161,7 @@ class PPIPNMessage {
 		{
 			throw new PPConfigurationException('No COnfig file found');
 		}
-		$httpConfig = new PPHttpConfig($url);
+		return $url;
 	}
 
 }
