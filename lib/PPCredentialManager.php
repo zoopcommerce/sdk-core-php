@@ -15,9 +15,9 @@ class PPCredentialManager
 	/*
 	 * Constructor initialize credential for multiple accounts specified in property file.
 	 */
-	private function __construct(){
+	private function __construct($config){
 		try {
-			$this->initCredential();
+			$this->initCredential($config);
 		} catch (Exception $e) {
 			$this->credentialHashmap = array();
 			throw $e;
@@ -27,24 +27,48 @@ class PPCredentialManager
 	/*
 	 * Create singleton instance for this class.
 	 */
-	public static function getInstance()
+	public static function getInstance($config)
 	{
-		if (!isset(self::$instance)) {
-			self::$instance = new PPCredentialManager();
-		}
-		return self::$instance;
+		
+			return self::$instance = new PPCredentialManager($config);
+		
 	}
 	
 	/*
 	 * Load credentials for multiple accounts, with priority given to Signature credential. 
 	 */
-	private function initCredential(){
-		$configMgr = PPConfigManager::getInstance();
+	private function initCredential($config){
+	//	$configMgr = PPConfigManager::getInstance();
 		$suffix = 1;
 		$prefix = "acct";
 
-		$credArr = $configMgr->get($prefix);
-		$arrayPartKeys = $configMgr->getIniPrefix();
+	//	$credArr = $configMgr->get($prefix);
+	//	$arrayPartKeys = $configMgr->getIniPrefix();
+		
+		if(array_key_exists($prefix, $config))
+		{
+			$credArr =  $this->config[$searchKey];
+		}
+		else {
+			$arr = array();
+			foreach ($config as $k => $v){
+				if(strstr($k, $prefix)){
+					$arr[$k] = $v;
+				}
+			}
+				
+			$credArr =  $arr;
+		}
+		
+		$arr = array();
+		foreach ($config as $key => $value) {
+			$pos = strpos($key, '.');
+			if(strstr($key, "acct")){
+				$arr[] = substr($key, 0, $pos);
+			}
+		}
+		$arrayPartKeys =  array_unique($arr);
+		
 		if(count($arrayPartKeys) == 0)
 			throw new PPMissingCredentialException("No valid API accounts have been configured");
 

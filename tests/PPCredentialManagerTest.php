@@ -10,13 +10,35 @@ class PPCredentialManagerTest extends PHPUnit_Framework_TestCase
 	 */
 	protected $object;
 
+	private $config = array(
+			'acct1.UserName' => 'jb-us-seller_api1.paypal.com'	,
+			'acct1.Password' => 'WX4WTU3S8MY44S7F'	,
+			'acct1.Signature' => 	'AFcWxV21C7fd0v3bYYYRCpSSRl31A7yDhhsPUU2XhtMoZXsWHFxu-RWy'	,
+			'acct1.AppId' => 	'APP-80W284485P519543T'	,
+			'acct2.UserName' => 	'certuser_biz_api1.paypal.com'	,
+			'acct2.Password' => 	'D6JNKKULHN3G5B8A'	,
+			'acct2.CertPath' => 	'cert_key.pem'	,
+			'acct2.AppId' => 	'APP-80W284485P519543T'	,
+			'http.ConnectionTimeOut' => 	'30'	,
+			'http.Retry' => 	'5'	,
+			'service.RedirectURL' => 	'https://www.sandbox.paypal.com/webscr&cmd='	,
+			'service.DevCentralURL' => 'https://developer.paypal.com'	,
+			'service.EndPoint.IPN' => 'https://www.sandbox.paypal.com/cgi-bin/webscr'	,
+			'service.EndPoint.AdaptivePayments' => 'https://svcs.sandbox.paypal.com/'	,
+			'service.SandboxEmailAddress' => 'platform_sdk_seller@gmail.com',
+			'log.FileName' => 'PayPal1.log'	,
+			'log.LogLevel' => 	'INFO'	,
+			'log.LogEnabled' => 	'1'	,
+	
+	
+	);
 	/**
 	 * Sets up the fixture, for example, opens a network connection.
 	 * This method is called before a test is executed.
 	 */
 	protected function setUp()
 	{
-		$this->object = PPCredentialManager::getInstance();
+		$this->object = PPCredentialManager::getInstance($this->config);
 	}
 
 	/**
@@ -32,7 +54,7 @@ class PPCredentialManagerTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testGetInstance()
 	{
-		$instance = $this->object->getInstance();
+		$instance = $this->object->getInstance($this->config);
 		$this->assertTrue($instance instanceof PPCredentialManager);
 	}
 
@@ -45,10 +67,10 @@ class PPCredentialManagerTest extends PHPUnit_Framework_TestCase
 		$this->assertNotNull($cred);
 		$this->assertEquals('jb-us-seller_api1.paypal.com', $cred->getUsername());
 		
-		$cred = $this->object->getCredentialObject('platfo_1255170694_biz_api1.gmail.com');
+		$cred = $this->object->getCredentialObject('certuser_biz_api1.paypal.com');
 		$this->assertNotNull($cred);
-		$this->assertEquals('platfo_1255170694_biz_api1.gmail.com', $cred->getUsername());
-		$this->assertStringEndsWith('cacert.pem', $cred->getCertificatePath());		
+		$this->assertEquals('certuser_biz_api1.paypal.com', $cred->getUsername());
+		$this->assertStringEndsWith('cert_key.pem', $cred->getCertificatePath());		
 	}
 	
 	/**

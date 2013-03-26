@@ -1,7 +1,7 @@
 <?php
 class PPCredentialAuthHandler implements IPPHandler {
 
-	public function handle($httpConfig, $request) {
+	public function handle($httpConfig, $request, $options) {
 
 		$credential = $request->getCredential();
 		if(!isset($credential)) {

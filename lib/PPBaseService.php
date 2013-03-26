@@ -10,7 +10,7 @@ class PPBaseService {
 	private $serviceName;
 	private $serviceBinding;
 	private $handlers;
-
+	
    /*
     * Setters and getters for Third party authentication (Permission Services)
     */
@@ -20,7 +20,10 @@ class PPBaseService {
 	protected $lastRequest;
 	protected $lastResponse;
 	
-
+	
+	
+	// config hash map
+	public $config;
 
 	/**
 	 * Compute the value that needs to sent for the PAYPAL_REQUEST_SOURCE
@@ -84,10 +87,19 @@ class PPBaseService {
 		$this->tokenSecret = $tokenSecret;
 	}
 
-	public function __construct($serviceName, $serviceBinding, $handlers=array()) {
+	public function __construct($serviceName, $serviceBinding, $handlers=array(), $config = null) {
 		$this->serviceName = $serviceName;
 		$this->serviceBinding = $serviceBinding;
 		$this->handlers = $handlers;
+		if($config == null)
+		{
+			$configFile = PPConfigManager::getInstance();
+			$this->config = $configFile->getConfigHashmap();
+		}
+		else 
+		{
+			$this->config = PPConfigManager::mergrDefaults($config);
+		}
 	}
 
 	public function getServiceName() {
@@ -102,10 +114,10 @@ class PPBaseService {
 	 * 		a username configured in sdk_config.ini or a ICredential object
 	 *      created dynamically 		
 	 */
-	public function call($port, $method, $requestObject, $apiCredential = null) {		
+	public function call($port, $method, $requestObject) {		
 		$service = new PPAPIService($port, $this->serviceName, 
-				$this->serviceBinding, $this->handlers);		
-		$ret = $service->makeRequest($method, $requestObject, $apiCredential,
+				$this->serviceBinding, $this->handlers,$this->config);		
+		$ret = $service->makeRequest($method, $requestObject, 
 				$this->accessToken, $this->tokenSecret);
 		$this->lastRequest = $ret['request'];
 		$this->lastResponse = $ret['response'];

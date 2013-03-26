@@ -19,13 +19,13 @@ class PPHttpConnection
 
 	private $logger;
 
-	public function __construct($httpConfig)
+	public function __construct($httpConfig, $config)
 	{
 		if( !function_exists("curl_init") ) {
 			throw new PPConfigurationException("Curl module is not available on this system");
 		}
 		$this->httpConfig = $httpConfig;
-		$this->logger = new PPLoggingManager(__CLASS__);
+		$this->logger = new PPLoggingManager(__CLASS__, $config);
 	}	
 
 	private function getHttpHeaders() {

@@ -37,7 +37,7 @@ class PPHttpConfig {
 	 * @param string $url
 	 * @param string $method  HTTP method (GET, POST etc) defaults to POST
 	 */
-	public function __construct($url, $method=self::HTTP_POST) {
+	public function __construct($url=null, $method=self::HTTP_POST) {
 		$this->url = $url;
 		$this->method = $method;
 		$this->curlOptions = self::$DEFAULT_CURL_OPTS;
@@ -62,6 +62,10 @@ class PPHttpConfig {
 		return NULL;
 	}
 
+	public function setUrl($url) {
+		$this->url = $url;
+	}
+	
 	public function setHeaders(array $headers) {
 		$this->headers = $headers;
 	}

@@ -21,20 +21,19 @@ class PPConnectionManager
 	/**
 	 * This function returns a new PPHttpConnection object
 	 */
-	public function getConnection($httpConfig) {
-		$configMgr = PPConfigManager::getInstance();
-		if( ($configMgr->get("http.ConnectionTimeOut")) ) {
-			$httpConfig->setHttpTimeout( $configMgr->get("http.ConnectionTimeOut") );
+	public function getConnection($httpConfig, $config) {
+		if(isset( $config["http.ConnectionTimeOut"] )) {
+			$httpConfig->setHttpTimeout( $config["http.ConnectionTimeOut"] );
 		}
-		if( $configMgr->get("http.Proxy") ) {
-			$httpConfig->setHttpProxy( $configMgr->get("http.Proxy") );
+		if(isset( $config["http.Proxy"] )) {
+			$httpConfig->setHttpProxy($config["http.Proxy"] );
 		}
-		if( $configMgr->get("http.Retry") ) {
-			$retry = $configMgr->get("http.Retry");
+		if(isset( $config["http.Retry"] )) {
+			$retry =  $config["http.Retry"];
 			$httpConfig->setHttpRetryCount($retry ) ;
 		}
 		
-		return new PPHttpConnection($httpConfig);
+		return new PPHttpConnection($httpConfig, $config);
 	}
 
 }
