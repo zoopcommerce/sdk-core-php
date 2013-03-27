@@ -114,10 +114,10 @@ class PPBaseService {
 	 * 		a username configured in sdk_config.ini or a ICredential object
 	 *      created dynamically 		
 	 */
-	public function call($port, $method, $requestObject) {		
+	public function call($port, $method, $requestObject, $apiUserName = NULL) {		
 		$service = new PPAPIService($port, $this->serviceName, 
 				$this->serviceBinding, $this->handlers,$this->config);		
-		$ret = $service->makeRequest($method, $requestObject, 
+		$ret = $service->makeRequest($method, $requestObject, $apiUserName, 
 				$this->accessToken, $this->tokenSecret);
 		$this->lastRequest = $ret['request'];
 		$this->lastResponse = $ret['response'];

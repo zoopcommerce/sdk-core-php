@@ -32,7 +32,7 @@ class PPAPIService {
 	}
 
 	public function makeRequest($apiMethod, $params, $apiUsername = null, $accessToken = null, $tokenSecret = null) {
-
+		
 		$this->apiMethod = $apiMethod;
 		if(is_string($apiUsername) || is_null($apiUsername)) {
 			// $apiUsername is optional, if null the default account in config file is taken
@@ -67,13 +67,15 @@ class PPAPIService {
 	}
 
 	private function runHandlers($httpConfig, $request) {
-		$handler = new PPAuthenticationHandler();
+	
 		$this->getOptions();
-		$handler->handle($httpConfig, $request, $this->options);
+		
 		foreach($this->handlers as $handlerClass) {
 			$handler = new $handlerClass();
 			$handler->handle($httpConfig, $request, $this->options);
 		}
+		$handler = new PPAuthenticationHandler();
+		$handler->handle($httpConfig, $request, $this->options);
 	}
 	
 	private function getOptions()
