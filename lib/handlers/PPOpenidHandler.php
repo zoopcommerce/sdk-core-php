@@ -1,8 +1,11 @@
 <?php
 
-class PPRestHandler implements IPPHandler {
+class PPOpenidHandler implements IPPHandler {
 	
 	private $config;
+	
+	private static $sdkName = "openid-sdk-php";	
+	private static $sdkVersion = "1.0.0";
 	
 	public function __construct($config) {
 		$this->config = $config;
@@ -34,6 +37,9 @@ class PPRestHandler implements IPPHandler {
 		if(!array_key_exists("Authorization", $httpConfig->getHeaders())) {			
 			$auth = base64_encode($this->config['acct1.ClientId'] . ':' . $this->config['acct1.ClientSecret']);
 			$httpConfig->addHeader("Authorization", "Basic $auth");
+		}
+		if(!array_key_exists("User-Agent", $httpConfig->getHeaders())) {
+			$httpConfig->addHeader("User-Agent", PPUserAgent::getValue(self::$sdkName, self::$sdkVersion));
 		}
 	}
 }

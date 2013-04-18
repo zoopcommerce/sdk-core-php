@@ -81,7 +81,7 @@ class Tokeninfo extends PPModel {
         /**
 		 * Creates an Access Token from an Authorization Code.
 		 *
-		 * @path /v1/openidconnect/token
+		 * @path /v1/identity/openidconnect/tokenservice
 		 * @method POST
 		 * @param array $params (allowed values are grant_type, code and redirect_uri)
 		 * 				(optional) grant_type is the Token grant type. Defaults to authorization_code
@@ -91,7 +91,7 @@ class Tokeninfo extends PPModel {
 		 * @param array $config Optional SDK configuration.   
 		 * @return Tokeninfo
 		 */
-		public function createFromAuthorizationCode($params, $config=null) {
+		public static function createFromAuthorizationCode($params, $config=null) {
 			static $allowedParams = array('grant_type' => 1, 'code' => 1, 'redirect_uri' => 1);
 			
 			if(is_null($config)) {
@@ -102,18 +102,19 @@ class Tokeninfo extends PPModel {
 			}			
 			
 			$call = new PPRestCall($config);
-			$this->fromJson(
-				$call->execute("/v1/openidconnect/tokenservice" , "POST", 
+			$token = new Tokeninfo();
+			$token->fromJson(
+				$call->execute("/v1/identity/openidconnect/tokenservice" , "POST", 
 					http_build_query(array_intersect_key($params, $allowedParams)),
 					array('Content-Type' => 'application/x-www-form-urlencoded')
 			));
-			return $this;
+			return $token;
 		}
 
         /**
 		 * Creates an Access Token from an Refresh Token.
 		 *
-		 * @path /v1/openidconnect/token
+		 * @path /v1/identity/openidconnect/tokenservice
 		 * @method POST
 		 * @param array $params (allowed values are grant_type and scope)
 		 * 				(optional) grant_type is the Token grant type. Defaults to refresh_token
@@ -121,7 +122,7 @@ class Tokeninfo extends PPModel {
 		 * @param array $config Optional SDK configuration.   
 		 * @return Tokeninfo
 		 */
-		public static function createFromRefreshToken($params, $config=null) {
+		public function createFromRefreshToken($params, $config=null) {
 			
 			static $allowedParams = array('grant_type' => 1, 'refresh_token' => 1, 'scope' => 1);
 			
@@ -131,16 +132,15 @@ class Tokeninfo extends PPModel {
 			if(!array_key_exists('grant_type', $params)) {
 				$params['grant_type'] = 'refresh_token';
 			}
-			$params['refresh_token'] = $this->getRefreshToken();
+			$params['refresh_token'] = $this->getRefreshToken();			
 			
-			$token = new Tokeninfo();
 			$call = new PPRestCall($config);			
-			$token->fromJson(
-				$call->execute("/v1/openidconnect/tokenservice"  , "POST",
+			$this->fromJson(
+				$call->execute("/v1/identity/openidconnect/tokenservice"  , "POST",
 					http_build_query(array_intersect_key($params, $allowedParams)),
 					array('Content-Type' => 'application/x-www-form-urlencoded')
 			));
-			return $token;
+			return $this;
 		}
 
 }

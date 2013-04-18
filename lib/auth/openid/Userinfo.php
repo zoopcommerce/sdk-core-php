@@ -166,7 +166,7 @@ class Userinfo extends PPModel {
         /**
 		 * returns user details
 		 *
-		 * @path /v1/openidconnect/userinfo
+		 * @path /v1/identity/openidconnect/userinfo
 		 * @method GET
 		 * @param array $params (allowed values are schema and access_token)
 		 * 					schema - (Optional) the schema that is used to return as per openidconnect protocol
@@ -175,7 +175,7 @@ class Userinfo extends PPModel {
 		 * @return Userinfo
 		 */
 		public static function getuserinfo($params, $config=null) {
-			static $allowedParams = array( 'schema' => 1, 'access_token' => 1);
+			static $allowedParams = array( 'schema' => 1);
 			
 			if(is_null($config)) {
 				$config = PPConfigManager::getInstance()->getConfigHashmap();
@@ -187,8 +187,13 @@ class Userinfo extends PPModel {
 			$call = new PPRestCall($config);
 			$ret = new Userinfo();
 			$ret->fromJson(
-				$call->execute("/v1/openidconnect/userinfo?"
-					. http_build_query(array_intersect_key($params, $allowedParams)), "GET", "")
+				$call->execute("/v1/identity/openidconnect/userinfo?"
+					. http_build_query(array_intersect_key($params, $allowedParams)), "GET", "", 
+					array(
+						'Authorization' => "Bearer " . $params['access_token'],
+						'Content-Type'=> 'x-www-form-urlencoded'
+					)
+				)
 			);
 			return $ret;
 		}
