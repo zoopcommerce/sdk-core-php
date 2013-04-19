@@ -25,7 +25,7 @@ class PPRestCall {
 				'Content-Type' => 'application/json'
 			)	
 		);
-		$handler = new PPOpenidHandler($this->config);
+		$handler = new PPOpenIdHandler($this->config);
 		$handler->handle($httpConfig, $data, array('path' => $path));
 
 		$connection = new PPHttpConnection($httpConfig, $this->config);

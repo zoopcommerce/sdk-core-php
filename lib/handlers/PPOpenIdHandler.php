@@ -1,6 +1,6 @@
 <?php
 
-class PPOpenidHandler implements IPPHandler {
+class PPOpenIdHandler implements IPPHandler {
 	
 	private $config;
 	
@@ -13,7 +13,9 @@ class PPOpenidHandler implements IPPHandler {
 
 	public function handle($httpConfig, $request, $options) {
 
-		if (isset($this->config['service.EndPoint'])) {
+		if (isset($this->config['openid.EndPoint'])) {
+			$endpoint = $this->config['openid.EndPoint'];
+		} else if (isset($this->config['service.EndPoint'])) {
 			$endpoint = $this->config['service.EndPoint'];
 		} else if (isset($this->config['mode'])) {
 			switch (strtoupper($this->config['mode'])) {
