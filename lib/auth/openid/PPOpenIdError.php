@@ -3,7 +3,7 @@
 /**
  * Error resource
  */
-class Error extends PPModel {
+class PPOpenIdError extends PPModel {
 
 		/**
 		 * A single ASCII error code from the following enum.

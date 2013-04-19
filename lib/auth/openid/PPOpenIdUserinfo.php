@@ -3,7 +3,7 @@
 /**
  * OpenIdConnect UserInfo Resource
  */
-class Userinfo extends PPModel {
+class PPOpenIdUserinfo extends PPModel {
 
 		/**
 		 * Subject - Identifier for the End-User at the Issuer.
@@ -231,7 +231,7 @@ class Userinfo extends PPModel {
 		 }
 		/**
 		 * End-User's preferred address.
-		 * @param Address $address
+		 * @param PPOpenIdAddress $address
 		 */
 		 public function setAddress($address) {
 		 	$this->address = $address;
@@ -240,7 +240,7 @@ class Userinfo extends PPModel {
 		
 		/**
 		 * End-User's preferred address.
-		 * @return Address
+		 * @return PPOpenIdAddress
 		 */
 		 public function getAddress() {
 		 	return $this->address;
@@ -319,7 +319,7 @@ class Userinfo extends PPModel {
 		 * 					schema - (Optional) the schema that is used to return as per openidconnect protocol
 		 * 					access_token - 
 		 * @param array $config Optional SDK configuration.
-		 * @return Userinfo
+		 * @return PPOpenIdUserinfo
 		 */
 		public static function getUserinfo($params, $config=null) {
 			static $allowedParams = array( 'schema' => 1);
@@ -332,7 +332,7 @@ class Userinfo extends PPModel {
 			}
 						
 			$call = new PPRestCall($config);
-			$ret = new Userinfo();
+			$ret = new PPOpenIdUserinfo();
 			$ret->fromJson(
 				$call->execute("/v1/identity/openidconnect/userinfo?"
 					. http_build_query(array_intersect_key($params, $allowedParams)), "GET", "", 

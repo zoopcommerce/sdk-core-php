@@ -3,7 +3,7 @@
 /**
  * Token grant resource
  */
-class Tokeninfo extends PPModel {
+class PPOpenIdTokeninfo extends PPModel {
 
 		/**
 		 * OPTIONAL, if identical to the scope requested by the client; otherwise, REQUIRED.
@@ -97,7 +97,7 @@ class Tokeninfo extends PPModel {
 		 * 				redirect_uri Redirection endpoint that must match the one provided during the 
 		 * 					authorization request that ended in receiving the authorization code.
 		 * @param array $config Optional SDK configuration.   
-		 * @return Tokeninfo
+		 * @return PPOpenIdTokeninfo
 		 */
 		public static function createFromAuthorizationCode($params, $config=null) {
 			static $allowedParams = array('grant_type' => 1, 'code' => 1, 'redirect_uri' => 1);
@@ -110,7 +110,7 @@ class Tokeninfo extends PPModel {
 			}			
 			
 			$call = new PPRestCall($config);
-			$token = new Tokeninfo();
+			$token = new PPOpenIdTokeninfo();
 			$token->fromJson(
 				$call->execute("/v1/identity/openidconnect/tokenservice" , "POST", 
 					http_build_query(array_intersect_key($params, $allowedParams)),
@@ -127,7 +127,7 @@ class Tokeninfo extends PPModel {
 		 * 				(optional) grant_type is the Token grant type. Defaults to refresh_token
 		 * 				scope is an array that either the same or a subset of the scope passed to the authorization request
 		 * @param array $config Optional SDK configuration.   
-		 * @return Tokeninfo
+		 * @return PPOpenIdTokeninfo
 		 */
 		public function createFromRefreshToken($params, $config=null) {
 			

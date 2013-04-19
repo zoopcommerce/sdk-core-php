@@ -1,23 +1,21 @@
 <?php 
 /**
- * Test class for Userinfo.
+ * Test class for PPOpenIdAddress.
  *
  */
-class TokeninfoTest extends PHPUnit_Framework_TestCase {
+class PPOpenIdAddressTest extends PHPUnit_Framework_TestCase {
 	
-	public $token;
+	public $addr;
 
 	/**
 	 * Sets up the fixture, for example, opens a network connection.
 	 * This method is called before a test is executed.
 	 */
 	protected function setUp() {
-		$this->token = new Tokeninfo();
-		$this->token->setAccessToken("Access token")
-					->setExpiresIn(900)
-					->setRefreshToken("Refresh token")
-					->setScope("openid address")
-					->setTokenType("Bearer");
+		$this->addr = new PPOpenIdAddress();
+		$this->addr->setCountry("US")->setLocality("San Jose")
+		->setPostalCode("95112")->setRegion("CA")
+		->setStreetAddress("1, North 1'st street");
 	}
 	
 	/**
@@ -32,9 +30,9 @@ class TokeninfoTest extends PHPUnit_Framework_TestCase {
 	 * @test
 	 */
 	public function testSerializationDeserialization() {				
-		$tokenCopy = new Tokeninfo();
-		$tokenCopy->fromJson($this->token->toJson());
+		$addrCopy = new PPOpenIdAddress();
+		$addrCopy->fromJson($this->addr->toJson());
 		
-		$this->assertEquals($this->token, $tokenCopy);
+		$this->assertEquals($this->addr, $addrCopy);
 	}
 }

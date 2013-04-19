@@ -1,9 +1,9 @@
 <?php
 
-class Authorization {
+class PPOpenIdSession {
 	
 	/**
-	 * Get the PayPal URL to which the user must be redirected to 
+	 * Returns the PayPal URL to which the user must be redirected to 
 	 * start the authentication / authorization process.
 	 *  
 	 * @param string $redirectUri Uri on merchant website to where
@@ -13,7 +13,7 @@ class Authorization {
 	 * 				See https://developer.paypal.com/webapps/developer/docs/classic/loginwithpaypal/ht_OpenIDConnect/#parameters for more
 	 * @param array $config Optional SDK configuration
 	 */
-	public static function getRedirectUrl($redirectUri, $scope, $config=null) {
+	public static function getAuthorizationUrl($redirectUri, $scope, $config=null) {
 		
 		if(is_null($config)) {
 			$config = PPConfigManager::getInstance()->getConfigHashmap();
@@ -32,5 +32,26 @@ class Authorization {
 			'redirect_uri' => $redirectUri
 		);
 		return sprintf("%s/v1/authorize?%s", $baseUrl, http_build_query($params));		
+	}
+	
+	
+	/**
+	 * Returns the URL to which the user must be redirected to
+	 * logout from the OpenID provider (i.e. PayPal)
+	 *
+	 * @param string $redirectUri Uri on merchant website to where
+	 * 				the user must be redirected to post logout
+	 * @param string $idToken id_token from the TokenInfo object
+	 * @param array $config Optional SDK configuration
+	 */
+	public static function getLogoutUrl($redirectUri, $idToken, $config=null) {
+		$baseUrl = array_key_exists('openid.RedirectUri', $config) ? $config['openid.RedirectUri'] :
+			PPConstants::OPENID_REDIRECT_LIVE_URL;
+		$params = array(
+			'id_token' => $idToken,
+			'redirect_uri' => $redirectUri,
+			'logout' => 'true'
+		);
+		return sprintf("%s/v1/endsession?%s", $baseUrl, http_build_query($params));
 	}
 }

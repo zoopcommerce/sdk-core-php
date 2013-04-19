@@ -1,10 +1,10 @@
 <?php
 
 /**
- * Test class for Authorization.
+ * Test class for PPOpenIdSession.
  *
  */
-class AuthorizationTest extends PHPUnit_Framework_TestCase {
+class PPOpenIdSessionTest extends PHPUnit_Framework_TestCase {
 	
 	private $config;
 	/**
@@ -34,21 +34,21 @@ class AuthorizationTest extends PHPUnit_Framework_TestCase {
 	 */
 	public function testLoginUrlForMultipleScopes() {
 	
-		$redirectUri = "http://mywebsite.com";
+		$redirectUri = 'http://mywebsite.com';
 		$scope = array('this', 'that', 'and more');
 	
 		$expectedBaseUrl = "https://www.paypal.com/webapps/auth/protocol/openidconnect/v1/authorize";
 	
 		$this->assertEquals($expectedBaseUrl . "?client_id=ProxyRP-01&response_type=code&scope=this+that+and+more+openid&redirect_uri=" . urlencode($redirectUri),
-				Authorization::getRedirectUrl($redirectUri, $scope), "Failed case - custom scope");
+				PPOpenIdSession::getAuthorizationUrl($redirectUri, $scope), "Failed case - custom scope");
 	
 		$scope = array();
 		$this->assertEquals($expectedBaseUrl . "?client_id=ProxyRP-01&response_type=code&scope=openid+profile+address+email+phone+" . urlencode("https://uri.paypal.com/services/paypalattributes") . "&redirect_uri=" . urlencode($redirectUri),
-				Authorization::getRedirectUrl($redirectUri, $scope), "Failed case - default scope");
+				PPOpenIdSession::getAuthorizationUrl($redirectUri, $scope), "Failed case - default scope");
 	
 		$scope = array('openid');
 		$this->assertEquals($expectedBaseUrl . "?client_id=ProxyRP-01&response_type=code&scope=openid&redirect_uri=" . urlencode($redirectUri),
-				Authorization::getRedirectUrl($redirectUri, $scope), "Failed case - openid scope");
+				PPOpenIdSession::getAuthorizationUrl($redirectUri, $scope), "Failed case - openid scope");
 	}
 	
 	/**
@@ -56,12 +56,26 @@ class AuthorizationTest extends PHPUnit_Framework_TestCase {
 	 */
 	public function testLoginWithCustomConfig() {
 	
-		$redirectUri = "http://mywebsite.com";
+		$redirectUri = 'http://mywebsite.com';
 		$scope = array('this', 'that', 'and more');
 	
 		$expectedBaseUrl = "https://www.paypal.com/webapps/auth/protocol/openidconnect/v1/authorize";
 			
 		$this->assertEquals($expectedBaseUrl . "?client_id=DummyId&response_type=code&scope=this+that+and+more+openid&redirect_uri=" . urlencode($redirectUri),
-				Authorization::getRedirectUrl($redirectUri, $scope, $this->config), "Failed case - custom config");
+				PPOpenIdSession::getAuthorizationUrl($redirectUri, $scope, $this->config), "Failed case - custom config");
+	}
+	
+	/**
+	 * @test
+	 */
+	public function testLogoutWithCustomConfig() {
+		
+		$redirectUri = 'http://mywebsite.com';
+		$idToken = 'abc';
+		
+		$expectedBaseUrl = "https://www.paypal.com/webapps/auth/protocol/openidconnect/v1/endsession";
+			
+		$this->assertEquals($expectedBaseUrl . "?id_token=$idToken&redirect_uri=" . urlencode($redirectUri) . "&logout=true",
+				PPOpenIdSession::getLogoutUrl($redirectUri, $idToken, $this->config), "Failed case - custom config");
 	}
 }

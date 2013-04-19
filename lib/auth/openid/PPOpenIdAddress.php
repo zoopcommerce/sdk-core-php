@@ -3,7 +3,7 @@
 /**
  * End-User's preferred address.
  */
-class Address extends PPModel {
+class PPOpenIdAddress extends PPModel {
 
 		/**
 		 * Full street address component, which may include house number, street name.
