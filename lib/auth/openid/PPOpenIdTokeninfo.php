@@ -21,6 +21,7 @@ class PPOpenIdTokeninfo extends PPModel {
 		 public function getScope() {
 		 	return $this->scope;
 		 }
+		 
 		/**
 		 * The access token issued by the authorization server.
 		 * @param string $access_token
@@ -37,6 +38,7 @@ class PPOpenIdTokeninfo extends PPModel {
 		 public function getAccessToken() {
 		 	return $this->access_token;
 		 }
+		 
 		/**
 		 * The refresh token, which can be used to obtain new access tokens using the same authorization grant as described in OAuth2.0 RFC6749 in Section 6.
 		 * @param string $refresh_token
@@ -53,6 +55,7 @@ class PPOpenIdTokeninfo extends PPModel {
 		 public function getRefreshToken() {
 		 	return $this->refresh_token;
 		 }
+		 
 		/**
 		 * The type of the token issued as described in OAuth2.0 RFC6749 (Section 7.1).  Value is case insensitive.
 		 * @param string $token_type
@@ -69,6 +72,24 @@ class PPOpenIdTokeninfo extends PPModel {
 		 public function getTokenType() {
 		 	return $this->token_type;
 		 }
+		 
+		/**
+		 * The id_token is a session token assertion that denotes the user's authentication status
+		 * @param string $id_token
+		 */
+		 public function setIdToken($id_token) {
+		 	$this->id_token = $id_token;
+		 	return $this;
+		 }
+		
+		/**
+		 * The id_token is a session token assertion that denotes the user's authentication status
+		 * @return string
+		 */
+		 public function getIdToken() {
+		 	return $this->id_token;
+		 }
+		 
 		/**
 		 * The lifetime in seconds of the access token.
 		 * @param integer $expires_in
@@ -85,6 +106,7 @@ class PPOpenIdTokeninfo extends PPModel {
 		 public function getExpiresIn() {
 		 	return $this->expires_in;
 		 }
+		 
 
         /**
 		 * Creates an Access Token from an Authorization Code.

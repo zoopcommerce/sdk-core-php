@@ -37,7 +37,7 @@ class PPOpenIdSessionTest extends PHPUnit_Framework_TestCase {
 		$redirectUri = 'http://mywebsite.com';
 		$scope = array('this', 'that', 'and more');
 	
-		$expectedBaseUrl = "https://www.paypal.com/webapps/auth/protocol/openidconnect/v1/authorize";
+		$expectedBaseUrl = "https://www.sandbox.paypal.com/webapps/auth/protocol/openidconnect/v1/authorize";
 	
 		$this->assertEquals($expectedBaseUrl . "?client_id=ProxyRP-01&response_type=code&scope=this+that+and+more+openid&redirect_uri=" . urlencode($redirectUri),
 				PPOpenIdSession::getAuthorizationUrl($redirectUri, $scope), "Failed case - custom scope");

@@ -21,6 +21,7 @@ class PPOpenIdAddress extends PPModel {
 		 public function getStreetAddress() {
 		 	return $this->street_address;
 		 }
+		 
 		/**
 		 * City or locality component.
 		 * @param string $locality
@@ -37,6 +38,7 @@ class PPOpenIdAddress extends PPModel {
 		 public function getLocality() {
 		 	return $this->locality;
 		 }
+		 
 		/**
 		 * State, province, prefecture or region component.
 		 * @param string $region
@@ -53,6 +55,7 @@ class PPOpenIdAddress extends PPModel {
 		 public function getRegion() {
 		 	return $this->region;
 		 }
+		 
 		/**
 		 * Zip code or postal code component.
 		 * @param string $postal_code
@@ -69,6 +72,7 @@ class PPOpenIdAddress extends PPModel {
 		 public function getPostalCode() {
 		 	return $this->postal_code;
 		 }
+		 
 		/**
 		 * Country name component.
 		 * @param string $country
@@ -85,5 +89,6 @@ class PPOpenIdAddress extends PPModel {
 		 public function getCountry() {
 		 	return $this->country;
 		 }
+		 
 
 }

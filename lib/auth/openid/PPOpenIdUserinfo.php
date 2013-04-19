@@ -21,6 +21,7 @@ class PPOpenIdUserinfo extends PPModel {
 		 public function getUserId() {
 		 	return $this->user_id;
 		 }
+		 
 		/**
 		 * Subject - Identifier for the End-User at the Issuer.
 		 * @param string $sub
@@ -37,6 +38,7 @@ class PPOpenIdUserinfo extends PPModel {
 		 public function getSub() {
 		 	return $this->sub;
 		 }
+		 
 		/**
 		 * End-User's full name in displayable form including all name parts, possibly including titles and suffixes, ordered according to the End-User's locale and preferences.
 		 * @param string $name
@@ -53,6 +55,7 @@ class PPOpenIdUserinfo extends PPModel {
 		 public function getName() {
 		 	return $this->name;
 		 }
+		 
 		/**
 		 * Given name(s) or first name(s) of the End-User
 		 * @param string $given_name
@@ -69,6 +72,7 @@ class PPOpenIdUserinfo extends PPModel {
 		 public function getGivenName() {
 		 	return $this->given_name;
 		 }
+		 
 		/**
 		 * Surname(s) or last name(s) of the End-User.
 		 * @param string $family_name
@@ -85,6 +89,7 @@ class PPOpenIdUserinfo extends PPModel {
 		 public function getFamilyName() {
 		 	return $this->family_name;
 		 }
+		 
 		/**
 		 * Middle name(s) of the End-User.
 		 * @param string $middle_name
@@ -101,6 +106,7 @@ class PPOpenIdUserinfo extends PPModel {
 		 public function getMiddleName() {
 		 	return $this->middle_name;
 		 }
+		 
 		/**
 		 * URL of the End-User's profile picture.
 		 * @param string $picture
@@ -117,6 +123,7 @@ class PPOpenIdUserinfo extends PPModel {
 		 public function getPicture() {
 		 	return $this->picture;
 		 }
+		 
 		/**
 		 * End-User's preferred e-mail address.
 		 * @param string $email
@@ -133,6 +140,7 @@ class PPOpenIdUserinfo extends PPModel {
 		 public function getEmail() {
 		 	return $this->email;
 		 }
+		 
 		/**
 		 * True if the End-User's e-mail address has been verified; otherwise false.
 		 * @param boolean $email_verified
@@ -149,6 +157,7 @@ class PPOpenIdUserinfo extends PPModel {
 		 public function getEmailVerified() {
 		 	return $this->email_verified;
 		 }
+		 
 		/**
 		 * End-User's gender.
 		 * @param string $gender
@@ -165,12 +174,13 @@ class PPOpenIdUserinfo extends PPModel {
 		 public function getGender() {
 		 	return $this->gender;
 		 }
+		 
 		/**
 		 * End-User's birthday, represented as an YYYY-MM-DD format. They year MAY be 0000, indicating it is omited. To represent only the year, YYYY format would be used.
-		 * @param string $birthdate
+		 * @param string $birthday
 		 */
-		 public function setBirthdate($birthdate) {
-		 	$this->birthdate = $birthdate;
+		 public function setBirthday($birthday) {
+		 	$this->birthday = $birthday;
 		 	return $this;
 		 }
 		
@@ -178,9 +188,10 @@ class PPOpenIdUserinfo extends PPModel {
 		 * End-User's birthday, represented as an YYYY-MM-DD format. They year MAY be 0000, indicating it is omited. To represent only the year, YYYY format would be used.
 		 * @return string
 		 */
-		 public function getBirthdate() {
-		 	return $this->birthdate;
+		 public function getBirthday() {
+		 	return $this->birthday;
 		 }
+		 
 		/**
 		 * Time zone database representing the End-User's time zone
 		 * @param string $zoneinfo
@@ -197,6 +208,7 @@ class PPOpenIdUserinfo extends PPModel {
 		 public function getZoneinfo() {
 		 	return $this->zoneinfo;
 		 }
+		 
 		/**
 		 * End-User's locale.
 		 * @param string $locale
@@ -213,6 +225,41 @@ class PPOpenIdUserinfo extends PPModel {
 		 public function getLocale() {
 		 	return $this->locale;
 		 }
+		 
+		/**
+		 * End-User's language.
+		 * @param string $language
+		 */
+		 public function setLanguage($language) {
+		 	$this->language = $language;
+		 	return $this;
+		 }
+		
+		/**
+		 * End-User's language.
+		 * @return string
+		 */
+		 public function getLanguage() {
+		 	return $this->language;
+		 }
+		 
+		/**
+		 * End-User's verified status.
+		 * @param boolean $verified
+		 */
+		 public function setVerified($verified) {
+		 	$this->verified = $verified;
+		 	return $this;
+		 }
+		
+		/**
+		 * End-User's verified status.
+		 * @return boolean
+		 */
+		 public function getVerified() {
+		 	return $this->verified;
+		 }
+		 
 		/**
 		 * End-User's preferred telephone number.
 		 * @param string $phone_number
@@ -229,6 +276,7 @@ class PPOpenIdUserinfo extends PPModel {
 		 public function getPhoneNumber() {
 		 	return $this->phone_number;
 		 }
+		 
 		/**
 		 * End-User's preferred address.
 		 * @param PPOpenIdAddress $address
@@ -245,6 +293,7 @@ class PPOpenIdUserinfo extends PPModel {
 		 public function getAddress() {
 		 	return $this->address;
 		 }
+		 
 		/**
 		 * Verified account status.
 		 * @param boolean $verified_account
@@ -261,6 +310,7 @@ class PPOpenIdUserinfo extends PPModel {
 		 public function getVerifiedAccount() {
 		 	return $this->verified_account;
 		 }
+		 
 		/**
 		 * Account type.
 		 * @param string $account_type
@@ -277,6 +327,7 @@ class PPOpenIdUserinfo extends PPModel {
 		 public function getAccountType() {
 		 	return $this->account_type;
 		 }
+		 
 		/**
 		 * Account holder age range.
 		 * @param string $age_range
@@ -293,6 +344,7 @@ class PPOpenIdUserinfo extends PPModel {
 		 public function getAgeRange() {
 		 	return $this->age_range;
 		 }
+		 
 		/**
 		 * Account payer identifier.
 		 * @param string $payer_id
@@ -309,6 +361,7 @@ class PPOpenIdUserinfo extends PPModel {
 		 public function getPayerId() {
 		 	return $this->payer_id;
 		 }
+		 
 
         /**
 		 * returns user details

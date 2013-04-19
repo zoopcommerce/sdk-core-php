@@ -29,7 +29,7 @@ class PPOpenIdUserinfoTest extends PHPUnit_Framework_TestCase {
 	 */
 	public function testSerializationDeserialization() {
 		$user = new PPOpenIdUserinfo();
-		$user->setAccountType("PERSONAL")->setAgeRange("20-30")->setBirthdate("1970-01-01")
+		$user->setAccountType("PERSONAL")->setAgeRange("20-30")->setBirthday("1970-01-01")
 			->setEmail("me@email.com")->setEmailVerified(true)
 			->setFamilyName("Doe")->setMiddleName("A")->setGivenName("John")
 			->setLocale("en-US")->setGender("male")->setName("John A Doe")

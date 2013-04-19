@@ -21,6 +21,7 @@ class PPOpenIdError extends PPModel {
 		 public function getError() {
 		 	return $this->error;
 		 }
+		 
 		/**
 		 * A resource ID that indicates the starting resource in the returned results.
 		 * @param string $error_description
@@ -37,6 +38,7 @@ class PPOpenIdError extends PPModel {
 		 public function getErrorDescription() {
 		 	return $this->error_description;
 		 }
+		 
 		/**
 		 * A URI identifying a human-readable web page with information about the error, used to provide the client developer with additional information about the error.
 		 * @param string $error_uri
@@ -53,5 +55,6 @@ class PPOpenIdError extends PPModel {
 		 public function getErrorUri() {
 		 	return $this->error_uri;
 		 }
+		 
 
 }
