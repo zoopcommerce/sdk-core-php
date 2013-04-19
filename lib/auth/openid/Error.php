@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Error resource
+ */
 class Error extends PPModel {
 
 		/**
@@ -8,6 +11,7 @@ class Error extends PPModel {
 		 */
 		 public function setError($error) {
 		 	$this->error = $error;
+		 	return $this;
 		 }
 		
 		/**
@@ -23,6 +27,7 @@ class Error extends PPModel {
 		 */
 		 public function setErrorDescription($error_description) {
 		 	$this->error_description = $error_description;
+		 	return $this;
 		 }
 		
 		/**
@@ -38,6 +43,7 @@ class Error extends PPModel {
 		 */
 		 public function setErrorUri($error_uri) {
 		 	$this->error_uri = $error_uri;
+		 	return $this;
 		 }
 		
 		/**

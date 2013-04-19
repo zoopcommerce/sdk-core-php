@@ -1,7 +1,18 @@
 <?php
 
+/**
+ * OpenIdConnect UserInfo Resource
+ */
 class Userinfo extends PPModel {
 
+		/**
+		 * Subject - Identifier for the End-User at the Issuer.
+		 * @param string $user_id
+		 */
+		 public function setUserId($user_id) {
+		 	$this->user_id = $user_id;
+		 	return $this;
+		 }
 		
 		/**
 		 * Subject - Identifier for the End-User at the Issuer.
@@ -9,6 +20,14 @@ class Userinfo extends PPModel {
 		 */
 		 public function getUserId() {
 		 	return $this->user_id;
+		 }
+		/**
+		 * Subject - Identifier for the End-User at the Issuer.
+		 * @param string $sub
+		 */
+		 public function setSub($sub) {
+		 	$this->sub = $sub;
+		 	return $this;
 		 }
 		
 		/**
@@ -18,6 +37,14 @@ class Userinfo extends PPModel {
 		 public function getSub() {
 		 	return $this->sub;
 		 }
+		/**
+		 * End-User's full name in displayable form including all name parts, possibly including titles and suffixes, ordered according to the End-User's locale and preferences.
+		 * @param string $name
+		 */
+		 public function setName($name) {
+		 	$this->name = $name;
+		 	return $this;
+		 }
 		
 		/**
 		 * End-User's full name in displayable form including all name parts, possibly including titles and suffixes, ordered according to the End-User's locale and preferences.
@@ -25,6 +52,14 @@ class Userinfo extends PPModel {
 		 */
 		 public function getName() {
 		 	return $this->name;
+		 }
+		/**
+		 * Given name(s) or first name(s) of the End-User
+		 * @param string $given_name
+		 */
+		 public function setGivenName($given_name) {
+		 	$this->given_name = $given_name;
+		 	return $this;
 		 }
 		
 		/**
@@ -34,6 +69,14 @@ class Userinfo extends PPModel {
 		 public function getGivenName() {
 		 	return $this->given_name;
 		 }
+		/**
+		 * Surname(s) or last name(s) of the End-User.
+		 * @param string $family_name
+		 */
+		 public function setFamilyName($family_name) {
+		 	$this->family_name = $family_name;
+		 	return $this;
+		 }
 		
 		/**
 		 * Surname(s) or last name(s) of the End-User.
@@ -41,6 +84,14 @@ class Userinfo extends PPModel {
 		 */
 		 public function getFamilyName() {
 		 	return $this->family_name;
+		 }
+		/**
+		 * Middle name(s) of the End-User.
+		 * @param string $middle_name
+		 */
+		 public function setMiddleName($middle_name) {
+		 	$this->middle_name = $middle_name;
+		 	return $this;
 		 }
 		
 		/**
@@ -50,6 +101,14 @@ class Userinfo extends PPModel {
 		 public function getMiddleName() {
 		 	return $this->middle_name;
 		 }
+		/**
+		 * URL of the End-User's profile picture.
+		 * @param string $picture
+		 */
+		 public function setPicture($picture) {
+		 	$this->picture = $picture;
+		 	return $this;
+		 }
 		
 		/**
 		 * URL of the End-User's profile picture.
@@ -57,6 +116,14 @@ class Userinfo extends PPModel {
 		 */
 		 public function getPicture() {
 		 	return $this->picture;
+		 }
+		/**
+		 * End-User's preferred e-mail address.
+		 * @param string $email
+		 */
+		 public function setEmail($email) {
+		 	$this->email = $email;
+		 	return $this;
 		 }
 		
 		/**
@@ -66,6 +133,14 @@ class Userinfo extends PPModel {
 		 public function getEmail() {
 		 	return $this->email;
 		 }
+		/**
+		 * True if the End-User's e-mail address has been verified; otherwise false.
+		 * @param boolean $email_verified
+		 */
+		 public function setEmailVerified($email_verified) {
+		 	$this->email_verified = $email_verified;
+		 	return $this;
+		 }
 		
 		/**
 		 * True if the End-User's e-mail address has been verified; otherwise false.
@@ -73,6 +148,14 @@ class Userinfo extends PPModel {
 		 */
 		 public function getEmailVerified() {
 		 	return $this->email_verified;
+		 }
+		/**
+		 * End-User's gender.
+		 * @param string $gender
+		 */
+		 public function setGender($gender) {
+		 	$this->gender = $gender;
+		 	return $this;
 		 }
 		
 		/**
@@ -82,6 +165,14 @@ class Userinfo extends PPModel {
 		 public function getGender() {
 		 	return $this->gender;
 		 }
+		/**
+		 * End-User's birthday, represented as an YYYY-MM-DD format. They year MAY be 0000, indicating it is omited. To represent only the year, YYYY format would be used.
+		 * @param string $birthdate
+		 */
+		 public function setBirthdate($birthdate) {
+		 	$this->birthdate = $birthdate;
+		 	return $this;
+		 }
 		
 		/**
 		 * End-User's birthday, represented as an YYYY-MM-DD format. They year MAY be 0000, indicating it is omited. To represent only the year, YYYY format would be used.
@@ -89,6 +180,14 @@ class Userinfo extends PPModel {
 		 */
 		 public function getBirthdate() {
 		 	return $this->birthdate;
+		 }
+		/**
+		 * Time zone database representing the End-User's time zone
+		 * @param string $zoneinfo
+		 */
+		 public function setZoneinfo($zoneinfo) {
+		 	$this->zoneinfo = $zoneinfo;
+		 	return $this;
 		 }
 		
 		/**
@@ -98,6 +197,14 @@ class Userinfo extends PPModel {
 		 public function getZoneinfo() {
 		 	return $this->zoneinfo;
 		 }
+		/**
+		 * End-User's locale.
+		 * @param string $locale
+		 */
+		 public function setLocale($locale) {
+		 	$this->locale = $locale;
+		 	return $this;
+		 }
 		
 		/**
 		 * End-User's locale.
@@ -105,6 +212,14 @@ class Userinfo extends PPModel {
 		 */
 		 public function getLocale() {
 		 	return $this->locale;
+		 }
+		/**
+		 * End-User's preferred telephone number.
+		 * @param string $phone_number
+		 */
+		 public function setPhoneNumber($phone_number) {
+		 	$this->phone_number = $phone_number;
+		 	return $this;
 		 }
 		
 		/**
@@ -114,6 +229,14 @@ class Userinfo extends PPModel {
 		 public function getPhoneNumber() {
 		 	return $this->phone_number;
 		 }
+		/**
+		 * End-User's preferred address.
+		 * @param Address $address
+		 */
+		 public function setAddress($address) {
+		 	$this->address = $address;
+		 	return $this;
+		 }
 		
 		/**
 		 * End-User's preferred address.
@@ -122,13 +245,13 @@ class Userinfo extends PPModel {
 		 public function getAddress() {
 		 	return $this->address;
 		 }
-		 
-		 /**
-		  * End-User's preferred address.
-		  * @param Address $address
-		  */
-		 public function setAddress($address) {
-		 	$this->address = $address;
+		/**
+		 * Verified account status.
+		 * @param boolean $verified_account
+		 */
+		 public function setVerifiedAccount($verified_account) {
+		 	$this->verified_account = $verified_account;
+		 	return $this;
 		 }
 		
 		/**
@@ -138,6 +261,14 @@ class Userinfo extends PPModel {
 		 public function getVerifiedAccount() {
 		 	return $this->verified_account;
 		 }
+		/**
+		 * Account type.
+		 * @param string $account_type
+		 */
+		 public function setAccountType($account_type) {
+		 	$this->account_type = $account_type;
+		 	return $this;
+		 }
 		
 		/**
 		 * Account type.
@@ -146,6 +277,14 @@ class Userinfo extends PPModel {
 		 public function getAccountType() {
 		 	return $this->account_type;
 		 }
+		/**
+		 * Account holder age range.
+		 * @param string $age_range
+		 */
+		 public function setAgeRange($age_range) {
+		 	$this->age_range = $age_range;
+		 	return $this;
+		 }
 		
 		/**
 		 * Account holder age range.
@@ -153,6 +292,14 @@ class Userinfo extends PPModel {
 		 */
 		 public function getAgeRange() {
 		 	return $this->age_range;
+		 }
+		/**
+		 * Account payer identifier.
+		 * @param string $payer_id
+		 */
+		 public function setPayerId($payer_id) {
+		 	$this->payer_id = $payer_id;
+		 	return $this;
 		 }
 		
 		/**
@@ -174,7 +321,7 @@ class Userinfo extends PPModel {
 		 * @param array $config Optional SDK configuration.
 		 * @return Userinfo
 		 */
-		public static function getuserinfo($params, $config=null) {
+		public static function getUserinfo($params, $config=null) {
 			static $allowedParams = array( 'schema' => 1);
 			
 			if(is_null($config)) {
@@ -197,5 +344,4 @@ class Userinfo extends PPModel {
 			);
 			return $ret;
 		}
-
 }

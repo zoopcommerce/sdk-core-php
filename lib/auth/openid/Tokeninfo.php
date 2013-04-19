@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Token grant resource
+ */
 class Tokeninfo extends PPModel {
 
 		/**
@@ -8,6 +11,7 @@ class Tokeninfo extends PPModel {
 		 */
 		 public function setScope($scope) {
 		 	$this->scope = $scope;
+		 	return $this;
 		 }
 		
 		/**
@@ -23,6 +27,7 @@ class Tokeninfo extends PPModel {
 		 */
 		 public function setAccessToken($access_token) {
 		 	$this->access_token = $access_token;
+		 	return $this;
 		 }
 		
 		/**
@@ -38,6 +43,7 @@ class Tokeninfo extends PPModel {
 		 */
 		 public function setRefreshToken($refresh_token) {
 		 	$this->refresh_token = $refresh_token;
+		 	return $this;
 		 }
 		
 		/**
@@ -53,6 +59,7 @@ class Tokeninfo extends PPModel {
 		 */
 		 public function setTokenType($token_type) {
 		 	$this->token_type = $token_type;
+		 	return $this;
 		 }
 		
 		/**
@@ -68,6 +75,7 @@ class Tokeninfo extends PPModel {
 		 */
 		 public function setExpiresIn($expires_in) {
 		 	$this->expires_in = $expires_in;
+		 	return $this;
 		 }
 		
 		/**
@@ -110,7 +118,6 @@ class Tokeninfo extends PPModel {
 			));
 			return $token;
 		}
-
         /**
 		 * Creates an Access Token from an Refresh Token.
 		 *
@@ -142,5 +149,4 @@ class Tokeninfo extends PPModel {
 			));
 			return $this;
 		}
-
 }

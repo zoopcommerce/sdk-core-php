@@ -18,7 +18,7 @@ class Authorization {
 		if(is_null($config)) {
 			$config = PPConfigManager::getInstance()->getConfigHashmap();
 		}
-		
+
 		$baseUrl = array_key_exists('openid.RedirectUri', $config) ? $config['openid.RedirectUri'] : 
 			PPConstants::OPENID_REDIRECT_LIVE_URL;
 		$scope = count($scope) != 0 ? $scope : array('openid', 'profile', 'address', 'email', 'phone', 'https://uri.paypal.com/services/paypalattributes');

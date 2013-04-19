@@ -25,7 +25,7 @@
    ```
    * The access token is valid for a predefined duration and can be used for seamless XO or for retrieving user information
    ```php
-   $user = Userinfo::getuserinfo(
+   $user = Userinfo::getUserinfo(
 		array(
 			'access_token' => $token->getAccessToken()
 		)	
