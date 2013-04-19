@@ -10,7 +10,7 @@
 ## Configuration
   
  
-## Openid
+## OpenID Connect Integration
 
    * Redirect your buyer to `PPOpenIdSession::getAuthorizationUrl($redirectUri, array());` to obtain authorization.
    * Capture the authorization code that is available as a query parameter (`code`) in the redirect url
