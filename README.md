@@ -1,4 +1,3 @@
-
 # PayPal Core SDK - V1.2.0
 
 ## Prerequisites
@@ -17,25 +16,27 @@
    * Capture the authorization code that is available as a query parameter (`code`) in the redirect url
    * Exchange the authorization code for a access token, refresh token, id token combo
 
-   ```php
+
+```php
     $token = PPOpenIdTokeninfo::createFromAuthorizationCode(
 		array(
 			'code' => $authCode
 		)
 	);
-   ```
+```
    * The access token is valid for a predefined duration and can be used for seamless XO or for retrieving user information
 
-   ```php
+
+```php
    $user = PPOpenIdUserinfo::getUserinfo(
 		array(
 			'access_token' => $token->getAccessToken()
 		)	
 	);
-   ```
+```
    * If the access token has expired, you can obtain a new access token using the refresh token from the 3'rd step.
 
-   ```php
+```php
    $token->createFromRefreshToken(array());
-   ```
+```
    * Redirect your buyer to `PPOpenIdSession::getLogoutUrl($redirectUri, $idToken);` to log him out of paypal. 
