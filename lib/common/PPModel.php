@@ -30,7 +30,7 @@ class PPModel {
 	private function _convertToArray($param) {
 		$ret = array();		
 		foreach($param as $k => $v) {
-			if($v instanceof Model ) {				
+			if($v instanceof PPModel ) {				
 				$ret[$k] = $v->toArray();
 			} else if (is_array($v)) {
 				$ret[$k] = $this->_convertToArray($v);
@@ -46,14 +46,12 @@ class PPModel {
 		foreach($arr as $k => $v) {
 			if(is_array($v)) {
 				$clazz = PPReflectionUtil::getPropertyClass(get_class($this), $k);
-
+				
 				if(PPArrayUtil::isAssocArray($v)) {
 					$o = new $clazz();
 					$o->fromArray($v);
-					$setterFunc = "set".ucfirst($k);
-					$this->$setterFunc($o);
+					$this->__set($k, $o);
 				} else {
-					$setterFunc = "set".ucfirst($k);
 					$arr =  array();		
 					foreach($v as $nk => $nv) {
 						if(is_array($nv)) {
@@ -64,7 +62,7 @@ class PPModel {
 							$arr[$nk] = $nv;
 						}
 					}
-					$this->$setterFunc($arr);
+					$this->__set($k, $arr);
 				} 
 			}else {
 				$this->$k = $v;
@@ -76,7 +74,7 @@ class PPModel {
 		$this->fromArray(json_decode($json, true));
 	}
 	
-	public function toArray() {
+	public function toArray() {		
 		return $this->_convertToArray($this->_propMap);
 	}
 	

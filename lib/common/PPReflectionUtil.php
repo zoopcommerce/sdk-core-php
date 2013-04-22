@@ -21,13 +21,13 @@ class PPReflectionUtil {
 	 */
 	public static function getPropertyClass($class, $propertyName) {
 		
-		if (($annotations = self::propertyAnnotations($class, $propertyName)) && isset($annotations['param'])) {		
+		if (($annotations = self::propertyAnnotations($class, $propertyName)) && isset($annotations['return'])) {		
 // 			if (substr($annotations['param'], -2) === '[]') {
 // 				$param = substr($annotations['param'], 0, -2);
 // 			}
-			$param = $annotations['param'];
+			$param = $annotations['return'];
 		}
-
+		
 		if(isset($param)) {
 			$anno = explode(' ', $param);
 			return $anno[0];
@@ -53,10 +53,12 @@ class PPReflectionUtil {
 		if ($annotations =& self::$propertiesType[$class][$propertyName]) {
 			return $annotations;
 		}
-	
-		$setterFunc = "set" . ucfirst($propertyName);
+		
 		if (!($refl =& self::$propertiesRefl[$class][$propertyName])) {
-			$refl = new \ReflectionMethod($class, $setterFunc);
+			$getter = method_exists($class, "get" . ucfirst($propertyName)) ? "get". ucfirst($propertyName)
+				: "get". preg_replace("/([_-\s]?([a-z0-9]+))/e", "ucwords('\\2')", $propertyName);
+			$refl = new ReflectionMethod($class, $getter);
+			self::$propertiesRefl[$class][$propertyName] = $refl;
 		}
 	
 		// todo: smarter regexp
