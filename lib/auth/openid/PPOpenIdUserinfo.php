@@ -371,24 +371,24 @@ class PPOpenIdUserinfo extends PPModel {
 		 * @param array $params (allowed values are schema and access_token)
 		 * 					schema - (Optional) the schema that is used to return as per openidconnect protocol
 		 * 					access_token - 
-		 * @param array $config Optional SDK configuration.
+		 * @param PPApiContext $apiContext Optional API Context
 		 * @return PPOpenIdUserinfo
 		 */
-		public static function getUserinfo($params, $config=null) {
+		public static function getUserinfo($params, $apiContext=null) {
 			static $allowedParams = array( 'schema' => 1);
-			
-			if(is_null($config)) {
-				$config = PPConfigManager::getInstance()->getConfigHashmap();
-			}
-			if(!array_key_exists('schema', $params)) {
-				$params['schema'] = 'openid';
+			if(is_null($apiContext)) {
+				$apiContext = new PPApiContext();
 			}
 						
-			$call = new PPRestCall($config);
+			if(!array_key_exists('schema', $params)) {
+				$params['schema'] = 'openid';
+			}			
+			$requestUrl = "/v1/identity/openidconnect/userinfo?"
+					. http_build_query(array_intersect_key($params, $allowedParams));			
+			$call = new PPRestCall();
 			$ret = new PPOpenIdUserinfo();
 			$ret->fromJson(
-				$call->execute("/v1/identity/openidconnect/userinfo?"
-					. http_build_query(array_intersect_key($params, $allowedParams)), "GET", "", 
+				$call->execute($apiContext, array('PPOpenIdHandler'), $requestUrl, "GET", "", 
 					array(
 						'Authorization' => "Bearer " . $params['access_token'],
 						'Content-Type'=> 'x-www-form-urlencoded'

@@ -40,24 +40,15 @@ class PPLoggingManager {
 
 	public function __construct($loggerName, $config = null) {
 		$this->loggerName = $loggerName;
-		if($config == null)
-		{
-
-			$config = PPConfigManager::getInstance();
-			$this->loggerFile = ($config->get('log.FileName')) ? $config->get('log.FileName') : ini_get('error_log');
-			$loggingEnabled = $config->get('log.LogEnabled');
-			$this->isLoggingEnabled = (isset($loggingEnabled)) ? $loggingEnabled : false;
-			$loggingLevel = strtoupper($config->get('log.LogLevel'));
-			$this->loggingLevel = (isset($loggingLevel) && defined("PPLoggingLevel::$loggingLevel")) ? constant("PPLoggingLevel::$loggingLevel") : PPLoggingManager::DEFAULT_LOGGING_LEVEL;
-		}
-		else 
-		{
+		if($config == null) {
+			$config = PPConfigManager::getInstance()->getConfigHashmap();
+		}		
+		$this->isLoggingEnabled = (array_key_exists('log.LogEnabled', $config) && $config['log.LogEnabled'] == '1');		
+		 
+		if($this->isLoggingEnabled) {
 			$this->loggerFile = ($config['log.FileName']) ? $config['log.FileName'] : ini_get('error_log');
-			$loggingEnabled = $config['log.LogEnabled'];
-			$this->isLoggingEnabled = (isset($loggingEnabled)) ? $loggingEnabled : false;
 			$loggingLevel = strtoupper($config['log.LogLevel']);
 			$this->loggingLevel = (isset($loggingLevel) && defined("PPLoggingLevel::$loggingLevel")) ? constant("PPLoggingLevel::$loggingLevel") : PPLoggingManager::DEFAULT_LOGGING_LEVEL;
-				
 		}
 	}
 

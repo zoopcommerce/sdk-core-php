@@ -11,14 +11,15 @@ class PPOpenIdSession {
 	 * @param array $scope The access privilges that you are requesting for
 	 * 				from the user. Pass empty array for all scopes.
 	 * 				See https://developer.paypal.com/webapps/developer/docs/classic/loginwithpaypal/ht_OpenIDConnect/#parameters for more
-	 * @param array $config Optional SDK configuration
+	 * @param PPApiContext $apiContext Optional API Context
 	 */
-	public static function getAuthorizationUrl($redirectUri, $scope, $config=null) {
+	public static function getAuthorizationUrl($redirectUri, $scope, $apiContext=null) {
 
-		if(is_null($config)) {
-			$config = PPConfigManager::getInstance()->getConfigHashmap();
+		if(is_null($apiContext)) {
+			$apiContext = new PPApiContext();
 		}
-		
+		$config = $apiContext->getConfig();
+
 		$scope = count($scope) != 0 ? $scope : array('openid', 'profile', 'address', 'email', 'phone', 'https://uri.paypal.com/services/paypalattributes');
 		if(!in_array('openid', $scope)) {
 			$scope[] = 'openid';
@@ -40,10 +41,15 @@ class PPOpenIdSession {
 	 * @param string $redirectUri Uri on merchant website to where
 	 * 				the user must be redirected to post logout
 	 * @param string $idToken id_token from the TokenInfo object
-	 * @param array $config Optional SDK configuration
+	 * @param PayPal/Rest/APIContext $apiContext Optional API Context
 	 */
-	public static function getLogoutUrl($redirectUri, $idToken, $config=null) {
-		$baseUrl = array_key_exists('openid.RedirectUri', $config) ? $config['openid.RedirectUri'] :
+	public static function getLogoutUrl($redirectUri, $idToken, $apiContext=null) {
+		
+		if(is_null($apiContext)) {
+			$apiContext = new PPApiContext();
+		}
+		$config = $apiContext->getConfig();
+		
 		PPConstants::OPENID_REDIRECT_LIVE_URL;
 		$params = array(
 				'id_token' => $idToken,
@@ -62,7 +68,7 @@ class PPOpenIdSession {
 				case 'SANDBOX':
 					return PPConstants::OPENID_REDIRECT_SANDBOX_URL;
 				case 'LIVE':
-					return PPConstants::OPENID_REDIRECT_LIVE_URL;
+					return PPConstants::OPENID_REDIRECT_LIVE_URL;	
 			}
 		}
 		return ;

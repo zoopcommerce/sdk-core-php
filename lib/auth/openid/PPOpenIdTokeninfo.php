@@ -118,23 +118,24 @@ class PPOpenIdTokeninfo extends PPModel {
 		 * 				code is Authorization code previously received from the authorization server
 		 * 				redirect_uri Redirection endpoint that must match the one provided during the 
 		 * 					authorization request that ended in receiving the authorization code.
-		 * @param array $config Optional SDK configuration.   
+		 * @param PPApiContext $apiContext Optional API Context   
 		 * @return PPOpenIdTokeninfo
 		 */
-		public static function createFromAuthorizationCode($params, $config=null) {
+		public static function createFromAuthorizationCode($params, $apiContext=null) {
 			static $allowedParams = array('grant_type' => 1, 'code' => 1, 'redirect_uri' => 1);
-			
-			if(is_null($config)) {
-				$config = PPConfigManager::getInstance()->getConfigHashmap();
+			if(is_null($apiContext)) {
+				$apiContext = new PPApiContext();
 			}
+			
 			if(!array_key_exists('grant_type', $params)) {
 				$params['grant_type'] = 'authorization_code';
-			}			
+			}	
 			
-			$call = new PPRestCall($config);
+			$call = new PPRestCall();
 			$token = new PPOpenIdTokeninfo();
 			$token->fromJson(
-				$call->execute("/v1/identity/openidconnect/tokenservice" , "POST", 
+				$call->execute($apiContext, array('PPOpenIdHandler'),
+					"/v1/identity/openidconnect/tokenservice" , "POST", 
 					http_build_query(array_intersect_key($params, $allowedParams)),
 					array('Content-Type' => 'application/x-www-form-urlencoded')
 			));
@@ -146,26 +147,31 @@ class PPOpenIdTokeninfo extends PPModel {
 		 * @path /v1/identity/openidconnect/tokenservice
 		 * @method POST
 		 * @param array $params (allowed values are grant_type and scope)
+		 * 				(optional) refresh_token refresh token. If one is not passed, refresh token from the current object is used.
 		 * 				(optional) grant_type is the Token grant type. Defaults to refresh_token
 		 * 				scope is an array that either the same or a subset of the scope passed to the authorization request
-		 * @param array $config Optional SDK configuration.   
+		 * @param APIContext $apiContext Optional API Context   
 		 * @return PPOpenIdTokeninfo
 		 */
-		public function createFromRefreshToken($params, $config=null) {
+		public function createFromRefreshToken($params, $apiContext=null) {
 			
 			static $allowedParams = array('grant_type' => 1, 'refresh_token' => 1, 'scope' => 1);
-			
-			if(is_null($config)) {
-				$config = PPConfigManager::getInstance()->getConfigHashmap();
-			}		
+			if(is_null($apiContext)) {
+				$apiContext = new PPApiContext();
+			}
+							
 			if(!array_key_exists('grant_type', $params)) {
 				$params['grant_type'] = 'refresh_token';
 			}
-			$params['refresh_token'] = $this->getRefreshToken();			
+			if(!array_key_exists('refresh_token', $params)) {
+				$params['refresh_token'] = $this->getRefreshToken();
+			}
+						
 			
-			$call = new PPRestCall($config);			
+			$call = new PPRestCall();			
 			$this->fromJson(
-				$call->execute("/v1/identity/openidconnect/tokenservice"  , "POST",
+				$call->execute($apiContext, array('PPOpenIdHandler'), 
+					"/v1/identity/openidconnect/tokenservice", "POST",
 					http_build_query(array_intersect_key($params, $allowedParams)),
 					array('Content-Type' => 'application/x-www-form-urlencoded')
 			));
