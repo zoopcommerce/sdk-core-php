@@ -6,17 +6,19 @@
  */
 class PPOpenIdSessionTest extends PHPUnit_Framework_TestCase {
 	
-	private $config;
+	private $context;
 	/**
 	 * Sets up the fixture, for example, opens a network connection.
 	 * This method is called before a test is executed.
 	 */
 	protected function setUp()
 	{
-		$this->config = array(
-			'acct1.ClientId' => 'DummyId',
-			'acct1.ClientSecret' => 'A8VERY8SECRET8VALUE0',
-			'mode' => 'live'
+		$this->context = new PPApiContext(
+			array(
+				'acct1.ClientId' => 'DummyId',
+				'acct1.ClientSecret' => 'A8VERY8SECRET8VALUE0',
+				'mode' => 'live'
+			)
 		);
 	}
 	
@@ -62,7 +64,7 @@ class PPOpenIdSessionTest extends PHPUnit_Framework_TestCase {
 		$expectedBaseUrl = "https://www.paypal.com/webapps/auth/protocol/openidconnect/v1/authorize";
 			
 		$this->assertEquals($expectedBaseUrl . "?client_id=DummyId&response_type=code&scope=this+that+and+more+openid&redirect_uri=" . urlencode($redirectUri),
-				PPOpenIdSession::getAuthorizationUrl($redirectUri, $scope, $this->config), "Failed case - custom config");
+				PPOpenIdSession::getAuthorizationUrl($redirectUri, $scope, $this->context), "Failed case - custom config");
 	}
 	
 	/**
@@ -76,6 +78,6 @@ class PPOpenIdSessionTest extends PHPUnit_Framework_TestCase {
 		$expectedBaseUrl = "https://www.paypal.com/webapps/auth/protocol/openidconnect/v1/endsession";
 			
 		$this->assertEquals($expectedBaseUrl . "?id_token=$idToken&redirect_uri=" . urlencode($redirectUri) . "&logout=true",
-				PPOpenIdSession::getLogoutUrl($redirectUri, $idToken, $this->config), "Failed case - custom config");
+				PPOpenIdSession::getLogoutUrl($redirectUri, $idToken, $this->context), "Failed case - custom config");
 	}
 }
