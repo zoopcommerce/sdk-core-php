@@ -368,9 +368,8 @@ class PPOpenIdUserinfo extends PPModel {
 		 *
 		 * @path /v1/identity/openidconnect/userinfo
 		 * @method GET
-		 * @param array $params (allowed values are schema and access_token)
-		 * 					schema - (Optional) the schema that is used to return as per openidconnect protocol
-		 * 					access_token - 
+		 * @param array $params (allowed values are access_token)
+		 * 					access_token - access token from the createFromAuthorizationCode / createFromRefreshToken calls  
 		 * @param PPApiContext $apiContext Optional API Context
 		 * @return PPOpenIdUserinfo
 		 */
