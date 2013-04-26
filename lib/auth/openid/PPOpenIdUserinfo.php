@@ -384,10 +384,10 @@ class PPOpenIdUserinfo extends PPModel {
 			}			
 			$requestUrl = "/v1/identity/openidconnect/userinfo?"
 					. http_build_query(array_intersect_key($params, $allowedParams));			
-			$call = new PPRestCall();
+			$call = new PPRestCall($apiContext);
 			$ret = new PPOpenIdUserinfo();
 			$ret->fromJson(
-				$call->execute($apiContext, array('PPOpenIdHandler'), $requestUrl, "GET", "", 
+				$call->execute(array('PPOpenIdHandler'), $requestUrl, "GET", "", 
 					array(
 						'Authorization' => "Bearer " . $params['access_token'],
 						'Content-Type'=> 'x-www-form-urlencoded'

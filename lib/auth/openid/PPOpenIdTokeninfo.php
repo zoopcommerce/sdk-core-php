@@ -131,10 +131,10 @@ class PPOpenIdTokeninfo extends PPModel {
 				$params['grant_type'] = 'authorization_code';
 			}	
 			
-			$call = new PPRestCall();
+			$call = new PPRestCall($apiContext);
 			$token = new PPOpenIdTokeninfo();
 			$token->fromJson(
-				$call->execute($apiContext, array('PPOpenIdHandler'),
+				$call->execute(array('PPOpenIdHandler'),
 					"/v1/identity/openidconnect/tokenservice" , "POST", 
 					http_build_query(array_intersect_key($params, $allowedParams)),
 					array('Content-Type' => 'application/x-www-form-urlencoded')
@@ -168,9 +168,9 @@ class PPOpenIdTokeninfo extends PPModel {
 			}
 						
 			
-			$call = new PPRestCall();			
+			$call = new PPRestCall($apiContext);			
 			$this->fromJson(
-				$call->execute($apiContext, array('PPOpenIdHandler'), 
+				$call->execute(array('PPOpenIdHandler'), 
 					"/v1/identity/openidconnect/tokenservice", "POST",
 					http_build_query(array_intersect_key($params, $allowedParams)),
 					array('Content-Type' => 'application/x-www-form-urlencoded')
