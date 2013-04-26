@@ -8,22 +8,24 @@ class PPRestCall {
 	 * @var PPLoggingManager logger interface
 	 */
 	private $logger;
+	
+	private $apiContext;
 
-	public function __construct() {
-		$this->logger = new PPLoggingManager(__CLASS__);
+	public function __construct($apiContext) {
+		$this->apiContext = $apiContext;
+		$this->logger = new PPLoggingManager(__CLASS__, $apiContext->getConfig());
 	}
 
 	/**
-	 * @param APIContext $apiContext API context for this call
 	 * @param array $handlers array of handlers
 	 * @param string $path   Resource path relative to base service endpoint
 	 * @param string $method HTTP method - one of GET, POST, PUT, DELETE, PATCH etc
 	 * @param string $data   Request payload
 	 * @param array $headers HTTP headers
 	 */
-	public function execute($apiContext, $handlers, $path, $method, $data='', $headers=array()) {
+	public function execute($handlers, $path, $method, $data='', $headers=array()) {
 
-		$config = $apiContext->getConfig();		
+		$config = $this->apiContext->getConfig();		
 		$httpConfig = new PPHttpConfig(null, $method);
 		$httpConfig->setHeaders($headers + 
 			array(
@@ -32,7 +34,7 @@ class PPRestCall {
 		);
 		
 		foreach($handlers as $handler) {
-			$handler = new $handler($apiContext);
+			$handler = new $handler($this->apiContext);
 			$handler->handle($httpConfig, $data, array('path' => $path));
 		}
 		$connection = new PPHttpConnection($httpConfig, $config);
@@ -41,6 +43,5 @@ class PPRestCall {
 		
 		return $response;
 	}
-	
 	
 }
