@@ -1,4 +1,5 @@
 <?php
+namespace paypal\auth;
 /**
  *
  * Represents token based third party authorization

@@ -1,4 +1,5 @@
 <?php
+namespace paypal\formatters;
 class FormatterFactory {
 	public static function factory($bindingType) {
 		switch ($bindingType) {

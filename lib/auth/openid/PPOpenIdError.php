@@ -1,5 +1,5 @@
 <?php
-
+namespace paypal\auth\openid;
 /**
  * Error resource
  */

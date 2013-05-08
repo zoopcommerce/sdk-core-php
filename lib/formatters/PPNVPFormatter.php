@@ -1,4 +1,5 @@
 <?php
+namespace paypal\formatters;
 class PPNVPFormatter implements IPPFormatter {
 	
 	public function toString($request, $options=array()) {		

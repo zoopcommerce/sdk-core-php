@@ -1,4 +1,5 @@
 <?php
+namespace paypal;
 /**
  * PPConfigManager loads the SDK configuration file and
  * hands out appropriate config params to other classes

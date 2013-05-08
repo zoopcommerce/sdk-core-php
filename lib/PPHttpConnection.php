@@ -1,5 +1,5 @@
 <?php
-
+namespace paypal;
 /**
  * A wrapper class based on the curl extension.
  * Requires the PHP curl module to be enabled.

@@ -1,5 +1,5 @@
 <?php
-
+namespace paypal\auth;
 /**
  * 
  * Marker interface for implementations of third party authorization.

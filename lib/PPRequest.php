@@ -1,4 +1,5 @@
 <?php
+namespace paypal;
 /**
  * Encapsulates API request information
  *

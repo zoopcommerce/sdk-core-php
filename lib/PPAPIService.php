@@ -1,5 +1,5 @@
 <?php
-
+namespace paypal;
 class PPAPIService {
 
 	public $endpoint;

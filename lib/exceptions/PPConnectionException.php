@@ -1,4 +1,5 @@
 <?php
+namespace paypal\exceptions;
 class PPConnectionException extends Exception
 {
 	/**

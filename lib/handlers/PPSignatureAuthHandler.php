@@ -1,4 +1,5 @@
 <?php
+namespace paypal\handlers;
 class PPSignatureAuthHandler implements IPPHandler {
 		
 	public function handle($httpConfig, $request, $options) {

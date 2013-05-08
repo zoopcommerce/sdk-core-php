@@ -1,5 +1,5 @@
 <?php
-
+namespace paypal\auth;
 /**
  * API signature (3-token) based credentials
  */

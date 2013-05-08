@@ -1,5 +1,5 @@
 <?php
-
+namespace paypal\ipn;
 /**
  *
  *

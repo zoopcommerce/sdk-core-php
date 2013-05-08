@@ -1,4 +1,5 @@
 <?php
+namespace paypal\handlers;
 interface IPPHandler {
 	/**
 	 * 

@@ -1,5 +1,5 @@
 <?php
-
+namespace paypal\auth;
 /**
  * Interface that represents API credentials
  */

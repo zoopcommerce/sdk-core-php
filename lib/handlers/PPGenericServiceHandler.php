@@ -1,5 +1,5 @@
 <?php
-
+namespace paypal\handlers;
 class PPGenericServiceHandler implements IPPHandler {
 
 	public function handle($httpConfig, $request, $options) {

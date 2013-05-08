@@ -1,4 +1,5 @@
 <?php
+namespace paypal\exceptions;
 class PPTransformerException extends Exception{
 
 	public function __construct($message = null, $code = 0) {

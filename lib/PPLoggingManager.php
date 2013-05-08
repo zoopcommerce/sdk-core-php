@@ -1,5 +1,5 @@
 <?php
-
+namespace paypal;
 /**
  * Simple Logging Manager.
  * This does an error_log for now

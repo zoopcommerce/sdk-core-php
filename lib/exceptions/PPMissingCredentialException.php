@@ -1,5 +1,5 @@
 <?php
-
+namespace paypal\exceptions;
 
 class PPMissingCredentialException extends Exception{
 

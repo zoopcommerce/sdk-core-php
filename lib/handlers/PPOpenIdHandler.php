@@ -1,5 +1,5 @@
 <?php
-
+namespace paypal\handlers;
 class PPOpenIdHandler implements IPPHandler {
 	
 	private $apiContext;

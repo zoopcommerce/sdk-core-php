@@ -1,5 +1,5 @@
 <?php
-
+namespace paypal\formatters;
 class PPSOAPFormatter implements IPPFormatter {
 	
 	private static $SOAP_NAMESPACE = ' xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" ';

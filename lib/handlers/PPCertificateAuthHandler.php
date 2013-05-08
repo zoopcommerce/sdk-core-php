@@ -1,4 +1,5 @@
 <?php
+namespace paypal\handlers;
 class PPCredentialAuthHandler implements IPPHandler {
 
 	public function handle($httpConfig, $request, $options) {

@@ -1,5 +1,5 @@
 <?php
-
+namespace paypal\handlers;
 class PPAuthenticationHandler implements IPPHandler {	
 	
 	public function handle($httpConfig, $request, $options) {

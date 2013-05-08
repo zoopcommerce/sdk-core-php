@@ -1,4 +1,5 @@
 <?php
+namespace paypal\auth;
 /**
  *
  * Represents the older subject based "third party authorization"

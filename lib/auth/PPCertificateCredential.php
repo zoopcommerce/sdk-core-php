@@ -1,4 +1,5 @@
 <?php
+namespace paypal\auth;
 /**
  * 
  * Client certificate based credentials

@@ -1,5 +1,5 @@
 <?php
-
+namespace paypal\common;
 /**
  * 
  * Container for Call level parameters such as

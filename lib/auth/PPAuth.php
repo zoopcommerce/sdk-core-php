@@ -1,4 +1,5 @@
 <?php
+namespace paypal\auth;
 //PayPal specific modification starts
 //Method to be called for generating signature
 

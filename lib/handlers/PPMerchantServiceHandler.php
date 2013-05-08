@@ -1,5 +1,5 @@
 <?php
-
+namespace paypal\handlers;
 class PPMerchantServiceHandler extends PPGenericServiceHandler {
 	private $endpoint;
 	private $config;

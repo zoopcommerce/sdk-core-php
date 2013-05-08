@@ -1,4 +1,5 @@
 <?php
+namespace paypal\formatters;
 /**
  * Interface for all classes that format objects to
  * and from a on-wire representation

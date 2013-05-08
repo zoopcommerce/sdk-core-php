@@ -1,4 +1,5 @@
 <?php
+namespace paypal;
 class PPConstants
 {
     const MERCHANT_SANDBOX_SIGNATURE_ENDPOINT = "https://api-3t.sandbox.paypal.com/2.0";
