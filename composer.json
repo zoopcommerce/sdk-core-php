@@ -16,6 +16,8 @@
         "ext-curl": "*"
     },
     "autoload": {
-        "classmap": ["lib"]
-    }
+        "psr-0": {
+            "paypal": "lib/"
+        }
+    } 
 }
