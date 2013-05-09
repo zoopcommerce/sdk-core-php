@@ -1,5 +1,7 @@
 <?php
 namespace paypal\ipn;
+use paypal\PPHttpConfig;
+use paypal\exceptions\PPConfigurationException;
 /**
  *
  *

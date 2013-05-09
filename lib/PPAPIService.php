@@ -1,5 +1,19 @@
 <?php
 namespace paypal;
+use paypal\PPLoggingManager;
+
+use paypal\PPRequest;
+use paypal\PPHttpConfig;
+use paypal\handlers\PPAuthenticationHandler;
+use paypal\handlers\IPPHandler;
+use paypal\handlers\PPCertificateAuthHandler;
+use paypal\handlers\PPGenericServiceHandler;
+use paypal\handlers\PPMerchantServiceHandler;
+use paypal\handlers\PPOpenIdHandler;
+use paypal\handlers\PPPlatformServiceHandler;
+use paypal\handlers\PPSignatureAuthHandler;
+use paypal\auth\PPTokenAuthorization;
+
 class PPAPIService {
 
 	public $endpoint;

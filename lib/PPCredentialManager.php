@@ -1,8 +1,14 @@
 <?php
 namespace paypal;
+use paypal\PPCredentialManager;
+use paypal\auth\PPSignatureCredential;
+use paypal\auth\PPCertificateCredential;
+use paypal\auth\PPSubjectAuthorization;
+use paypal\exceptions\PPInvalidCredentialException;
+use paypal\exceptions\PPMissingCredentialException;
+
 class PPCredentialManager
 {
-	
 	private static $instance;
 	//hashmap to contain credentials for accounts.
 	private $credentialHashmap = array();

@@ -1,5 +1,6 @@
 <?php
 namespace paypal;
+use paypal\PPAPIService;
 class PPBaseService {
 
     // SDK Name

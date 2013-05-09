@@ -1,5 +1,7 @@
 <?php
 namespace paypal\handlers;
+use paypal\handlers\PPSignatureAuthHandler;
+use paypal\handlers\PPCredentialAuthHandler;
 class PPAuthenticationHandler implements IPPHandler {	
 	
 	public function handle($httpConfig, $request, $options) {

@@ -1,5 +1,6 @@
 <?php
 namespace paypal\handlers;
+use paypal\exceptions\PPConfigurationException;
 class PPMerchantServiceHandler extends PPGenericServiceHandler {
 	private $endpoint;
 	private $config;

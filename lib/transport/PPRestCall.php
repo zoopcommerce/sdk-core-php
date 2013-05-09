@@ -1,5 +1,8 @@
 <?php
 namespace paypal\transport;
+use paypal\PPLoggingManager;
+use paypal\PPHttpConfig;
+use paypal\PPHttpConnection;
 class PPRestCall {
 
 	

@@ -1,5 +1,6 @@
 <?php
 namespace paypal;
+use paypal\exceptions\PPConfigurationException;
 class PPHttpConfig {
 
 	/**

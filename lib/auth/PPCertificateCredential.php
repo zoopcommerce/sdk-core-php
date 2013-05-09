@@ -1,5 +1,6 @@
 <?php
 namespace paypal\auth;
+use paypal\exceptions\PPMissingCredentialException;
 /**
  * 
  * Client certificate based credentials

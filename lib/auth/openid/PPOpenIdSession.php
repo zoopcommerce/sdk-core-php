@@ -1,5 +1,6 @@
 <?php
 namespace paypal\auth\openid;
+use paypal\common\PPApiContext;
 class PPOpenIdSession {
 
 	/**

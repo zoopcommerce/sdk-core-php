@@ -1,5 +1,7 @@
 <?php
 namespace paypal;
+use paypal\PPConfigManager;
+use paypal\exceptions\PPConfigurationException;
 /**
  * PPConfigManager loads the SDK configuration file and
  * hands out appropriate config params to other classes

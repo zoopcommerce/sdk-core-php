@@ -1,5 +1,9 @@
 <?php
 namespace paypal;
+use paypal\PPLoggingManager;
+use paypal\exceptions\PPConfigurationException;
+use paypal\exceptions\PPConnectionException;
+
 /**
  * A wrapper class based on the curl extension.
  * Requires the PHP curl module to be enabled.

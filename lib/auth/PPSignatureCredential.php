@@ -1,5 +1,6 @@
 <?php
 namespace paypal\auth;
+use paypal\exceptions\PPMissingCredentialException;
 /**
  * API signature (3-token) based credentials
  */
