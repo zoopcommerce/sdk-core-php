@@ -1,10 +1,10 @@
 <?php
-
+use paypal\exceptions\PPInvalidCredentialException;
 /**
  * Test class for PPInvalidCredentialException.
  *
  */
-class PPInvalidCredentialExceptionTest extends PHPUnit_Framework_TestCase
+class PPInvalidCredentialExceptionTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var PPInvalidCredentialException

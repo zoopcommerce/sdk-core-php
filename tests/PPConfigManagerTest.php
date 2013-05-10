@@ -1,9 +1,10 @@
 <?php
+use paypal\PPConfigManager;
 /**
  * Test class for PPConfigManager.
  *
  */
-class PPConfigManagerTest extends PHPUnit_Framework_TestCase
+class PPConfigManagerTest extends \PHPUnit_Framework_TestCase
 {
 	/**
 	 * @var PPConfigManager
@@ -36,23 +37,6 @@ class PPConfigManagerTest extends PHPUnit_Framework_TestCase
 	{
 		$instance = $this->object->getInstance();
 		$this->assertTrue($instance instanceof PPConfigManager);
-	}
-
-	/**
-	 * @test
-	 */
-	public function testGet()
-	{
-		$ret = $this->object->get('acct1');
-		$this->assertContains('jb-us-seller_api1.paypal.com', $ret);
-		$this->assertArrayHasKey('acct1.UserName', $ret);
-		$this->assertTrue(sizeof($ret) == 5);
-		
-		$ret = $this->object->get('acct1.UserName');
-		$this->assertEquals('jb-us-seller_api1.paypal.com', $ret);
-		$ret = $this->object->get("acct");  
-		$this->assertEquals(sizeof($ret), 8);
-
 	}
 
 	/**

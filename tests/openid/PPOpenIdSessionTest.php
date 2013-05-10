@@ -1,10 +1,11 @@
 <?php
-
+use paypal\common\PPApiContext;
+use paypal\auth\openid\PPOpenIdSession;
 /**
  * Test class for PPOpenIdSession.
  *
  */
-class PPOpenIdSessionTest extends PHPUnit_Framework_TestCase {
+class PPOpenIdSessionTest extends \PHPUnit_Framework_TestCase {
 	
 	private $context;
 	/**

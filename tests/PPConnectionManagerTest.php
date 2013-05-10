@@ -1,10 +1,12 @@
 <?php
-
+use paypal\PPConnectionManager;
+use paypal\PPHttpConnection;
+use paypal\PPHttpConfig;
 /**
  * Test class for PPConnectionManager.
  *
  */
-class PPConnectionManagerTest extends PHPUnit_Framework_TestCase
+class PPConnectionManagerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var PPConnectionManager
@@ -68,7 +70,7 @@ class PPConnectionManagerTest extends PHPUnit_Framework_TestCase
         $conn = $this->object->getConnection(new PPHttpConfig("http://domain.com"), $this->config);
         $this->assertNotNull($conn);
         $this->assertTrue($conn instanceof PPHttpConnection);
-        $this->assertEquals(get_class($conn), "PPHttpConnection");
+        $this->assertEquals(get_class($conn), "paypal\PPHttpConnection");
     }
 }
 ?>

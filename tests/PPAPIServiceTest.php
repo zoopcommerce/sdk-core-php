@@ -1,10 +1,10 @@
 <?php
-
+use paypal\PPAPIService;
 /**
  * Test class for PPAPIService.
  *
  */
-class PPAPIServiceTest extends PHPUnit_Framework_TestCase
+class PPAPIServiceTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var PPAPIService

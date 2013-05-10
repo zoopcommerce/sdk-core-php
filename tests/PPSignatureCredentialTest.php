@@ -1,5 +1,7 @@
 <?php
-
+use paypal\auth\PPSignatureCredential;
+use paypal\auth\PPTokenAuthorization;
+use paypal\auth\PPSubjectAuthorization;
 /**
  * Test class for PPSignatureCredential.
  *
@@ -38,7 +40,7 @@ class PPSignatureCredentialTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testValidateUsername()
 	{
-		$this->setExpectedException('PPMissingCredentialException');
+		$this->setExpectedException('paypal\exceptions\PPMissingCredentialException');
 		$cred = new PPSignatureCredential("", "1255077037","Abg0gYcQyxQvnf2HDJkKtA-p6pqhA1k-KTYE0Gcy1diujFio4io5Vqjf");
 		$cred->validate();
 	}
@@ -48,7 +50,7 @@ class PPSignatureCredentialTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testValidatepwd()
 	{
-		$this->setExpectedException('PPMissingCredentialException');
+		$this->setExpectedException('paypal\exceptions\PPMissingCredentialException');
 		$cred = new PPSignatureCredential("platfo_1255077030_biz_api1.gmail.com", "","Abg0gYcQyxQvnf2HDJkKtA-p6pqhA1k-KTYE0Gcy1diujFio4io5Vqjf");
 		$cred->validate();
 	}

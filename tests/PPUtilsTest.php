@@ -1,9 +1,10 @@
 <?php
+use paypal\PPUtils;
 /**
  * Test class for PPUtils.
  *
  */
-class PPUtilsTest extends PHPUnit_Framework_TestCase
+class PPUtilsTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var PPUtils
@@ -16,7 +17,7 @@ class PPUtilsTest extends PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->object = new PPUtils;
+        $this->object = new PPUtils();
     }
 
     /**

@@ -1,5 +1,6 @@
 <?php
-
+use paypal\PPMessage;
+use paypal\PPUtils;
 
 class SimpleTestClass extends PPMessage {
 	/**

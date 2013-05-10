@@ -1,9 +1,10 @@
 <?php
+use paypal\ipn\PPIPNMessage;
 /**
  * Test class for PPIPNMessage.
  *
  */
-class PPIPNMessageTest extends PHPUnit_Framework_TestCase {
+class PPIPNMessageTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @test
 	 */

@@ -1,10 +1,10 @@
 <?php
-
+use paypal\exceptions\PPConnectionException;
 /**
  * Test class for PPConnectionException.
  *
  */
-class PPConnectionExceptionTest extends PHPUnit_Framework_TestCase
+class PPConnectionExceptionTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var PPConnectionException
@@ -40,7 +40,7 @@ class PPConnectionExceptionTest extends PHPUnit_Framework_TestCase
      */
  public function testPPConnectionException()
     {
-    	$this->setExpectedException('PPConnectionException');
+    	$this->setExpectedException('paypal\exceptions\PPConnectionException');
     	throw new PPConnectionException('http://testURL','Test msg PPConnectionException');
     	
     }
