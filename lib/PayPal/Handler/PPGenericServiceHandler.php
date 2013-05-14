@@ -1,8 +1,8 @@
 <?php
 namespace PayPal\Handler;
 use PayPal\Handler\IPPHandler;
-use PayPal\PPUtils;
-use PayPal\PPBaseService;
+use PayPal\Core\PPUtils;
+use PayPal\Core\PPBaseService;
 class PPGenericServiceHandler implements IPPHandler {
 
 	public function handle($httpConfig, $request, $options) {
