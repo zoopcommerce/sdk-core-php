@@ -1,6 +1,9 @@
 <?php
 namespace PayPal\Handler;
 use PayPal\Exception\PPConfigurationException;
+use PayPal\Auth\PPSignatureCredential;
+use PayPal\Auth\PPCertificateCredential;
+use PayPal\Core\PPConstants;
 class PPMerchantServiceHandler extends PPGenericServiceHandler {
 	private $endpoint;
 	private $config;
