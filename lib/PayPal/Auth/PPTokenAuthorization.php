@@ -1,5 +1,6 @@
 <?php
 namespace PayPal\Auth;
+use PayPal\Auth\IPPThirdPartyAuthorization;
 /**
  *
  * Represents token based third party authorization

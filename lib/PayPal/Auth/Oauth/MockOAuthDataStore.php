@@ -1,5 +1,5 @@
 <?php //vim: foldmethod=marker
-namespace PayPal\Auth;
+namespace PayPal\Auth\Oauth;
 class MockOAuthDataStore extends OAuthDataStore {/*{{{*/
     private $consumer;
     private $request_token;
