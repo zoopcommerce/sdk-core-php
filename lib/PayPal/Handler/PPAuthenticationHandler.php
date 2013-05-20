@@ -1,11 +1,12 @@
 <?php
 namespace PayPal\Handler;
+use PayPal\Auth\PPSignatureCredential;
+use PayPal\Auth\PPCertificateCredential;
 use PayPal\Handler\IPPHandler;
 use PayPal\Handler\PPSignatureAuthHandler;
 use PayPal\Handler\PPCredentialAuthHandler;
 use PayPal\Exception\PPInvalidCredentialException;
-use PayPal\Auth\PPSignatureCredential;
-use PayPal\Auth\PPCertificateCredential;
+
 class PPAuthenticationHandler implements IPPHandler {	
 	
 	public function handle($httpConfig, $request, $options) {

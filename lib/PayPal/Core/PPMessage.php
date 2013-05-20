@@ -1,8 +1,6 @@
 <?php
 namespace PayPal\Core;
 use PayPal\Core\PPUtils;
-use PayPal\Service;
-use PayPal\Types;
 /**
  * @author 
  */

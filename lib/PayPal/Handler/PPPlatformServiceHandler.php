@@ -1,8 +1,10 @@
 <?php
 namespace PayPal\Handler;
-use PayPal\Exception\PPConfigurationException;
-use PayPal\Handler\PPGenericServiceHandler;
 use PayPal\Core\PPConstants;
+use PayPal\Handler\PPGenericServiceHandler;
+use PayPal\Exception\PPConfigurationException;
+
+
 class PPPlatformServiceHandler extends PPGenericServiceHandler {
 	private $endpoint;
 	private $config;

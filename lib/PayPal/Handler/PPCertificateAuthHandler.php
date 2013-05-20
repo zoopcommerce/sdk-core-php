@@ -1,5 +1,9 @@
 <?php
 namespace PayPal\handlers;
+use PayPal\Auth\PPTokenAuthorization;
+use PayPal\Auth\PPSubjectAuthorization;
+use PayPal\Auth\Oauth\AuthSignature;
+use PayPal\Handler\IPPHandler;
 class PPCredentialAuthHandler implements IPPHandler {
 
 	public function handle($httpConfig, $request, $options) {
