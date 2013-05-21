@@ -4,7 +4,7 @@ use PayPal\Auth\PPSignatureCredential;
 use PayPal\Auth\PPCertificateCredential;
 use PayPal\Handler\IPPHandler;
 use PayPal\Handler\PPSignatureAuthHandler;
-use PayPal\Handler\PPCredentialAuthHandler;
+use PayPal\Handler\PPCertificateAuthHandler;
 use PayPal\Exception\PPInvalidCredentialException;
 
 class PPAuthenticationHandler implements IPPHandler {	
@@ -15,7 +15,7 @@ class PPAuthenticationHandler implements IPPHandler {
 			if($credential instanceof PPSignatureCredential) {
 				$handler = new PPSignatureAuthHandler($credential);
 			} else if($credential instanceof PPCertificateCredential) {
-				$handler = new PPCredentialAuthHandler($credential);
+				$handler = new PPCertificateAuthHandler($credential);
 			} else {
 				throw new PPInvalidCredentialException();
 			}
