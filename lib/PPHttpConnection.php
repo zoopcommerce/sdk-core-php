@@ -67,7 +67,7 @@ class PPHttpConnection
 			$this->logger->info("Adding header $header");
 		}
 		$result = curl_exec($ch);
-		if (curl_errno($ch) == 60 && $httpConfig->getMethod() != "DELETE") {
+		if ((curl_errno($ch) == 60) && ($this->httpConfig->getMethod() != "DELETE")) {
 		 	$this->logger->info("Invalid or no certificate authority found - Retrying using bundled CA certs file");
 		 	curl_setopt($ch, CURLOPT_CAINFO,
 		 	dirname(__FILE__) . '/cacert.pem');
