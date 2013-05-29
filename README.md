@@ -1,16 +1,16 @@
-# PayPal Core SDK - V2.4.0
+### PayPal Core SDK - V2.4.0
 
-## Prerequisites
+#### Prerequisites
 
  * PHP 5.3 and above
  * curl extension with support for OpenSSL
  * PHPUnit 3.5 for running test suite (Optional)
  * Composer
 
-## Configuration
+#### Configuration
   
  
-## OpenID Connect Integration
+#### OpenID Connect Integration
 
    1. Redirect your buyer to `PPOpenIdSession::getAuthorizationUrl($redirectUri, array('openid', 'address'));` to obtain authorization. The second argument is the list of access privileges that you want from the buyer.
    2. Capture the authorization code that is available as a query parameter (`code`) in the redirect url
