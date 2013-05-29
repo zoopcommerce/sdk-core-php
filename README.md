@@ -1,11 +1,11 @@
-# PayPal Core SDK - V1.4.0
+# PayPal Core SDK - V2.4.0
 
 ## Prerequisites
 
  * PHP 5.3 and above
  * curl extension with support for OpenSSL
  * PHPUnit 3.5 for running test suite (Optional)
- * Composer (Optional - for running test cases)
+ * Composer
 
 ## Configuration
   
