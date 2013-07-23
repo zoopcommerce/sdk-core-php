@@ -4,7 +4,7 @@ class PPAPIService {
 
 	public $endpoint;
 	public $config;
-	public $options = array();
+	
 	public $serviceName;
 	private $logger;
 	private $handlers = array();
@@ -64,22 +64,23 @@ class PPAPIService {
 
 	private function runHandlers($httpConfig, $request) {
 	
-		$this->getOptions();
+		$options = $this->getOptions();
 		
 		foreach($this->handlers as $handlerClass) {
 			$handler = new $handlerClass();
-			$handler->handle($httpConfig, $request, $this->options);
+			$handler->handle($httpConfig, $request, $options);
 		}
 		$handler = new PPAuthenticationHandler();
-		$handler->handle($httpConfig, $request, $this->options);
+		$handler->handle($httpConfig, $request, $options);
 	}
 	
 	private function getOptions()
 	{
-		$this->options['port'] = $this->port;
-		$this->options['serviceName'] = $this->serviceName;
-		$this->options['serviceBinding'] = $this->serviceBinding;
-		$this->options['config'] = $this->config;
-		$this->options['apiMethod'] = $this->apiMethod;
+		return array(
+			'port' => $this->port,
+			'serviceName' => $this->serviceName,
+			'config' => $this->config,
+			'apiMethod' => $this->apiMethod
+		);
 	}	
 }
