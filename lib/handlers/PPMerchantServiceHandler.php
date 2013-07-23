@@ -1,5 +1,12 @@
 <?php
 
+/**
+ *
+ * Adds non-authentication headers that are specific to
+ * PayPal's Merchant APIs and determines endpoint to
+ * hit based on configuration parameters.
+ *
+ */
 class PPMerchantServiceHandler extends PPGenericServiceHandler {
 	private $endpoint;
 	private $config;
@@ -7,7 +14,7 @@ class PPMerchantServiceHandler extends PPGenericServiceHandler {
 		parent::handle($httpConfig, $request, $options);
 		$this->config = $options['config'];
 		$credential = $request->getCredential();
-		if($options['port'] != null && isset($this->config['service.EndPoint.'.$options['port']]))
+		if(isset($options['port']) && isset($this->config['service.EndPoint.'.$options['port']]))
 		{
 			$this->endpoint = $this->config['service.EndPoint.'.$options['port']];
 		}
@@ -46,7 +53,7 @@ class PPMerchantServiceHandler extends PPGenericServiceHandler {
 			throw new PPConfigurationException('endpoint Not Set');
 		}
 		
-		if($options['serviceBinding'] == 'SOAP' )
+		if($request->getBindingType() == 'SOAP' )
 		{
 			$httpConfig->setUrl($this->endpoint);
 		}

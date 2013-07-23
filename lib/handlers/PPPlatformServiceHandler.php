@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * 
+ * Adds non-authentication headers that are specific to
+ * PayPal's platform APIs and determines endpoint to
+ * hit based on configuration parameters.
+ *
+ */
 class PPPlatformServiceHandler extends PPGenericServiceHandler {
 	private $endpoint;
 	private $config;
@@ -7,11 +14,10 @@ class PPPlatformServiceHandler extends PPGenericServiceHandler {
 		parent::handle($httpConfig, $request, $options);
 		$this->config = $options['config'];
 		$credential = $request->getCredential();
-		//TODO: Assuming existence of getApplicationId
 		if($credential && $credential->getApplicationId() != NULL) {
 			$httpConfig->addHeader('X-PAYPAL-APPLICATION-ID', $credential->getApplicationId());
 		}
-		if($options['port'] != null && isset($this->config['service.EndPoint.'.$options['port']]))
+		if(isset($this->config['port']) && isset($this->config['service.EndPoint.'.$options['port']]))
 		{
 			$endpnt = 'service.EndPoint.'.$options['port']; 
 			$this->endpoint = $this->config[$endpnt];

@@ -159,7 +159,7 @@ class PPIPNMessage {
 		}
 		else
 		{
-			throw new PPConfigurationException('No COnfig file found');
+			throw new PPConfigurationException('You must set one of mode OR service.endpoint.IPN parameters');
 		}
 		return $url;
 	}
