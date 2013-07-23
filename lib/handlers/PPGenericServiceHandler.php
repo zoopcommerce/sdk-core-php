@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * 
+ * Adds non-authentication headers that are common to PayPal's
+ * merchant and platform APIs
+ */
 class PPGenericServiceHandler implements IPPHandler {
 
 	public function handle($httpConfig, $request, $options) {
