@@ -7,7 +7,7 @@
 
 class PPConfigManager {
 
-	public $config;
+	private $config;
 	/**
 	 * @var PPConfigManager
 	 */
@@ -103,7 +103,7 @@ class PPConfigManager {
 	 * returns the config file hashmap
 	 * 
 	 */
-	public function getConfigHashmap()
+	private function getConfigHashmap()
 	{
 		return $this->config;
 	}
@@ -111,9 +111,10 @@ class PPConfigManager {
 	/**
 	 * use  the default configuration if it is not passed in hashmap
 	 */
-	public static function mergrDefaults($config)
+	public static function getConfigWithDefaults($config=null)
 	{
-		return array_merge(PPConfigManager::$defaults, $config);
+		return array_merge(PPConfigManager::$defaults, 
+				($config != null) ? $config : PPConfigManager::getInstance()->getConfigHashmap());
 	}
 }
 
