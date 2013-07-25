@@ -2,7 +2,7 @@
 <phpunit bootstrap="./tests/PPBootStrap.php" colors="true">
     <testsuites>
         <testsuite name="All">
-            <directory suffix="tests/Test.php">.</directory>
+            <directory suffix="tests/Test.php">.</directory>            
         </testsuite>
     </testsuites>
     
@@ -15,6 +15,8 @@
             <directory>./lib</directory>
             <exclude>
                 <directory>./vendor</directory>
+                <directory>./lib/auth/PPAuth.php</directory>
+                <directory>./lib/auth/AuthUtil.php</directory>
             </exclude>
         </whitelist>
     </filter>

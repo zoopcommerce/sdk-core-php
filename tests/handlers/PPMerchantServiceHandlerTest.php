@@ -28,7 +28,7 @@ class PPMerchantServiceHandlerTest extends PHPUnit_Framework_TestCase {
 	/**
 	 * @test
 	 */
-	public function testModeBasedEndpoint() {
+	public function testModeBasedEndpointForSignatureCredential() {
 		$apiMethod = 'DoExpressCheckout';
 		$port = 'apiAA';
 		
@@ -49,6 +49,38 @@ class PPMerchantServiceHandlerTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals(PPConstants::MERCHANT_LIVE_SIGNATURE_ENDPOINT, $httpConfig->getUrl());
 		
 		
+		$this->setExpectedException('PPConfigurationException');
+		$handler->handle($httpConfig,
+				new PPRequest(new StdClass(), 'NVP'),
+				array('config' => array())
+		);
+	}
+	
+	
+	/**
+	 * @test
+	 */
+	public function testModeBasedEndpointForCertificateCredential() {
+		$apiMethod = 'DoExpressCheckout';
+		$port = 'apiAA';
+	
+		$httpConfig = new PPHttpConfig();
+		$handler = new PPMerchantServiceHandler();
+		$req = new PPRequest(new StdClass(), 'SOAP');
+		$req->setCredential(new PPCertificateCredential('a', 'b', 'c'));
+	
+		$handler->handle($httpConfig, $req,
+				array('config' => array('mode' => 'sandbox'), 'apiMethod' => $apiMethod, 'port' => $port)
+		);
+		$this->assertEquals(PPConstants::MERCHANT_SANDBOX_CERT_ENDPOINT, $httpConfig->getUrl());
+	
+	
+		$handler->handle($httpConfig, $req,
+				array('config' => array('mode' => 'live'), 'apiMethod' => $apiMethod, 'port' => $port)
+		);
+		$this->assertEquals(PPConstants::MERCHANT_LIVE_CERT_ENDPOINT, $httpConfig->getUrl());
+	
+	
 		$this->setExpectedException('PPConfigurationException');
 		$handler->handle($httpConfig,
 				new PPRequest(new StdClass(), 'NVP'),

@@ -17,6 +17,14 @@ class SimpleXMLTestClass extends PPXmlMessage {
 	 * @var string
 	 */
 	public $field2;
+	
+	/**
+	 * @name fieldWith-FunnyName
+	 * @access public
+	 * @namespace ebl
+	 * @var string
+	 */
+	public $fieldWithFunnyName;
 }
 
 class SimpleContainerXMLTestClass extends PPXmlMessage {
@@ -139,14 +147,43 @@ class PPXmlMessageTest extends PHPUnit_Framework_TestCase
 	/**
 	 * @test
 	 */
-	public function simpleSerialization() {
+	public function testToSOAP() {
+		$o = new SimpleXMLTestClass();
+		$o->field1 = "fieldvalue1";
+		$o->field2 = "fieldvalue2";
+		
+		$this->assertEquals($o->toXMLString(), $o->toSOAP());
+	}
+	
+	/**
+	 * @test
+	 */
+	public function testSimpleSerialization() {
 		
 		$o = new SimpleXMLTestClass();
 		$o->field1 = "fieldvalue1";
 		$o->field2 = "fieldvalue2";
 
 		$this->assertEquals("<ebl:field1>fieldvalue1</ebl:field1><ebl:field2>fieldvalue2</ebl:field2>", $o->toXMLString(''));
-		
+	}
+	
+	/**
+	 * @test
+	 */
+	public function testSpecialCharsSerialization() {
+	
+		$o = new SimpleXMLTestClass();
+		$o->field1 = "fieldvalue1";
+		$o->fieldWithFunnyName = "fieldvalue2";
+	
+		$this->assertEquals("<ebl:field1>fieldvalue1</ebl:field1><ebl:fieldWith-FunnyName>fieldvalue2</ebl:fieldWith-FunnyName>", $o->toXMLString(''));
+	}
+	
+	/**
+	 * @test
+	 */
+	public function testNestedSerialization() {
+	
 		$child = new SimpleXMLTestClass();
 		$child->field1 = "fieldvalue1";
 		$child->field2 = "fieldvalue2";
@@ -159,21 +196,146 @@ class PPXmlMessageTest extends PHPUnit_Framework_TestCase
 		$this->assertEquals("<ebl:field1>parent</ebl:field1><ebl:nestedField><ebl:field1>fieldvalue1</ebl:field1><ebl:field2>fieldvalue2</ebl:field2></ebl:nestedField>", $parent->toXMLString(''));
 	}
 	
+	/**
+	 * @test
+	 */
+	public function testListSerialization() {	
+		
+		$parent = new SimpleContainerXMLTestClass();
+		$parent->list1 = array('i', 'am', 'an array');	
+		
+		$this->assertEquals('<ebl:list1>i</ebl:list1><ebl:list1>am</ebl:list1><ebl:list1>an array</ebl:list1>', $parent->toXMLString(''));
+		
+		
+		$child1 = new SimpleXMLTestClass();
+		$child1->field1 = "c1v1";
+		$child1->field2 = "c1v2";
+		$child2 = new SimpleXMLTestClass();
+		$child2->field1 = "c2v1";
+		$child2->field2 = "c2v2";
+		$parent->list2 = array($child1, $child2);
+		
+		$this->assertEquals('<ebl:list1>i</ebl:list1><ebl:list1>am</ebl:list1><ebl:list1>an array</ebl:list1>'
+				. '<ebl:list2><ebl:field1>c1v1</ebl:field1><ebl:field2>c1v2</ebl:field2></ebl:list2>'
+				. '<ebl:list2><ebl:field1>c2v1</ebl:field1><ebl:field2>c2v2</ebl:field2></ebl:list2>'
+			, $parent->toXMLString(''));
+	}
+
+	/**
+	 * @test
+	 */
+	public function testAttributeSerialization() {
+	
+		$o = new AttributeXMLTestClass();
+		$o->attrib1 = "a value";
+		$o->attrib2 = "another value";
+		$o->value = "value";
+		
+		$this->assertEquals('attrib1="a value" attrib2="another value">value', $o->toXMLString(''));
+		
+	
+		$o = new AttributeXMLTestClass();		
+		$o->value = "value";
+		
+		$this->assertEquals(' >value', $o->toXMLString(''));
+		
+		$o = new AttributeXMLTestClass();
+		$o->attrib1 = "a value";
+		$o->attrib2 = "another value";
+		
+		$this->assertEquals('attrib1="a value" attrib2="another value">', $o->toXMLString(''));
+		
+	}
 	
 	/**
-	 * @t1est
+	 * @test
 	 */
-	public function nestedSerialization() {
+	public function testSpecialCharsDeserialization() {
 	
+		$str = $this->wrapInSoapMessage("<SimpleXMLTestClass><field1>fieldvalue1</field1><fieldWith-FunnyName>fieldvalue2</fieldWith-FunnyName></SimpleXMLTestClass>");
 		$o = new SimpleXMLTestClass();
-		$o->field1 = "fieldvalue1";
-		$o->field2 = "fieldvalue2";
-	
-		$c = new SimpleContainerXMLTestClass();
-		$c->nestedField = $o;
-		$c->field1 = "abc";
-	
-		$this->assertEquals("field1=abc&nestedField.field1=fieldvalue1&nestedField.field2=fieldvalue2", $c->toXMLString(''));
+		$o->init($str);
+		
+		$this->assertEquals('fieldvalue1', $o->field1);
+		$this->assertEquals('fieldvalue2', $o->fieldWithFunnyName);
 	}
+	
+	/**
+	 * @test
+	 */
+	public function testAttributeDeserialization() {
+	
+		$str = $this->wrapInSoapMessage('<AttributeContainerXMLTestClass><member attrib1="a value" attrib2="another value">value</member></AttributeContainerXMLTestClass>');
+		$o = new AttributeContainerXMLTestClass();
+		$o->init($str);
+	
+		$this->assertNotNull($o->member);
+		$this->assertEquals("value", $o->member->value);
+		$this->assertEquals("a value", $o->member->attrib1);
+		$this->assertEquals("another value", $o->member->attrib2);
+		
+		
+		$str = $this->wrapInSoapMessage('<AttributeContainerXMLTestClass><member>value</member></AttributeContainerXMLTestClass>');
+		$o = new AttributeContainerXMLTestClass();
+		$o->init($str);		
+		
+		$this->assertNotNull($o->member);
+// 		$this->assertEquals("value", $o->member->value);
+// 		$this->assertNull($o->member->attrib1);
+// 		$this->assertNull($o->member->attrib2);
+	
+	}
+	
+	/**
+	 * @test
+	 */
+	public function testListDeserialization() {
+		
+		
+		
+		$str = $this->wrapInSoapMessage('<SimpleContainerXMLTestClass><list1>i</list1><list1>am</list1><list1>an array</list1></SimpleContainerXMLTestClass>');
+		$parent = new SimpleContainerXMLTestClass();
+		$parent->init($str);
+		
+		$this->assertNotNull($parent->list1);
+// 		$this->assertEquals(true, is_array($parent->list1));
+// 		$this->assertEquals(3, count($parent->list1));
+// 		$this->assertEquals('an array', $parent->list1[2]);
+		
+		
+		$str = $this->wrapInSoapMessage('<SimpleContainerXMLTestClass><list1>i</list1><list1>am</list1><list1>an array</list1>'
+				. '<list2><field1>c1v1</field1><field2>c1v2</field2></list2>'
+				. '<list2><field1>c2v1</field1><field2>c2v2</field2></list2></SimpleContainerXMLTestClass>');
+		$parent = new SimpleContainerXMLTestClass();
+		$parent->init($str);
+		
+		$this->assertNotNull($parent->list2);
+		$this->assertEquals(true, is_array($parent->list2));
+		$this->assertEquals(2, count($parent->list2));
+		$this->assertEquals('SimpleXMLTestClass', get_class($parent->list2[0]));
+		$this->assertEquals('c1v2', $parent->list2[0]->field2);
+		$this->assertEquals('c2v1', $parent->list2[1]->field1);
+	}
+	
+	/**
+	 * @test
+	 */
+	public function testNestedDeserialization() {
+		
+		$str = $this->wrapInSoapMessage("<SimpleContainerXMLTestClass><field1>parent</field1><nestedField><field1>fieldvalue1</field1><field2>fieldvalue2</field2></nestedField></SimpleContainerXMLTestClass>");
+		$o = new SimpleContainerXMLTestClass();
+		$o->init($str);
+		
+		$this->assertEquals("parent", $o->field1);
+		$this->assertNotNull($o->nestedField);
+		$this->assertEquals("fieldvalue1", $o->nestedField->field1);
+		$this->assertEquals("fieldvalue2", $o->nestedField->field2);
+		
+	}
+	
+	
+	
+	
+	
 	
 }
