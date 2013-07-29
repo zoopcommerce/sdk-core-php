@@ -2,8 +2,8 @@
 namespace PayPal\Handler;
 
 use PayPal\Exception\PPConfigurationException;
-use PayPal\Core\PPConstants;
 use PayPal\Common\PPUserAgent;
+use PayPal\Core\PPConstants;
 
 class PPOpenIdHandler implements IPPHandler {
 	
