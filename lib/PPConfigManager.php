@@ -8,16 +8,16 @@
 class PPConfigManager {
 
 	private $config;
-	/**
-	 * @var PPConfigManager
-	 */
 	
 	//default config values
 	public static $defaults = array(
 		"http.ConnectionTimeOut" => "30",
 		"http.Retry" => "5",
 	);
-	
+
+	/**
+	 * @var PPConfigManager
+	 */
 	private static $instance;
 
 	private function __construct(){
