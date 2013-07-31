@@ -31,7 +31,7 @@ class PPCertificateAuthHandlerTest extends PHPUnit_Framework_TestCase {
 		
 		$handler->handle($httpConfig, $req, $options);		
 		$this->assertEquals(2, count($httpConfig->getHeaders()));
-		$this->assertContains('CURLOPT_SSLCERT', $httpConfig->getCurlOptions());
+		$this->assertArrayHasKey(CURLOPT_SSLCERT, $httpConfig->getCurlOptions());
 		
 		// Test addition of 'subject' HTTP header for subject based third party auth
 		$httpConfig = new PPHttpConfig();
@@ -42,7 +42,7 @@ class PPCertificateAuthHandlerTest extends PHPUnit_Framework_TestCase {
 		$handler->handle($httpConfig, $req, $options);
 		$this->assertEquals(3, count($httpConfig->getHeaders()));
 		$this->assertArrayHasKey('X-PAYPAL-SECURITY-SUBJECT', $httpConfig->getHeaders());
-		$this->assertContains('CURLOPT_SSLCERT', $httpConfig->getCurlOptions());
+		$this->assertArrayHasKey(CURLOPT_SSLCERT, $httpConfig->getCurlOptions());
 		
 		// Test that no auth related HTTP headers (username, password, sign?) are 
 		// added for token based third party auth
@@ -51,7 +51,7 @@ class PPCertificateAuthHandlerTest extends PHPUnit_Framework_TestCase {
 				
 		$handler->handle($httpConfig, $req, $options);		
 		$this->assertEquals(0, count($httpConfig->getHeaders()));
-		$this->assertContains('CURLOPT_SSLCERT', $httpConfig->getCurlOptions());
+		$this->assertArrayHasKey(CURLOPT_SSLCERT, $httpConfig->getCurlOptions());
 	
 	}
 	
@@ -69,8 +69,7 @@ class PPCertificateAuthHandlerTest extends PHPUnit_Framework_TestCase {
 		// Test that no headers are added if no credential is passed
 		$httpConfig = new PPHttpConfig();
 		$handler->handle($httpConfig, $req, $options);
-		$this->assertEquals('', $req->getBindingInfo('securityHeader'));
-		$this->assertContains('CURLOPT_SSLCERT', $httpConfig->getCurlOptions());
+		$this->assertEquals('', $req->getBindingInfo('securityHeader'));		
 		
 		// Test that the 3 token SOAP headers are added for first party API calls
 		$req = new PPRequest(new StdClass(), 'SOAP');
@@ -79,7 +78,7 @@ class PPCertificateAuthHandlerTest extends PHPUnit_Framework_TestCase {
 		
 		$this->assertContains('<ebl:Username>', $req->getBindingInfo('securityHeader'));
 		$this->assertContains('<ebl:Password>', $req->getBindingInfo('securityHeader'));		
-		$this->assertContains('CURLOPT_SSLCERT', $httpConfig->getCurlOptions());
+		$this->assertArrayHasKey(CURLOPT_SSLCERT, $httpConfig->getCurlOptions());
 		
 		// Test addition of 'subject' SOAP header for subject based third party auth
 		$req = new PPRequest(new StdClass(), 'SOAP');
@@ -91,7 +90,7 @@ class PPCertificateAuthHandlerTest extends PHPUnit_Framework_TestCase {
 		$this->assertContains('<ebl:Username>', $req->getBindingInfo('securityHeader'));
 		$this->assertContains('<ebl:Password>', $req->getBindingInfo('securityHeader'));		
 		$this->assertContains('<ebl:Subject>', $req->getBindingInfo('securityHeader'));
-		$this->assertContains('CURLOPT_SSLCERT', $httpConfig->getCurlOptions());
+		$this->assertArrayHasKey(CURLOPT_SSLCERT, $httpConfig->getCurlOptions());
 		
 	
 		// Test that no auth related HTTP headers (username, password, sign?) are
@@ -103,7 +102,7 @@ class PPCertificateAuthHandlerTest extends PHPUnit_Framework_TestCase {
 
 		$this->assertContains('<ns:RequesterCredentials/>', $req->getBindingInfo('securityHeader'));
 		$this->assertEquals(0, count($httpConfig->getHeaders()));
-		$this->assertContains('CURLOPT_SSLCERT', $httpConfig->getCurlOptions());
+		$this->assertArrayHasKey(CURLOPT_SSLCERT, $httpConfig->getCurlOptions());
 	}
 	
 }
