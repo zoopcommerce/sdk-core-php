@@ -133,7 +133,8 @@ class PPOpenIdTokeninfo extends PPModel {
 			if(is_null($apiContext)) {
 				$apiContext = new PPApiContext();
 			}
-			
+			$config = $apiContext->getConfig();
+
 			if(!array_key_exists('grant_type', $params)) {
 				$params['grant_type'] = 'authorization_code';
 			}	
@@ -146,7 +147,7 @@ class PPOpenIdTokeninfo extends PPModel {
 					http_build_query(array_intersect_key($params, $allowedParams)),
 					array(
 						'Content-Type' => 'application/x-www-form-urlencoded',
-						'Authorization' => 'Basic ' . base64_encode($params['client_id'] . ":" . $params['client_secret'])
+						'Authorization' => 'Basic ' . base64_encode($config['acct1.ClientId'] . ":" . $config['acct1.ClientSecret'])
 					)
 			));
 			return $token;
