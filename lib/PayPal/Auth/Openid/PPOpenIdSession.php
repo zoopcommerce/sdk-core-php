@@ -17,7 +17,7 @@ class PPOpenIdSession {
 	 * 				See https://developer.paypal.com/webapps/developer/docs/integration/direct/log-in-with-paypal/detailed/#attributes for more
 	 * @param PPApiContext $apiContext Optional API Context
 	 */
-	public static function getAuthorizationUrl($redirectUri, $scope, $clientId, $apiContext=null) {
+	public static function getAuthorizationUrl($redirectUri, $scope, $nonce = null, $state = null, $apiContext=null) {
 
 		if(is_null($apiContext)) {
 			$apiContext = new PPApiContext();
@@ -29,12 +29,20 @@ class PPOpenIdSession {
 		if(!in_array('openid', $scope)) {
 			$scope[] = 'openid';
 		}
+		
 		$params = array(
-				'client_id' => $clientId,
+				'client_id' => $config['acct1.ClientId'],
 				'response_type' => 'code',
 				'scope' => implode(" ", $scope),
 				'redirect_uri' => $redirectUri
 		);
+		
+		if ($nonce)
+		    $params['nonce'] = $nonce;
+		
+		if ($state)
+		    $params['state'] = $state;
+		
 		return sprintf("%s/v1/authorize?%s", self::getBaseUrl($config), http_build_query($params));
 	}
 
