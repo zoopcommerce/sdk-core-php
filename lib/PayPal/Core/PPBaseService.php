@@ -5,11 +5,6 @@ use PayPal\Common\PPApiContext;
 
 class PPBaseService {
 
-    // SDK Name
-	protected  static $SDK_NAME = "paypal-php-sdk";
-	// SDK Version
-	protected static $SDK_VERSION = "2.1.96";
-	
 	private $serviceName;
 	private $serviceBinding;
 	private $handlers;
