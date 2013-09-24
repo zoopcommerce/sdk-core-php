@@ -15,10 +15,10 @@ class PPOpenIdHandlerTest extends PHPUnit_Framework_TestCase {
 	public function testInvalidConfiguration() {
 		$httpConfig = new PPHttpConfig();
 		$apiContext = new PPApiContext(array('mode' => 'unknown', 'acct1.ClientId' => 'clientId', 'acct1.ClientSecret' => 'clientSecret'));
-		$handler = new PPOpenIdHandler($apiContext);
+		$handler = new PPOpenIdHandler();
 	
 		$this->setExpectedException('PPConfigurationException');
-		$handler->handle($httpConfig, 'payload', array('path' => '/path'));
+		$handler->handle($httpConfig, 'payload', array('path' => '/path', 'apiContext' => $apiContext));
 		
 		
 		$httpConfig = new PPHttpConfig();
@@ -26,7 +26,7 @@ class PPOpenIdHandlerTest extends PHPUnit_Framework_TestCase {
 		$handler = new PPOpenIdHandler($apiContext);
 		
 		$this->setExpectedException('PPConfigurationException');
-		$handler->handle($httpConfig, 'payload', array('path' => '/path'));
+		$handler->handle($httpConfig, 'payload', array('path' => '/path', 'apiContext' => $apiContext));
 	}
 	
 	/**
@@ -36,8 +36,8 @@ class PPOpenIdHandlerTest extends PHPUnit_Framework_TestCase {
 		$httpConfig = new PPHttpConfig();
 		$apiContext = new PPApiContext(array('mode' => 'sandbox', 'acct1.ClientId' => 'clientId', 'acct1.ClientSecret' => 'clientSecret'));
 		
-		$handler = new PPOpenIdHandler($apiContext);
-		$handler->handle($httpConfig, 'payload', array());
+		$handler = new PPOpenIdHandler();
+		$handler->handle($httpConfig, 'payload', array('apiContext' => $apiContext));
 		
 		$this->assertArrayHasKey('Authorization', $httpConfig->getHeaders());
 		$this->assertArrayHasKey('User-Agent', $httpConfig->getHeaders());			
@@ -50,17 +50,17 @@ class PPOpenIdHandlerTest extends PHPUnit_Framework_TestCase {
 	public function testModeBasedEndpoint() {
 		$httpConfig = new PPHttpConfig();
 		$apiContext = new PPApiContext(array('mode' => 'sandbox', 'acct1.ClientId' => 'clientId', 'acct1.ClientSecret' => 'clientSecret'));		
-		$handler = new PPOpenIdHandler($apiContext);
+		$handler = new PPOpenIdHandler();
 		
-		$handler->handle($httpConfig, 'payload', array('path' => '/path'));		
+		$handler->handle($httpConfig, 'payload', array('path' => '/path', 'apiContext' => $apiContext));
 		$this->assertEquals(PPConstants::REST_SANDBOX_ENDPOINT . "path", $httpConfig->getUrl());
 		
 		
 		$httpConfig = new PPHttpConfig();
 		$apiContext = new PPApiContext(array('mode' => 'live', 'acct1.ClientId' => 'clientId', 'acct1.ClientSecret' => 'clientSecret'));
-		$handler = new PPOpenIdHandler($apiContext);
+		$handler = new PPOpenIdHandler();
 		
-		$handler->handle($httpConfig, 'payload', array('path' => '/path'));
+		$handler->handle($httpConfig, 'payload', array('path' => '/path', 'apiContext' => $apiContext));
 		$this->assertEquals(PPConstants::REST_LIVE_ENDPOINT . "path", $httpConfig->getUrl());
 	}
 	
@@ -71,27 +71,27 @@ class PPOpenIdHandlerTest extends PHPUnit_Framework_TestCase {
 		$customEndpoint = 'http://mydomain';
 		$httpConfig = new PPHttpConfig();
 		$apiContext = new PPApiContext(array('service.EndPoint' => $customEndpoint, 'acct1.ClientId' => 'clientId', 'acct1.ClientSecret' => 'clientSecret'));
-		$handler = new PPOpenIdHandler($apiContext);
+		$handler = new PPOpenIdHandler();
 		
-		$handler->handle($httpConfig, 'payload', array('path' => '/path'));
+		$handler->handle($httpConfig, 'payload', array('path' => '/path', 'apiContext' => $apiContext));
 		$this->assertEquals("$customEndpoint/path", $httpConfig->getUrl());
 		
 		
 		$customEndpoint = 'http://mydomain/';
 		$httpConfig = new PPHttpConfig();
 		$apiContext = new PPApiContext(array('service.EndPoint' => $customEndpoint, 'acct1.ClientId' => 'clientId', 'acct1.ClientSecret' => 'clientSecret'));
-		$handler = new PPOpenIdHandler($apiContext);
+		$handler = new PPOpenIdHandler();
 		
-		$handler->handle($httpConfig, 'payload', array('path' => '/path'));
+		$handler->handle($httpConfig, 'payload', array('path' => '/path', 'apiContext' => $apiContext));
 		$this->assertEquals("${customEndpoint}path", $httpConfig->getUrl());
 		
 		
 		$customEndpoint = 'http://mydomain';
 		$httpConfig = new PPHttpConfig();
 		$apiContext = new PPApiContext(array('service.EndPoint' => 'xyz', 'openid.EndPoint' => $customEndpoint, 'acct1.ClientId' => 'clientId', 'acct1.ClientSecret' => 'clientSecret'));
-		$handler = new PPOpenIdHandler($apiContext);
+		$handler = new PPOpenIdHandler();
 		
-		$handler->handle($httpConfig, 'payload', array('path' => '/path'));
+		$handler->handle($httpConfig, 'payload', array('path' => '/path', 'apiContext' => $apiContext));
 		$this->assertEquals("$customEndpoint/path", $httpConfig->getUrl());
 	}
 	

@@ -27,9 +27,9 @@ class PPAPIServiceTest extends PHPUnit_Framework_TestCase
     		'service.EndPoint.IPN' => 'https://www.sandbox.paypal.com/cgi-bin/webscr'	,
     		'service.EndPoint.Invoice' => 'https://svcs.sandbox.paypal.com/'	,
     		'service.SandboxEmailAddress' => 'platform_sdk_seller@gmail.com',
-    		'log.FileName' => 'PayPal1.log'	,
+    		'log.FileName' => 'PayPal.log'	,
     		'log.LogLevel' => 	'INFO'	,
-    		'log.LogEnabled' => 	'1'	,    
+    		'log.LogEnabled' => 	'1'	,
     
     );
 
@@ -39,7 +39,7 @@ class PPAPIServiceTest extends PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->object = new PPAPIService(null, 'Invoice', 'NV', array(), $this->config);
+        $this->object = new PPAPIService(null, 'Invoice', 'NV', new PPApiContext($this->config), array());
     }
 
     /**
@@ -66,22 +66,21 @@ class PPAPIServiceTest extends PHPUnit_Framework_TestCase
     public function testMakeRequestWithoutHandlers() {
     	$this->object->setServiceName('Invoice');
     	$this->setExpectedException('PPConnectionException');
-		$this->object->makeRequest('GetInvoiceDetails', new MockNVPClass());
+	$req = new PPRequest(new MockNVPClass(), "NV");
+	$this->object->makeRequest('GetInvoiceDetails', $req);
     }    
     
     /**
      * @test
      */
     public function testMakeRequestWithHandlers() {
-    	$this->object->addHandler('MockHandler');
-    	$ret = $this->object->makeRequest('GetInvoiceDetails', new MockNVPClass());
+    	$this->object->addHandler(new MockHandler());
+	$req = new PPRequest(new MockNVPClass(), "NV");
+    	$ret = $this->object->makeRequest('GetInvoiceDetails', $req);
     	
     	$this->assertArrayHasKey('response', $ret);
     	$this->assertContains("responseEnvelope.timestamp=", $ret['response']);
     }
-    
-    
-   
 }
 
 class MockNVPClass {
@@ -91,8 +90,8 @@ class MockNVPClass {
 }
 
 class MockHandler  implements IPPHandler {
-	
-	public function handle($httpConfig, $request, $options) {		
+
+	public function handle($httpConfig, $request, $options) {
 		$config = $options['config'];
 		$httpConfig->setUrl('https://svcs.sandbox.paypal.com/Invoice/GetInvoiceDetails');
 		$httpConfig->addHeader('X-PAYPAL-REQUEST-DATA-FORMAT', 'NV');

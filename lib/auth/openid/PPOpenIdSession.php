@@ -41,7 +41,7 @@ class PPOpenIdSession {
 	 * @param string $redirectUri Uri on merchant website to where
 	 * 				the user must be redirected to post logout
 	 * @param string $idToken id_token from the TokenInfo object
-	 * @param PayPal/Rest/APIContext $apiContext Optional API Context
+	 * @param APIContext $apiContext Optional API Context
 	 */
 	public static function getLogoutUrl($redirectUri, $idToken, $apiContext=null) {
 		
