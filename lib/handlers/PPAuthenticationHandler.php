@@ -4,7 +4,7 @@
  *
  * Determines which authentication handler to run based
  * on credential passed in.
- * 
+ *
  * Also handles PayPal third party authentication (Permissions API).
  *
  */
@@ -16,7 +16,7 @@ class PPAuthenticationHandler implements IPPHandler {
 			$thirdPartyAuth = $credential->getThirdPartyAuthorization();
 			if($thirdPartyAuth && $thirdPartyAuth instanceof PPTokenAuthorization) {
 				$authSignature = AuthSignature::generateFullAuthString($credential->getUsername(), $credential->getPassword(), $thirdPartyAuth->getAccessToken(), $thirdPartyAuth->getTokenSecret(), $httpConfig->getMethod(), $httpConfig->getUrl());
-				if( isset($options['port']) && 
+				if(isset($options['port']) &&
 						($options['port'] == 'PayPalAPI' || $options['port'] == 'PayPalAPIAA')) {
 					$httpConfig->addHeader('X-PP-AUTHORIZATION', $authSignature);
 				}

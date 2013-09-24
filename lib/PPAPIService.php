@@ -2,22 +2,21 @@
 
 class PPAPIService {
 
-	public $endpoint;
-	public $config;
-	
 	public $serviceName;
+	public $apiMethod;
+	public $apiContext;
 	private $logger;
 	private $handlers = array();
 	private $serviceBinding;
 	private $port;
-	private $apiMethod;
-	public function __construct($port, $serviceName, $serviceBinding, $handlers=array(), $config) {
+
+	public function __construct($port, $serviceName, $serviceBinding, $apiContext, $handlers=array()) {
 		
-		$this->config = $config;
+		$this->apiContext = $apiContext;		
 		$this->serviceName = $serviceName;
 		$this->port = $port;
 
-		$this->logger = new PPLoggingManager(__CLASS__, $this->config);
+		$this->logger = new PPLoggingManager(__CLASS__, $this->apiContext->getConfig());
 		$this->handlers = $handlers;
 		$this->serviceBinding = $serviceBinding;
 		
@@ -27,34 +26,41 @@ class PPAPIService {
 		$this->serviceName = $serviceName;
 	}
 
+	/**
+	 * Register additional handlers to run before
+	 * executing this call
+	 *
+	 * @param IPPHandler $handler
+	 */
 	public function addHandler($handler) {
 		$this->handlers[] = $handler;
 	}
 
-	public function makeRequest($apiMethod, $params, $apiUsername = null) {
+
+	/**
+	 * Execute an api call
+	 *
+	 * @param string $apiMethod	Name of the API operation (such as 'Pay')
+	 * @param PPRequest $params Request object
+	 * @return array containing request and response
+	 */
+	public function makeRequest($apiMethod, $request) {
 		
 		$this->apiMethod = $apiMethod;
-		if(is_string($apiUsername) || is_null($apiUsername)) {
-			// $apiUsername is optional, if null the default account in config file is taken
-			$credMgr = PPCredentialManager::getInstance($this->config);
-			$apiCredential = clone($credMgr->getCredentialObject($apiUsername ));
-		} else {
-			$apiCredential = $apiUsername; //TODO: Aargh
-		}
-	    if((isset($this->config['accessToken']) && isset($this->config['tokenSecret']))) {
-			$apiCredential->setThirdPartyAuthorization(
-					new PPTokenAuthorization($this->config['accessToken'], $this->config['tokenSecret']));
-		}
-
-
-		$request = new PPRequest($params, $this->serviceBinding);
-		$request->setCredential($apiCredential);
+		
 		$httpConfig = new PPHttpConfig(null, PPHttpConfig::HTTP_POST);
+		if($this->apiContext->getHttpHeaders() != null) {
+			$httpConfig->setHeaders($this->apiContext->getHttpHeaders());
+		}
 		$this->runHandlers($httpConfig, $request);
 
+		
+		// Serialize request object to a string according to the binding configuration
 		$formatter = FormatterFactory::factory($this->serviceBinding);
 		$payload = $formatter->toString($request);
-		$connection = PPConnectionManager::getInstance()->getConnection($httpConfig, $this->config);
+		
+		// Execute HTTP call
+		$connection = PPConnectionManager::getInstance()->getConnection($httpConfig, $this->apiContext->getConfig());
 		$this->logger->info("Request: $payload");
 		$response = $connection->execute($payload);
 		$this->logger->info("Response: $response");
@@ -65,13 +71,9 @@ class PPAPIService {
 	private function runHandlers($httpConfig, $request) {
 	
 		$options = $this->getOptions();
-		
 		foreach($this->handlers as $handlerClass) {
-			$handler = new $handlerClass();
-			$handler->handle($httpConfig, $request, $options);
+			$handlerClass->handle($httpConfig, $request, $options);
 		}
-		$handler = new PPAuthenticationHandler();
-		$handler->handle($httpConfig, $request, $options);
 	}
 	
 	private function getOptions()
@@ -79,8 +81,10 @@ class PPAPIService {
 		return array(
 			'port' => $this->port,
 			'serviceName' => $this->serviceName,
-			'config' => $this->config,
-			'apiMethod' => $this->apiMethod
+			'serviceBinding' => $this->serviceBinding,
+			'config' => $this->apiContext->getConfig(),
+			'apiMethod' => $this->apiMethod,
+			'apiContext' => $this->apiContext
 		);
 	}	
 }

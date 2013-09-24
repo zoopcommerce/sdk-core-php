@@ -18,7 +18,7 @@ class PPGenericServiceHandlerTest extends PHPUnit_Framework_TestCase {
 		
 		
 		$httpConfig = new PPHttpConfig();
-		$handler = new PPGenericServiceHandler();
+		$handler = new PPGenericServiceHandler('sdkname', 'sdkversion');
 		$handler->handle($httpConfig, 
 				new PPRequest(new StdClass(), $bindingType), 
 				array('config' => array('service.SandboxEmailAddress' => $devEmail))
@@ -34,4 +34,20 @@ class PPGenericServiceHandlerTest extends PHPUnit_Framework_TestCase {
 		
 	}
 	
+	/**
+	 * @test
+	 */
+	 public function testSourceHeader() {
+		$httpConfig = new PPHttpConfig();
+		$handler = new PPGenericServiceHandler('sdkname', 'sdkversion');
+		$handler->handle($httpConfig,
+				new PPRequest(new StdClass(), 'NV'),
+				array('config' => array())
+		);
+
+		$headers = $httpConfig->getHeaders();
+		$this->assertArrayHasKey('X-PAYPAL-REQUEST-SOURCE', $headers);
+		$this->assertRegExp('/.*sdkname.*/', $headers['X-PAYPAL-REQUEST-SOURCE']);
+		$this->assertRegExp('/.*sdkversion.*/', $headers['X-PAYPAL-REQUEST-SOURCE']);
+	}
 }

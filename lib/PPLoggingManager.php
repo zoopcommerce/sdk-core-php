@@ -40,7 +40,8 @@ class PPLoggingManager {
 
 	public function __construct($loggerName, $config = null) {
 		$this->loggerName = $loggerName;
-		$config = PPConfigManager::getConfigWithDefaults($config);		
+		$config = PPConfigManager::getConfigWithDefaults($config);
+
 		$this->isLoggingEnabled = (array_key_exists('log.LogEnabled', $config) && $config['log.LogEnabled'] == '1');		
 		 
 		if($this->isLoggingEnabled) {
@@ -50,7 +51,7 @@ class PPLoggingManager {
 		}
 	}
 
-	public function log($message, $level=PPLoggingLevel::INFO) {
+	private function log($message, $level=PPLoggingLevel::INFO) {
 		if($this->isLoggingEnabled && ($level <= $this->loggingLevel)) {
 			error_log( $this->loggerName . ": $message\n", 3, $this->loggerFile);
 		}

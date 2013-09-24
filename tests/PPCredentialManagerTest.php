@@ -29,7 +29,7 @@ class PPCredentialManagerTest extends PHPUnit_Framework_TestCase
 			'service.EndPoint.IPN' => 	'https://www.sandbox.paypal.com/cgi-bin/webscr',
 			'service.EndPoint.AdaptivePayments' => 'https://svcs.sandbox.paypal.com/',
 			'service.SandboxEmailAddress' => 'platform_sdk_seller@gmail.com',
-			'log.FileName' => 			'PayPal1.log',
+			'log.FileName' => 			'PayPal.log',
 			'log.LogLevel' => 			'INFO',
 			'log.LogEnabled' => 		'1',
 	);
@@ -57,8 +57,7 @@ class PPCredentialManagerTest extends PHPUnit_Framework_TestCase
 	{
 		$instance = $this->object->getInstance($this->config);
 		$this->assertTrue($instance instanceof PPCredentialManager);
-	}	
-	
+	}
 
 	/**
 	 * @test
@@ -101,8 +100,7 @@ class PPCredentialManagerTest extends PHPUnit_Framework_TestCase
 			'acct2.UserName' => 		'certuser_biz_api1.paypal.com',
 			'acct2.Password' => 		'D6JNKKULHN3G5B8A',
 			'acct2.CertPath' => 		'cert_key.pem',
-			'acct2.AppId' => 			'APP-80W284485P519543T'
-			
+			'acct2.AppId' => 		'APP-80W284485P519543T'
 		));
 		$cred = $o->getCredentialObject();
 		$this->assertEquals('client-id', $cred['clientId']);
@@ -122,7 +120,7 @@ class PPCredentialManagerTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testGetSubjectCredentialObject() {
 		$cred = $this->object->getCredentialObject('jb-us-seller_api1.paypal.com');
-		
+
 		$this->assertNotNull($cred);
 		$this->assertNotNull($cred->getThirdPartyAuthorization());
 		$this->assertEquals('PPSubjectAuthorization', get_class($cred->getThirdPartyAuthorization()));
@@ -131,14 +129,14 @@ class PPCredentialManagerTest extends PHPUnit_Framework_TestCase
 	/**
 	 * @test
 	 */
-	public function testGetResttCredentialObject() {
+	public function testGetRestCredentialObject() {
 		$cred = $this->object->getCredentialObject('acct3');
 	
 		$this->assertNotNull($cred);
-		
+
 		$this->assertArrayHasKey('clientId', $cred);
 		$this->assertEquals($this->config['acct3.ClientId'], $cred['clientId']);
-		
+
 		$this->assertArrayHasKey('clientSecret', $cred);
 		$this->assertEquals($this->config['acct3.ClientSecret'], $cred['clientSecret']);
 	}
@@ -149,7 +147,6 @@ class PPCredentialManagerTest extends PHPUnit_Framework_TestCase
 	public function testInvalidConfiguration() {
 		$this->setExpectedException('PPMissingCredentialException');
 		$o = PPCredentialManager::getInstance(array('mode' => 'sandbox'));
-	}	
-	
+	}
 }
 ?>
