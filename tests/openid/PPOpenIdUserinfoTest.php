@@ -53,6 +53,5 @@ class PPOpenIdUserinfoTest extends PHPUnit_Framework_TestCase {
 	
 		$this->setExpectedException('PPConnectionException');
 		PPOpenIdUserinfo::getUserinfo(array('access_token' => 'accessToken'));
-	
 	}
 }

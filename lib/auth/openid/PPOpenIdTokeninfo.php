@@ -166,6 +166,7 @@ class PPOpenIdTokeninfo extends PPModel {
 			if(is_null($apiContext)) {
 				$apiContext = new PPApiContext();
 			}
+
 			if(!array_key_exists('grant_type', $params)) {
 				$params['grant_type'] = 'refresh_token';
 			}
