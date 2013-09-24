@@ -20,7 +20,7 @@ class PPConfigManager {
 
 	/**
 	 * @var PPConfigManager
-	 */	
+	 */
 	private static $instance;
 
 	private function __construct(){

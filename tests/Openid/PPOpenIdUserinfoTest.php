@@ -51,6 +51,6 @@ class PPOpenIdUserinfoTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testInvalidParamUserInfoCall() {
 		$this->setExpectedException('PayPal\Exception\PPConnectionException');
-		var_dump(PPOpenIdUserinfo::getUserinfo(array('access_token' => 'accessToken')));
+		PPOpenIdUserinfo::getUserinfo(array('access_token' => 'accessToken'));
 	}
 }

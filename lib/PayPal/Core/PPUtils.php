@@ -92,7 +92,6 @@ class PPUtils
 
 		$results = $doc->getElementsByTagName("Body");
 		if($results->length > 0 ){
-			//$node = $results->item(0)->childNodes->item(0);
 			$node = $results->item(0);
 			return PPUtils::xmlNodeToArray($node);
 		} else {
@@ -198,7 +197,7 @@ class PPUtils
 
 	/**
 	 * @var array|string[]
-	*/
+	 */
 	private static $propertiesType = array();
 
 
@@ -210,7 +209,7 @@ class PPUtils
 	 * @param string $propertyName
 	 * @throws RuntimeException
 	 * @return string
-	*/
+	 */
 	public static function propertyAnnotations($class, $propertyName)
 	{
 		$class = is_object($class) ? get_class($class) : $class;

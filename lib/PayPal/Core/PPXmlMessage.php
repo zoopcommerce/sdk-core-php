@@ -113,7 +113,7 @@ abstract class PPXmlMessage
 		{
 			return $el . '</' . $namespace . ':' . $property . '>';
 		}
-		
+
 	}
 
 	/**

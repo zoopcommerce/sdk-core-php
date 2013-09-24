@@ -89,7 +89,7 @@ class PPMerchantServiceHandlerTest extends PHPUnit_Framework_TestCase {
 	
 	
 	public function testCustomEndpoint() {
-		
+
 		$customEndpoint = 'http://myhost/';
 		$options = $this->options;
 		$options['config']['service.EndPoint'] = $customEndpoint;

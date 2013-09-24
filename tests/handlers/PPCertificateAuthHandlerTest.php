@@ -48,7 +48,7 @@ class PPCertificateAuthHandlerTest extends PHPUnit_Framework_TestCase {
 		
 		$handler->handle($httpConfig, $req, $options);
 		$this->assertEquals(3, count($httpConfig->getHeaders()));
-		$this->assertArrayHasKey('X-PAYPAL-SECURITY-SUBJECT', $httpConfig->getHeaders());		
+		$this->assertArrayHasKey('X-PAYPAL-SECURITY-SUBJECT', $httpConfig->getHeaders());
 		$this->assertArrayHasKey(CURLOPT_SSLCERT, $httpConfig->getCurlOptions());
 		
 		// Test that no auth related HTTP headers (username, password, sign?) are 

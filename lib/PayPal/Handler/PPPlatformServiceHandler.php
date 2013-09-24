@@ -26,7 +26,7 @@ class PPPlatformServiceHandler extends PPGenericServiceHandler {
 
 	public function handle($httpConfig, $request, $options) {
 
-		parent::handle($httpConfig, $request, $options);		
+		parent::handle($httpConfig, $request, $options);
 			
 		if(is_string($this->apiUsername) || is_null($this->apiUsername)) {			
 			// $apiUsername is optional, if null the default account in config file is taken
@@ -44,7 +44,7 @@ class PPPlatformServiceHandler extends PPGenericServiceHandler {
 			$httpConfig->addHeader('X-PAYPAL-APPLICATION-ID', $credential->getApplicationId());
 		}
 		if(isset($config['port']) && isset($config['service.EndPoint.'.$options['port']]))
-		{			 
+		{
 			$endpoint = $config['service.EndPoint.'.$options['port']];
 		}
 		// for backward compatibilty (for those who are using old config files with 'service.EndPoint')

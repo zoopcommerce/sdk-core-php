@@ -13,7 +13,6 @@ class PPBaseService {
 	protected $lastRequest;
 	protected $lastResponse;
 
-		
     public function getLastRequest() {
 		return $this->lastRequest;
 	}
@@ -49,7 +48,7 @@ class PPBaseService {
 		{			
 			$apiContext->setConfig(PPConfigManager::getConfigWithDefaults($this->config));
 		}
-	
+
 		$service = new PPAPIService($port, $this->serviceName,
 				$this->serviceBinding, $apiContext, $handlers);
 		$ret = $service->makeRequest($method, new PPRequest($requestObject, $this->serviceBinding));

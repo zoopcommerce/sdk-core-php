@@ -152,7 +152,7 @@ class PPOpenIdTokeninfo extends PPModel {
 			));
 			return $token;
 		}
-        /**
+		/**
 		 * Creates an Access Token from an Refresh Token.
 		 *
 		 * @path /v1/identity/openidconnect/tokenservice

@@ -17,7 +17,7 @@ class PPAPIService {
 	private $handlers = array();
 	private $serviceBinding;
 	private $port;
-	
+
 	public function __construct($port, $serviceName, $serviceBinding, $apiContext, $handlers=array()) {
 		
 		$this->apiContext = $apiContext;		
@@ -78,7 +78,7 @@ class PPAPIService {
 
 	private function runHandlers($httpConfig, $request) {
 	
-		$options = $this->getOptions();		
+		$options = $this->getOptions();
 		foreach($this->handlers as $handlerClass) {
 			$handlerClass->handle($httpConfig, $request, $options);
 		}
@@ -87,7 +87,7 @@ class PPAPIService {
 	private function getOptions()
 	{
 		return array(
-			'port'=> $this->port,
+			'port' => $this->port,
 			'serviceName' => $this->serviceName,
 			'serviceBinding' => $this->serviceBinding,
 			'config' => $this->apiContext->getConfig(),

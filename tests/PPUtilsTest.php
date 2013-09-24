@@ -44,14 +44,14 @@ class PPUtilsTest extends \PHPUnit_Framework_TestCase
      */
     public function testArray_match_key()
     {
-       $arr = array('key1' => 'somevalue', 'key2' => 'someothervalue');
-		$this->assertEquals(PPUtils::array_match_key($arr, "key"), true);
+	$arr = array('key1' => 'somevalue', 'key2' => 'someothervalue');
+	$this->assertEquals(true, PPUtils::array_match_key($arr, "key"));
 		
 		$arr = array('key1' => 'somevalue', 'key2' => 'someothervalue');
 		$this->assertEquals(false, PPUtils::array_match_key($arr, "prefix"));
 		
 		$arr = unserialize('a:10:{s:26:"responseEnvelope.timestamp";s:35:"2011-04-19T04%3A32%3A29.469-07%3A00";s:20:"responseEnvelope.ack";s:7:"Failure";s:30:"responseEnvelope.correlationId";s:13:"c2514f258ddf1";s:22:"responseEnvelope.build";s:7:"1829457";s:16:"error(0).errorId";s:6:"580027";s:15:"error(0).domain";s:8:"PLATFORM";s:17:"error(0).severity";s:5:"Error";s:17:"error(0).category";s:11:"Application";s:16:"error(0).message";s:44:"Prohibited+request+parameter%3A+businessInfo";s:21:"error(0).parameter(0)";s:12:"businessInfo";}');
-		$this->assertEquals(PPUtils::array_match_key($arr, "error(0)."), true);
+		$this->assertEquals(true, PPUtils::array_match_key($arr, "error(0)."));
     }
 
     /**
@@ -71,40 +71,40 @@ class PPUtilsTest extends \PHPUnit_Framework_TestCase
      * @test
      */
     public function testValidXmlToArray() {
-    	 
+
     	$requestPayload = '<SetExpressCheckoutResponse xmlns="urn:ebay:api:PayPalAPI"><Timestamp xmlns="urn:ebay:apis:eBLBaseComponents">2013-07-23T05:51:03Z</Timestamp><Ack xmlns="urn:ebay:apis:eBLBaseComponents"><Nested>Success</Nested></Ack><CorrelationID xmlns="urn:ebay:apis:eBLBaseComponents">1cf4475882d05</CorrelationID><Version xmlns="urn:ebay:apis:eBLBaseComponents">94.0</Version><Build xmlns="urn:ebay:apis:eBLBaseComponents">6941909</Build><Token xsi:type="ebl:ExpressCheckoutTokenType" attrib="someValue">EC-6KT84265CE1992425</Token></SetExpressCheckoutResponse>';
-    	 
+
     	$xml = '<?xml version="1.0" encoding="UTF-8"?><SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:cc="urn:ebay:apis:CoreComponentTypes" xmlns:wsu="http://schemas.xmlsoap.org/ws/2002/07/utility" xmlns:saml="urn:oasis:names:tc:SAML:1.0:assertion" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:wsse="http://schemas.xmlsoap.org/ws/2002/12/secext" xmlns:ed="urn:ebay:apis:EnhancedDataTypes" xmlns:ebl="urn:ebay:apis:eBLBaseComponents" xmlns:ns="urn:ebay:api:PayPalAPI">'
-    	. '<SOAP-ENV:Header><Security xmlns="http://schemas.xmlsoap.org/ws/2002/12/secext" xsi:type="wsse:SecurityType"></Security><RequesterCredentials xmlns="urn:ebay:api:PayPalAPI" xsi:type="ebl:CustomSecurityHeaderType"><Credentials xmlns="urn:ebay:apis:eBLBaseComponents" xsi:type="ebl:UserIdPasswordType"><Username xsi:type="xs:string"></Username><Password xsi:type="xs:string"></Password><Signature xsi:type="xs:string"></Signature><Subject xsi:type="xs:string"></Subject></Credentials></RequesterCredentials></SOAP-ENV:Header>'
-    	. '<SOAP-ENV:Body id="_0">'
-    	. $requestPayload
-    	. '</SOAP-ENV:Body></SOAP-ENV:Envelope>';
-    	 
+		. '<SOAP-ENV:Header><Security xmlns="http://schemas.xmlsoap.org/ws/2002/12/secext" xsi:type="wsse:SecurityType"></Security><RequesterCredentials xmlns="urn:ebay:api:PayPalAPI" xsi:type="ebl:CustomSecurityHeaderType"><Credentials xmlns="urn:ebay:apis:eBLBaseComponents" xsi:type="ebl:UserIdPasswordType"><Username xsi:type="xs:string"></Username><Password xsi:type="xs:string"></Password><Signature xsi:type="xs:string"></Signature><Subject xsi:type="xs:string"></Subject></Credentials></RequesterCredentials></SOAP-ENV:Header>'
+		. '<SOAP-ENV:Body id="_0">'
+		. $requestPayload
+		. '</SOAP-ENV:Body></SOAP-ENV:Envelope>';
+
     	$ret = PPUtils::xmlToArray($xml);
     	
-		$this->assertEquals("SetExpressCheckoutResponse", $ret[0]['name']);
+        $this->assertEquals("SetExpressCheckoutResponse", $ret[0]['name']);
 
-		$ret = $ret[0]['children'];
+        $ret = $ret[0]['children'];
     	$this->assertEquals(6, count($ret));
     	
-		// Token node
+	// Token node
     	$this->assertFalse(array_key_exists('children', $ret[5]));
     	$this->assertEquals("Token", $ret[5]['name']);
     	$this->assertEquals("EC-6KT84265CE1992425", $ret[5]['text']);
-    	 
+    	
     	$this->assertEquals(1, count($ret[5]['attributes']));
     	$k = key($ret[5]['attributes']);
     	$this->assertEquals("attrib", $k);
     	$this->assertEquals("someValue", $ret[5]['attributes'][$k]);
-    	 
+    	
     	// Ack Node
     	$this->assertEquals("Ack", $ret[1]['name']);
     	$this->assertEquals(1, count($ret[1]['children']));
     	$this->assertEquals("Nested", $ret[1]['children'][0]['name']);
     	$this->assertEquals("Success", $ret[1]['children'][0]['text']);
-    	 
+
     }
-   
+
     /**
 	 * @test
 	 */
@@ -121,21 +121,21 @@ class PPUtilsTest extends \PHPUnit_Framework_TestCase
     public function testGetProperties() {
     	$o = new MockReflectionTestType();
     	$ret = PPUtils::objectProperties($o);
-    
+
     	//TODO: Check count
     	$this->assertEquals(6, count($ret), "Not all properties have been read");
     	$this->assertEquals('fieldWithSpecialChar', $ret['fieldwith-specialchar']);
-    	 
+
     }
     
     /**
      * @test
      */
     public function testGetPropertyType() {
-    	 
+
     	$this->assertEquals('string', PPUtils::propertyType('MockReflectionTestType', 'noAnnotations'));
     	$this->assertEquals('SomeType', PPUtils::propertyType('MockReflectionTestType', 'value'));
-    	 
+
     	$this->assertEquals(true, PPUtils::isPropertyArray('MockReflectionTestType', 'arrayMember'));
     	$this->assertEquals(false, PPUtils::isPropertyArray('MockReflectionTestType', 'value'));
     }

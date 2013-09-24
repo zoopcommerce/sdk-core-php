@@ -9,6 +9,7 @@ use PayPal\Core\PPConfigManager;
 class PPApiContext {
 	
 	/**
+	 * 
 	 * @var array Dynamic SDK configuration
 	 */
 	protected $config;

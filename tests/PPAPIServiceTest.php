@@ -44,7 +44,7 @@ class PPAPIServiceTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->object = new PPAPIService(null,'Invoice', 'NV', new PPApiContext($this->config), array());
+        $this->object = new PPAPIService(null, 'Invoice', 'NV', new PPApiContext($this->config), array());
     }
 
     /**
@@ -60,9 +60,9 @@ class PPAPIServiceTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetServiceName()
     {  
-    	$this->assertEquals('Invoice',$this->object->serviceName);
+    	$this->assertEquals('Invoice', $this->object->serviceName);
     	$this->object->setServiceName('AdaptiveAccounts');
-        $this->assertEquals('AdaptiveAccounts',$this->object->serviceName);
+        $this->assertEquals('AdaptiveAccounts', $this->object->serviceName);
     }
 
     /**
@@ -71,16 +71,16 @@ class PPAPIServiceTest extends \PHPUnit_Framework_TestCase
     public function testMakeRequestWithoutHandlers() {
     	$this->object->setServiceName('Invoice');
     	$this->setExpectedException('PayPal\Exception\PPConnectionException');
-		$req = new PPRequest(new MockNVPClass(), "NV");
-		$this->object->makeRequest('GetInvoiceDetails', $req);
+	$req = new PPRequest(new MockNVPClass(), "NV");
+	$this->object->makeRequest('GetInvoiceDetails', $req);
     }    
     
     /**
      * @test
      */
     public function testMakeRequestWithHandlers() {
-    	$this->object->addHandler( new MockHandler());
-		$req = new PPRequest(new MockNVPClass(), "NV");
+    	$this->object->addHandler(new MockHandler());
+	$req = new PPRequest(new MockNVPClass(), "NV");
     	$ret = $this->object->makeRequest('GetInvoiceDetails', $req);
     	
     	$this->assertArrayHasKey('response', $ret);

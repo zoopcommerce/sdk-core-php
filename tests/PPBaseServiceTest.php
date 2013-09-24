@@ -66,7 +66,7 @@ class PPBaseServiceTest extends \PHPUnit_Framework_TestCase
     	$this->assertContains("responseEnvelope.timestamp=", $ret);
     	$this->assertEquals($req->toNVPString(), $this->object->getLastRequest());
     	$this->assertEquals($ret, $this->object->getLastResponse());
-    	 
+    	
     }
 }
 ?>

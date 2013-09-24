@@ -65,7 +65,6 @@ class PPPlatformServiceHandlerTest extends PHPUnit_Framework_TestCase {
 		
 		$this->assertEquals(8, count($httpConfig->getHeaders()), "Basic headers not added");
 		
-		
 		$httpConfig = new PPHttpConfig();
 		$handler = new PPPlatformServiceHandler('certuser', 'sdkname', 'sdkversion');
 		$handler->handle($httpConfig, $req, $this->options);
@@ -89,7 +88,7 @@ class PPPlatformServiceHandlerTest extends PHPUnit_Framework_TestCase {
 				$this->options
 		);
 		$this->assertEquals(PPConstants::PLATFORM_SANDBOX_ENDPOINT . "$serviceName/$apiMethod", $httpConfig->getUrl());
-	
+
 		$options = $this->options;
 		$options['config']['mode'] = 'live';
 		$handler->handle($httpConfig,

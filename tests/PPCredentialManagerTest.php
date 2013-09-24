@@ -95,14 +95,13 @@ class PPCredentialManagerTest extends \PHPUnit_Framework_TestCase
 		// Test to see if default account for REST credentials works
 		// as expected
 		$o = PPCredentialManager::getInstance(array(
-				'mode' => 'sandbox',
-				'acct1.ClientId' => 		'client-id',
-				'acct1.ClientSecret' => 	'client-secret',
-				'acct2.UserName' => 		'certuser_biz_api1.paypal.com',
-				'acct2.Password' => 		'D6JNKKULHN3G5B8A',
-				'acct2.CertPath' => 		'cert_key.pem',
-				'acct2.AppId' => 			'APP-80W284485P519543T'
-					
+			'mode' => 'sandbox',
+			'acct1.ClientId' => 		'client-id',
+			'acct1.ClientSecret' => 	'client-secret',
+			'acct2.UserName' => 		'certuser_biz_api1.paypal.com',
+			'acct2.Password' => 		'D6JNKKULHN3G5B8A',
+			'acct2.CertPath' => 		'cert_key.pem',
+			'acct2.AppId' => 		'APP-80W284485P519543T'
 		));
 		$cred = $o->getCredentialObject();
 		$this->assertEquals('client-id', $cred['clientId']);
@@ -116,13 +115,13 @@ class PPCredentialManagerTest extends \PHPUnit_Framework_TestCase
 		$cred = $this->object->getCredentialObject();
 		$this->assertEquals('APP-80W284485P519543T', $cred->getApplicationId());
 	}
-	
+
 	/**
 	 * @test
 	 */
 	public function testGetSubjectCredentialObject() {
 		$cred = $this->object->getCredentialObject('jb-us-seller_api1.paypal.com');
-	
+
 		$this->assertNotNull($cred);
 		$this->assertNotNull($cred->getThirdPartyAuthorization());
 		$this->assertEquals('PayPal\Auth\PPSubjectAuthorization', get_class($cred->getThirdPartyAuthorization()));
@@ -135,13 +134,13 @@ class PPCredentialManagerTest extends \PHPUnit_Framework_TestCase
 		$cred = $this->object->getCredentialObject('acct3');
 	
 		$this->assertNotNull($cred);
-	
+
 		$this->assertArrayHasKey('clientId', $cred);
 		$this->assertEquals($this->config['acct3.ClientId'], $cred['clientId']);
-	
+
 		$this->assertArrayHasKey('clientSecret', $cred);
 		$this->assertEquals($this->config['acct3.ClientSecret'], $cred['clientSecret']);
-	}	
+	}
 	
 	/**
 	 * @test
