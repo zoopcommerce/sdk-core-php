@@ -8,7 +8,7 @@ use PayPal\Core\PPConstants;
 class PPOpenIdHandler implements IPPHandler {
 	
 	private static $sdkName = "openid-sdk-php";	
-	private static $sdkVersion = "2.4.3";
+	private static $sdkVersion = "2.5.0";
 	
 	public function handle($httpConfig, $request, $options) {
 		$apiContext = $options['apiContext'];
