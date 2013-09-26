@@ -35,18 +35,20 @@ class RestHandler implements IPPHandler {
 		$config = $apiContext->getConfig();
 		
 		if($credential == NULL) {
-			// Try picking credentials from the config file
-			$credMgr = PPCredentialManager::getInstance($config);
-			$credValues = $credMgr->getCredentialObject();
-			if(!is_array($credValues)) {
-				throw new PPMissingCredentialException("Empty or invalid credentials passed");
+			
+			try {
+				// Try picking credentials from the config file
+				$credMgr = PPCredentialManager::getInstance($config);
+				$credValues = $credMgr->getCredentialObject();
+			} catch (PPMissingCredentialException $ex) {
+				// Argh: swallow missing credential exception. 
+				// We may have come here because the API call does not require
+				// authentication and sent an explicit no credentials configuration 
 			}
-			$credential = new OAuthTokenCredential($credValues['clientId'], $credValues['clientSecret']);
+			if(isset($credValues) && is_array($credValues)) {
+				$credential = new OAuthTokenCredential($credValues['clientId'], $credValues['clientSecret']);
+			}
 		}
-		if($credential == NULL || ! ($credential instanceof OAuthTokenCredential) ) {
-			throw new PPInvalidCredentialException("Invalid credentials passed");
-		}
-
 		
 		$httpConfig->setUrl(
 			rtrim( trim($this->_getEndpoint($config)), '/') . 
