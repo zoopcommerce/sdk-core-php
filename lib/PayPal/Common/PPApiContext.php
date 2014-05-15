@@ -86,7 +86,20 @@ class PPApiContext {
 		return $this->config;
 	}
 	
-	/*
+    public function get($searchKey)
+    {
+        if(!isset($this->config)) {
+            return PPConfigManager::getInstance()->get($searchKey);
+        }
+        else
+        {
+            if (array_key_exists($searchKey, $this->getConfig()))
+                return $this->config[$searchKey];
+        }
+        return false;
+    }
+	
+    /*
 	 *
 	 * @param array SDK configuration parameters
 	 */
