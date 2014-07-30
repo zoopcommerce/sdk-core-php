@@ -1,7 +1,7 @@
 <?php
 class PPConstants {
     const SDK_NAME = 'sdk-core-php';
-    const SDK_VERSION = '1.5.0';
+    const SDK_VERSION = '1.5.4';
 
     const MERCHANT_SANDBOX_SIGNATURE_ENDPOINT = "https://api-3t.sandbox.paypal.com/2.0";
     const MERCHANT_SANDBOX_CERT_ENDPOINT = "https://api.sandbox.paypal.com/2.0";
