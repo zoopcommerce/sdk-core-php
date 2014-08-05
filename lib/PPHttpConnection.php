@@ -58,6 +58,8 @@ class PPHttpConnection
 		switch($this->httpConfig->getMethod()) {
 			case 'POST':
 				curl_setopt($ch, CURLOPT_POST, true);
+			case 'PUT':
+			case 'PATCH':
 				curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
 				break;
 		}
