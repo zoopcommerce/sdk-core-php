@@ -1,4 +1,10 @@
 <?php
+
+/**
+ * Class PPUtils
+ *
+ * Default Utils Class containing useful functions
+ */
 class PPUtils
 {
 
@@ -117,7 +123,7 @@ class PPUtils
 				$child = $children->item($i);
 				if($child !== null)
 				{
-					if($child->childNodes->item(0) instanceof \DOMText )
+					if($child->childNodes->item(0) instanceof DOMText )
 					{
 						$result[$i]['name'] = $child->nodeName;
 						$result[$i]['text'] = $child->childNodes->item(0)->nodeValue;

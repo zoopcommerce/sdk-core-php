@@ -7,7 +7,9 @@ build
 .project
 .settings
 .buildpath
+.idea
 *.bak
+atlassian-ide-plugin.xml
 
 # Composer
 vendor
