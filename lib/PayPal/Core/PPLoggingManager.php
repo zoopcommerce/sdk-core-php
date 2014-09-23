@@ -1,26 +1,11 @@
 <?php
 namespace PayPal\Core;
+
 /**
  * Simple Logging Manager.
  * This does an error_log for now
  * Potential frameworks to use are PEAR logger, log4php from Apache
  */
-
-class PPLoggingLevel {
-
-	// FINE Logging Level
-	const FINE = 3;
-
-	// INFO Logging Level
-	const INFO = 2;
-
-	// WARN Logging Level
-	const WARN = 1;
-
-	// ERROR Logging Level
-	const ERROR = 0;
-}
-
 class PPLoggingManager {
 
 	// Default Logging Level
