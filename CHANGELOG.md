@@ -1,6 +1,12 @@
 
 # CHANGELOG
 
+## V2.5.4 (September 23, 2014)
+
+   * namespace annotation fixes
+   * handler object checking
+   * put and patch features
+
 ## V2.5.0 (September 26, 2013)
 
    * Updating core to support genio.

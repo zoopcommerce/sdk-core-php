@@ -67,7 +67,7 @@ class PPOpenIdSessionTest extends \PHPUnit_Framework_TestCase {
 		$expectedBaseUrl = "https://www.paypal.com/webapps/auth/protocol/openidconnect/v1/authorize";
 			
 		$this->assertEquals($expectedBaseUrl . "?client_id=DummyId&response_type=code&scope=this+that+and+more+openid&redirect_uri=" . urlencode($redirectUri),
-				PPOpenIdSession::getAuthorizationUrl($redirectUri, $scope, "DummyId", $this->context), "Failed case - custom config");
+				PPOpenIdSession::getAuthorizationUrl($redirectUri, $scope, "DummyId", null, null, $this->context), "Failed case - custom config");
 	}
 	
 	/**
