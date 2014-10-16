@@ -45,10 +45,10 @@ class PPConfigManager {
 	//used to load the file
 	private function load($fileName) {
 
-		$this->config = @parse_ini_file($fileName);
-		if($this->config == NULL || count($this->config) == 0) {
-			throw new PPConfigurationException("Config file $fileName not found","303");
-		}
+        //Gracefully check for ini file
+        if(@parse_ini_file($fileName)) {
+            $this->config = @parse_ini_file($fileName);
+        }
 	}
 
 	/**
