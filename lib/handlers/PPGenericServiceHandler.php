@@ -20,6 +20,9 @@ class PPGenericServiceHandler implements IPPHandler {
 		$httpConfig->addHeader('X-PAYPAL-RESPONSE-DATA-FORMAT', $request->getBindingType());
 		$httpConfig->addHeader('X-PAYPAL-DEVICE-IPADDRESS', PPUtils::getLocalIPAddress());
 		$httpConfig->addHeader('X-PAYPAL-REQUEST-SOURCE', $this->getRequestSource());
+        if (!array_key_exists("User-Agent", $httpConfig->getHeaders())) {
+            $httpConfig->addHeader("User-Agent", PPUserAgent::getValue($this->sdkName, $this->sdkVersion));
+        }
 		if(isset($options['config']['service.SandboxEmailAddress'])) {
 			$httpConfig->addHeader('X-PAYPAL-SANDBOX-EMAIL-ADDRESS', $options['config']['service.SandboxEmailAddress']);
 		}		
