@@ -24,7 +24,7 @@ class PPBaseService {
 		return $this->serviceName;
 	}
 
-	public function __construct($serviceName, $serviceBinding, $handlers, $config=null) {
+	public function __construct($serviceName, $serviceBinding, $config=null, $handlers = array()) {
 		$this->serviceName = $serviceName;
 		$this->serviceBinding = $serviceBinding;
 		$this->config = $config;
@@ -36,10 +36,15 @@ class PPBaseService {
 	 * @param string $method - API method to call
 	 * @param object $requestObject Request object 
 	 * @param apiContext $apiContext object containing credential and SOAP headers
+     * @param array $handlers Array of Handlers
 	 * @param mixed $apiUserName - Optional API credential - can either be
 	 * 		a username configured in sdk_config.ini or a ICredential object created dynamically 		
 	 */
-	public function call($port, $method, $requestObject, $apiContext) {
+	public function call($port, $method, $requestObject, $apiContext, $handlers = array()) {
+
+        if (is_array($handlers)) {
+            $this->handlers = $this->handlers + $handlers;
+        }
 
 		if($apiContext == null)
 		{
