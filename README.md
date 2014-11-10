@@ -1,5 +1,32 @@
 # PayPal Core SDK - V1.5.4
 
+## POODLE UPDATE
+
+- Because of the Poodle vulnerability, PayPal has disabled SSLv3.
+- To enable TLS encryption, the change was made to PPHttpConfig.php to use a cipher list specific to TLS encryption.
+``` php
+    /**
+	 * Some default options for curl
+	 * These are typically overridden by PPConnectionManager
+	 */
+	public static $DEFAULT_CURL_OPTS = array(
+		CURLOPT_SSLVERSION => 1,
+		CURLOPT_CONNECTTIMEOUT => 10,
+		CURLOPT_RETURNTRANSFER => TRUE,
+		CURLOPT_TIMEOUT        => 60,	// maximum number of seconds to allow cURL functions to execute
+		CURLOPT_USERAGENT      => 'PayPal-PHP-SDK',
+		CURLOPT_HTTPHEADER     => array(),
+		CURLOPT_SSL_VERIFYHOST => 2,
+		CURLOPT_SSL_VERIFYPEER => 1,
+		CURLOPT_SSL_CIPHER_LIST => 'TLSv1',
+	);
+```
+- There are two primary changes done to curl options:
+    - CURLOPT_SSLVERSION is set to 1 . See [here](http://curl.haxx.se/libcurl/c/CURLOPT_SSLVERSION.html) for more information
+    - CURLOPT_SSL_CIPHER_LIST was set to TLSv1, See [here](http://curl.haxx.se/libcurl/c/CURLOPT_SSL_CIPHER_LIST.html) for more information
+
+All these changes are included in the recent [release](https://github.com/paypal/sdk-core-php/releases), along with many other bug fixes. We highly encourage you to update your versions, by either using `composer` or directly downloading the library available [here](https://github.com/paypal/sdk-core-php/releases).
+
 ## Prerequisites
 
  * PHP 5.2 and above
