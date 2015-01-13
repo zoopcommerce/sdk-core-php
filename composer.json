@@ -16,7 +16,9 @@
         "ext-curl": "*"
     },
     "autoload": {
-        "classmap": ["lib"]
+        "psr-0": {
+            "PayPal\\Core\\": "lib"
+        }
     },
     "require-dev": {
         "phpunit/phpunit": "3.7.*"
